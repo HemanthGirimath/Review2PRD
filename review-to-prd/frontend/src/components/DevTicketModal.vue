@@ -137,8 +137,10 @@ const emit = defineEmits<{
 const copyState = ref<'md' | 'json' | null>(null)
 
 function toggleCriteria(index: number) {
-  if (!props.ticket) return
-  emit('update:criteria', index, !props.ticket.acceptanceCriteria[index].done)
+  const item = props.ticket?.acceptanceCriteria?.[index]
+  if (item) {
+    emit('update:criteria', index, !item.done)
+  }
 }
 
 function buildMarkdown(): string {
