@@ -136,7 +136,7 @@ const password = ref('')
 const showPw = ref(false)
 const verifyState = ref(false)  // true when awaiting email verification
 
-const { loading, authError, login, signup, loginWithGoogle } = useAuth()
+const { loading, authError, login, signup } = useAuth()
 
 const supabaseConfigured = computed(() => !!supabase)
 

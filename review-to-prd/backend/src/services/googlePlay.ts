@@ -4,13 +4,19 @@ import { Review, AppInfo, ScrapeResponse } from '../types';
 const REVIEWS_PER_STAR = 75; // fetch 75 reviews per star (1★, 2★, 3★) = up to 225 total
 
 export function parseGooglePlayId(input: string): string | null {
-    // Handle full URL: https://play.google.com/store/apps/details?id=com.example.app
-    const urlMatch = input.match(/[?&]id=([a-zA-Z0-9._\-]+)/);
+    const trimmed = input.trim();
+    
+    // 1. Handle full URL: https://play.google.com/store/apps/details?id=com.example.app&others...
+    const urlMatch = trimmed.match(/[?&]id=([a-zA-Z0-9._\-]+)/);
     if (urlMatch) return urlMatch[1];
 
-    // Handle direct package name: com.example.app
-    const packageMatch = input.match(/^[a-zA-Z][a-zA-Z0-9_]*(\.[a-zA-Z][a-zA-Z0-9_]*)+$/);
-    if (packageMatch) return input.trim();
+    // 2. Handle package name with trailing parameters: com.example.app&hl=en
+    // Split by & or ? to get the core package name
+    const core = trimmed.split(/[&?]/)[0];
+    
+    // 3. Validate package name format: com.example.app
+    const packageMatch = core.match(/^[a-zA-Z][a-zA-Z0-9_]*(\.[a-zA-Z][a-zA-Z0-9_]*)+$/);
+    if (packageMatch) return core;
 
     return null;
 }

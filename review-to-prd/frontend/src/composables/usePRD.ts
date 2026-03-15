@@ -11,7 +11,7 @@ import {
     type PersistedSession
 } from './useSessionCache'
 
-const API_BASE = 'http://localhost:3001/api'
+const API_BASE = '/api'
 
 export function usePRD() {
     const step = ref<Step>('input')
@@ -125,7 +125,7 @@ export function usePRD() {
         }
 
         step.value = 'result'
-        activeView.value = 'board' // jump straight to the board
+        activeView.value = 'prd' // Changed from 'board' to keep focus on PRD
 
         // Persist session to localStorage so user can resume later
         saveSession({

@@ -83,7 +83,7 @@
       class="cards-grid"
       item-key="id"
       handle=".issue-card"
-      animation="200"
+      :animation="200"
       ghost-class="card-ghost"
     >
       <IssueCard
