@@ -2,7 +2,7 @@
   <div class="app">
     <!-- UNIVERSAL STICKY NAV (all states) -->
     <header class="top-nav">
-      <div class="nav-logo" @click="router.push('/')" style="cursor: pointer;" title="Return to Home">
+      <div class="nav-logo" @click="router.push('/app')" style="cursor: pointer;" title="Go to Dashboard">
         <div class="logo-dot"></div>
         <span class="logo-name-sm">Review<span class="logo-accent">2</span>PRD</span>
       </div>
