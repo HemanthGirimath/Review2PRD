@@ -12,7 +12,11 @@ Follow these steps to deploy your persistent monolith to Railway.app.
 
 ### 2. Railway Project Setup
 1.  **Create New Project**: Select "Deploy from GitHub repo".
-2.  **Add Database**: 
+2.  **CRITICAL: Set Root Directory**:
+    - Go to **Settings** -> **General** -> **Root Directory**.
+    - Set this to `review-to-prd`.
+    - This tells Railway where your `package.json` is located.
+3.  **Add Database**: 
     - Click "Add Service" -> "Database" -> "Add Postgres".
     - Once created, Railway automatically provides a `DATABASE_URL`.
 3.  **Run SQL Migration**:
