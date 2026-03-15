@@ -125,7 +125,7 @@ export function usePRD() {
         }
 
         step.value = 'result'
-        activeView.value = 'board' // jump straight to the board
+        activeView.value = 'prd' // Changed from 'board' to keep focus on PRD
 
         // Persist session to localStorage so user can resume later
         saveSession({

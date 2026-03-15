@@ -2,7 +2,7 @@
   <div class="app">
     <!-- UNIVERSAL STICKY NAV (all states) -->
     <header class="top-nav">
-      <div class="nav-logo">
+      <div class="nav-logo" @click="router.push('/')" style="cursor: pointer;" title="Return to Home">
         <div class="logo-dot"></div>
         <span class="logo-name-sm">Review<span class="logo-accent">2</span>PRD</span>
       </div>
@@ -212,6 +212,7 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
 import InputForm from './components/InputForm.vue'
 import LoadingState from './components/LoadingState.vue'
 import PRDDisplay from './components/PRDDisplay.vue'
@@ -233,6 +234,7 @@ const {
   exportFullReport, exportSprintPack, exportJSON,
 } = usePRD()
 
+const router = useRouter()
 const { user, logout } = useAuth()
 const { savedSession, dismiss, clear } = useSessionCache()
 
