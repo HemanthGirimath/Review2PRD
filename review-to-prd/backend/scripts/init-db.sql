@@ -18,3 +18,16 @@ CREATE TABLE IF NOT EXISTS analyses (
 CREATE INDEX IF NOT EXISTS idx_analyses_user_id ON analyses(user_id);
 -- Index for recent analyses sorting
 CREATE INDEX IF NOT EXISTS idx_analyses_analyzed_at ON analyses(analyzed_at DESC);
+
+-- AI Settings
+CREATE TABLE IF NOT EXISTS user_settings (
+    user_id UUID PRIMARY KEY,
+    ai_provider VARCHAR(50) DEFAULT 'ollama',
+    ai_model VARCHAR(100) DEFAULT 'kimi-k2.5:cloud',
+    api_key TEXT,
+    base_url TEXT DEFAULT 'http://localhost:11434',
+    updated_at TIMESTAMPTZ DEFAULT now()
+);
+
+-- Index for settings lookup
+CREATE INDEX IF NOT EXISTS idx_user_settings_user_id ON user_settings(user_id);

@@ -34,8 +34,13 @@
           History
           <span v-if="historyItems.length" class="nav-history-badge">{{ historyItems.length }}</span>
         </button>
+        <button id="settings-nav-btn" class="nav-btn" @click="settingsOpen = true" title="AI Settings">
+          <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 7a1 1 0 1 1 0 2 1 1 0 0 1 0-2Zm5.78-1.554.432-.249a.174.174 0 0 0 .022-.283l-.934-1.618a.174.174 0 0 0-.214-.047l-.433.25a1.706 1.706 0 0 1-1.742-.032c-.007-.004-.014-.009-.022-.014a1.708 1.708 0 0 1-.806-1.463l-.001-.484a.174.174 0 0 0-.174-.174H8.05a.174.174 0 0 0-.174.174l-.001.484a1.71 1.71 0 0 1-1.48 1.702l-.432.25a1.702 1.702 0 0 1-1.743-.034l-.43-.245a.175.175 0 0 0-.215.047l-.934 1.618a.174.174 0 0 0 .022.283l.432.249a1.702 1.702 0 0 1 .821 1.483l-.001.484c0 .02.002.039.006.058a1.703 1.703 0 0 1-.827 1.693l-.432.25a.175.175 0 0 0-.022.282l.934 1.619c.05.086.162.115.248.065l.432-.25a1.7 1.7 0 0 1 1.742.031l.022.014a1.71 1.71 0 0 1 .806 1.463l.001.48c0 .097.078.175.175.175h1.868a.175.175 0 0 0 .175-.175l.001-.484a1.711 1.711 0 0 1 1.48-1.702l.432-.25a1.7 1.7 0 0 1 1.743.033l.43.246a.175.175 0 0 0 .215-.047l.934-1.618a.175.175 0 0 0-.022-.283l-.432-.249a1.703 1.703 0 0 1-.821-1.483l.001-.484a1.7 1.7 0 0 1 .827-1.693Z"/></svg>
+        </button>
         <div v-if="user" class="user-menu">
-          <span class="user-email">{{ userEmail }}</span>
+          <button class="user-profile-trigger" @click="profileOpen = true" title="View Profile">
+            {{ userEmail }}
+          </button>
           <button id="logout-btn" class="logout-btn" @click="handleLogout" title="Sign out">
             <svg viewBox="0 0 16 16" fill="currentColor"><path d="M2 2.75C2 1.784 2.784 1 3.75 1h2.5a.75.75 0 0 1 0 1.5h-2.5a.25.25 0 0 0-.25.25v10.5c0 .138.112.25.25.25h2.5a.75.75 0 0 1 0 1.5h-2.5A1.75 1.75 0 0 1 2 13.25Zm10.44 4.5-1.97-1.97a.749.749 0 0 1 .326-1.275.749.749 0 0 1 .734.215l3.25 3.25a.75.75 0 0 1 0 1.06l-3.25 3.25a.749.749 0 0 1-1.275-.326.749.749 0 0 1 .215-.734l1.97-1.97H6.75a.75.75 0 0 1 0-1.5Z"/></svg>
           </button>
@@ -149,11 +154,25 @@
       @update:criteria="updateTicketCriteria"
     />
 
+    <!-- AI Settings Modal -->
+    <SettingsModal
+      :visible="settingsOpen"
+      @close="settingsOpen = false"
+    />
+
     <!-- Resume Session Banner -->
     <ResumeModal
       :session="savedSession"
       @resume="handleResume"
       @start-fresh="handleStartFresh"
+    />
+
+    <!-- User Profile Modal -->
+    <ProfileModal
+      :visible="profileOpen"
+      :user="user"
+      @close="profileOpen = false"
+      @open-settings="profileOpen = false; settingsOpen = true"
     />
 
     <!-- History Drawer -->
@@ -218,6 +237,8 @@ import LoadingState from './components/LoadingState.vue'
 import PRDDisplay from './components/PRDDisplay.vue'
 import IssueBoard from './components/IssueBoard.vue'
 import DevTicketModal from './components/DevTicketModal.vue'
+import SettingsModal from './components/SettingsModal.vue'
+import ProfileModal from './components/ProfileModal.vue'
 import ResumeModal from './components/ResumeModal.vue'
 import { usePRD } from './composables/usePRD'
 import { useAuth } from './composables/useAuth'
@@ -243,6 +264,8 @@ const userEmail = computed(() => user.value?.email?.split('@')[0] || '')
 
 const ticketModalIssue = ref<Issue | null>(null)
 const historyOpen = ref(false)
+const settingsOpen = ref(false)
+const profileOpen = ref(false)
 const historyLoading = ref(false)
 const historyItems = ref<SavedAnalysis[]>([])
 
@@ -681,13 +704,23 @@ body {
   border-left: 1px solid var(--color-border-subtle);
   padding-left: 0.75rem;
 }
-.user-email {
+.user-profile-trigger {
+  background: none;
+  border: none;
   font-size: 0.75rem;
   color: var(--color-text-muted);
   max-width: 120px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  font-family: inherit;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+.user-profile-trigger:hover {
+  background: var(--color-surface-2);
+  color: var(--color-text-primary);
 }
 .logout-btn {
   display: flex;

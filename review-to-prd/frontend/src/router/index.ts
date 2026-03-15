@@ -8,6 +8,10 @@ const router = createRouter({
             path: '/',
             name: 'landing',
             component: () => import('../pages/LandingPage.vue'),
+            beforeEnter: async () => {
+                const user = await getUser()
+                if (user) return { name: 'app' }
+            },
         },
         {
             path: '/login',

@@ -15,7 +15,7 @@ if (!fs.existsSync(dataDir)) {
 
 // Initialize JSON DB if missing
 if (!fs.existsSync(JSON_DB_PATH)) {
-    fs.writeFileSync(JSON_DB_PATH, JSON.stringify({ analyses: [] }, null, 2));
+    fs.writeFileSync(JSON_DB_PATH, JSON.stringify({ analyses: [], settings: [] }, null, 2));
 }
 
 let pool: Pool | null = null;
@@ -45,6 +45,7 @@ export async function query(text: string, params: any[] = []) {
 
     // JSON Fallback logic...
     const db = JSON.parse(fs.readFileSync(JSON_DB_PATH, 'utf-8'));
+    if (!db.settings) db.settings = []; // Migration for existing files
     
     if (text.includes('INSERT INTO analyses')) {
         const [user_id, app_name, platform, input_value, input_mode, prd, issues, ticket_cache] = params;
@@ -79,6 +80,26 @@ export async function query(text: string, params: any[] = []) {
         db.analyses = db.analyses.filter((a: any) => !(a.id === id && a.user_id === userId));
         fs.writeFileSync(JSON_DB_PATH, JSON.stringify(db, null, 2));
         return { rowCount: 1 };
+    }
+
+    // Settings logic
+    if (text.includes('SELECT * FROM user_settings') || text.includes('SELECT ai_provider')) {
+        const [userId] = params;
+        const row = db.settings.find((s: any) => s.user_id === userId);
+        return { rows: row ? [row] : [], rowCount: row ? 1 : 0 };
+    }
+
+    if (text.includes('INSERT INTO user_settings') || text.includes('UPSERT') || text.includes('ON CONFLICT')) {
+        const [user_id, ai_provider, ai_model, api_key, base_url] = params;
+        const index = db.settings.findIndex((s: any) => s.user_id === user_id);
+        const newRow = { user_id, ai_provider, ai_model, api_key, base_url, updated_at: new Date().toISOString() };
+        if (index > -1) {
+            db.settings[index] = newRow;
+        } else {
+            db.settings.push(newRow);
+        }
+        fs.writeFileSync(JSON_DB_PATH, JSON.stringify(db, null, 2));
+        return { rows: [newRow] };
     }
 
     throw new Error('Unsupported JSON fallback query: ' + text);

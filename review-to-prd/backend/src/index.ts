@@ -8,6 +8,7 @@ import scrapeRouter from './routes/scrape';
 import analyzeRouter from './routes/analyze';
 import ticketRouter from './routes/ticket';
 import analysesRouter from './routes/analyses';
+import settingsRouter from './routes/settings';
 
 const app = express();
 const PORT = 3001;
@@ -24,6 +25,7 @@ app.use('/api/scrape', scrapeRouter);
 app.use('/api/analyze', analyzeRouter);
 app.use('/api/ticket', ticketRouter);
 app.use('/api/analyses', analysesRouter);
+app.use('/api/settings', settingsRouter);
 
 const frontendPath = path.join(__dirname, '../../frontend/dist');
 app.use(express.static(frontendPath));

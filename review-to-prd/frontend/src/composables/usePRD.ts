@@ -10,8 +10,16 @@ import {
     saveSession, clearSession,
     type PersistedSession
 } from './useSessionCache'
+import { supabase } from '../lib/supabase'
 
 const API_BASE = '/api'
+
+async function getAuthHeader() {
+    if (!supabase) return {}
+    const { data: { session } } = await supabase.auth.getSession()
+    if (!session) return {}
+    return { Authorization: `Bearer ${session.access_token}` }
+}
 
 export function usePRD() {
     const step = ref<Step>('input')
@@ -72,7 +80,8 @@ export function usePRD() {
                 console.log('[cache] Scrape cache hit for:', cacheKey)
                 loadingMessage.value = '✓ Reviews loaded from cache'
             } else {
-                const scrapeRes = await axios.post<ScrapeResponse>(`${API_BASE}/scrape`, { url: cacheKey })
+                const headers = await getAuthHeader()
+                const scrapeRes = await axios.post<ScrapeResponse>(`${API_BASE}/scrape`, { url: cacheKey }, { headers })
                 if (!scrapeRes.data.success) { error.value = scrapeRes.data.error || 'Scraping failed'; step.value = 'input'; return }
                 scrapeResult = scrapeRes.data
                 // Store in cache for this session
@@ -103,9 +112,10 @@ export function usePRD() {
     }
 
     async function runAnalysis(reviews: Review[], appInfo?: AppInfo, manualTextVal?: string) {
+        const headers = await getAuthHeader()
         const analyzeRes = await axios.post<AnalyzeResponse>(`${API_BASE}/analyze`, {
             reviews, appInfo, manualText: manualTextVal,
-        })
+        }, { headers })
         if (!analyzeRes.data.success) { error.value = analyzeRes.data.error || 'AI analysis failed'; step.value = 'input'; return }
         prd.value = analyzeRes.data.prd!
 
@@ -113,10 +123,11 @@ export function usePRD() {
         step.value = 'extracting'
         loadingMessage.value = 'Extracting actionable issues from PRD…'
         try {
+            const headers = await getAuthHeader()
             const issuesRes = await axios.post<IssuesResponse>(`${API_BASE}/ticket/issues`, {
                 prd: prd.value,
                 reviews: scrapeData.value?.reviews || [],
-            })
+            }, { headers })
             if (issuesRes.data.success && issuesRes.data.issues) {
                 issues.value = issuesRes.data.issues
             }
@@ -146,10 +157,11 @@ export function usePRD() {
         if (ticketCache.value[issue.id]) return ticketCache.value[issue.id] ?? null
         generatingTicketId.value = issue.id
         try {
+            const headers = await getAuthHeader()
             const res = await axios.post<TicketResponse>(`${API_BASE}/ticket`, {
                 issue,
                 appInfo: scrapeData.value?.appInfo,
-            })
+            }, { headers })
             if (res.data.success && res.data.ticket) {
                 ticketCache.value[issue.id] = res.data.ticket
                 return res.data.ticket
