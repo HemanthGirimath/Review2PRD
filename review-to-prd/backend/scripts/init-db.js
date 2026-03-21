@@ -42,13 +42,16 @@ async function init() {
     client = await pool.connect();
     console.log('✅ Connected to database.');
 
-    // Split on semicolons and filter out empty/comment-only segments so each
+    // Remove all single-line comments before splitting
+    const cleanSql = sql.replace(/--.*$/gm, '');
+    
+    // Split on semicolons and filter out empty segments so each
     // statement is sent as a separate query — some pg client configurations
     // silently drop multi-statement strings.
-    const statements = sql
+    const statements = cleanSql
       .split(';')
       .map((s) => s.trim())
-      .filter((s) => s.length > 0 && !s.startsWith('--'));
+      .filter((s) => s.length > 0);
 
     console.log(`⚙️  Executing ${statements.length} SQL statement(s) individually...`);
 
