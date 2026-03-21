@@ -95,7 +95,7 @@ export function usePRD() {
             loadingMessage.value = `Analyzing ${scrapeResult.negativeCount} complaints with Kimi AI…`
             await runAnalysis(scrapeResult.reviews!, scrapeResult.appInfo)
         } catch (err: any) {
-            error.value = err.response?.data?.error || err.message || 'Unexpected error'
+            error.value = err.response?.data?.message || err.response?.data?.error || err.message || 'Unexpected error'
             step.value = 'input'
         }
     }
@@ -106,7 +106,7 @@ export function usePRD() {
         try {
             await runAnalysis([], undefined, manualText.value)
         } catch (err: any) {
-            error.value = err.response?.data?.error || err.message || 'Unexpected error'
+            error.value = err.response?.data?.message || err.response?.data?.error || err.message || 'Unexpected error'
             step.value = 'input'
         }
     }
