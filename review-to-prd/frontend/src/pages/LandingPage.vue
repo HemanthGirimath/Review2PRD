@@ -1,186 +1,203 @@
 <template>
   <div class="landing">
+
     <!-- NAV -->
     <nav class="nav">
       <div class="nav-inner">
         <div class="nav-logo">
-          <div class="nav-logo-icon">
-            <svg viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="10" fill="url(#lg)"/><path d="M8 10h16M8 16h10M8 22h13" stroke="white" stroke-width="2.5" stroke-linecap="round"/><circle cx="24" cy="22" r="4" fill="white" fill-opacity=".9"/><path d="M22.5 22l1 1 2-2" stroke="#6366f1" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><defs><linearGradient id="lg" x1="0" y1="0" x2="32" y2="32"><stop stop-color="#6366f1"/><stop offset="1" stop-color="#8b5cf6"/></linearGradient></defs></svg>
-          </div>
+          <svg width="24" height="24" viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="7" fill="#e8e4dc"/><path d="M8 10h16M8 16h10M8 22h13" stroke="#0d1a14" stroke-width="2.5" stroke-linecap="round"/></svg>
           <span>Review<span class="accent">2</span>PRD</span>
         </div>
-        <!-- <RouterLink class="nav-signin" to="/login">Sign In →</RouterLink> -->
+        <!-- Sign-in hidden during early access -->
       </div>
     </nav>
 
-    <!-- HERO -->
+    <!-- HERO — split layout: text left, mockup right -->
     <section class="hero">
-      <div class="hero-glow hero-glow-1"></div>
-      <div class="hero-glow hero-glow-2"></div>
-
-      <div class="hero-inner">
+      <div class="hero-left">
         <div class="hero-badge">
           <span class="badge-dot"></span>
-          AI-Powered Product Intelligence
+          Early Access
         </div>
 
         <h1 class="hero-headline">
-          Turn App Store<br />
-          <span class="headline-gradient">Complaints Into</span><br />
-          Shipping-Ready PRDs
+          Turn&nbsp;App&nbsp;Store<br />reviews into your<br />next&nbsp;sprint.
         </h1>
 
         <p class="hero-sub">
-          Paste a Google Play or App Store URL. Get a structured PRD, an issue board, and developer-ready tickets — powered by local AI, in under 2 minutes.
+          Paste a Google Play or App Store link. Get a structured PRD, a prioritized issue board, and developer-ready tickets in under 2&nbsp;minutes.
         </p>
 
-        <!-- Email capture CTA -->
         <form class="hero-cta" @submit.prevent="handleEarlyAccess">
-          <input
-            id="hero-email"
-            v-model="email"
-            type="email"
-            placeholder="you@company.com"
-            class="cta-input"
-            required
-          />
+          <input id="hero-email" v-model="email" type="email" placeholder="your@work.com" class="cta-input" required />
           <button type="submit" class="cta-btn" :disabled="ctaLoading">
             <span v-if="ctaLoading" class="cta-spinner"></span>
-            <span v-else>Get Early Access</span>
+            <span v-else>Get early access</span>
           </button>
         </form>
-        <p v-if="ctaSuccess" class="cta-success">🎉 You're on the list! We'll be in touch.</p>
+        <p v-if="ctaSuccess" class="cta-success">🎉 You're on the list!</p>
         <p v-if="ctaError" class="cta-error">{{ ctaError }}</p>
-        <p class="hero-note">No credit card required · Works with your local Ollama</p>
+        <p class="hero-note">No credit card · Bring your own AI key or use Ollama locally</p>
+      </div>
 
-        <!-- Mini preview -->
-        <div class="hero-preview">
-          <div class="preview-bar">
-            <span class="preview-dot red"></span>
-            <span class="preview-dot yellow"></span>
-            <span class="preview-dot green"></span>
-            <span class="preview-title">Review2PRD — Spotify: Music and Podcasts</span>
+      <div class="hero-right">
+        <div class="hero-card">
+          <div class="card-topbar">
+             <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+             <span class="card-title">app.review2prd.com</span>
           </div>
-          <div class="preview-body">
-            <div class="preview-issue" v-for="i in mockIssues" :key="i.id">
-              <span class="prev-sev" :class="i.sev">{{ i.sev }}</span>
-              <span class="prev-title">{{ i.title }}</span>
-              <span class="prev-status">{{ i.status }}</span>
+          <div class="card-body">
+            <div class="issue-row" v-for="i in mockIssues" :key="i.id">
+              <span class="sev-tag" :class="i.sev">{{ i.sev }}</span>
+              <span class="issue-text">{{ i.title }}</span>
+              <span class="issue-status">{{ i.status }}</span>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- PROBLEM → SOLUTION strip -->
-    <section class="ps-strip">
-      <div class="ps-col before">
-        <div class="ps-label before-label">Before Review2PRD</div>
-        <ul>
-          <li>📂 Manually read through hundreds of reviews</li>
-          <li>🤔 Guess which problems matter most</li>
-          <li>📝 Write PRDs from scratch, repeating yourself</li>
-          <li>📬 Manually write dev tickets, copy-paste quotes</li>
-          <li>⏳ 4-8 hours per analysis cycle</li>
-        </ul>
-      </div>
-      <div class="ps-divider">→</div>
-      <div class="ps-col after">
-        <div class="ps-label after-label">After Review2PRD</div>
-        <ul>
-          <li>🤖 Auto-scrape 200+ reviews per star rating</li>
-          <li>📊 AI clusters complaints into ranked issues</li>
-          <li>📋 PRD generated with problem statement + metrics</li>
-          <li>🎫 One-click dev tickets with acceptance criteria</li>
-          <li>⚡ Under 2 minutes, every time</li>
-        </ul>
-      </div>
-    </section>
 
-    <!-- FEATURES -->
-    <section class="features">
-      <div class="section-label">What it does</div>
-      <h2 class="section-title">Everything from review to roadmap</h2>
+    <!-- DEMO VIDEO -->
+    <section class="video-section">
+      <div class="video-inner">
+        <div class="section-eyebrow" style="text-align:center">See it in action</div>
+        <h2 class="video-heading">From URL to sprint-ready PRD<br />in under 2 minutes.</h2>
+        <p class="video-sub">Watch how Review2PRD turns a Google Play listing into a structured PRD, an issue board, and developer tickets — automatically.</p>
 
-      <div class="features-grid">
-        <div class="feature-card" v-for="f in features" :key="f.title">
-          <div class="feature-icon">{{ f.icon }}</div>
-          <h3 class="feature-title">{{ f.title }}</h3>
-          <p class="feature-desc">{{ f.desc }}</p>
-        </div>
-      </div>
-    </section>
+        <div class="video-frame-wrapper">
+          <!-- Replace src with your Loom/YouTube embed URL when ready -->
+          <!-- <iframe src="https://www.loom.com/embed/YOUR_VIDEO_ID" frameborder="0" allowfullscreen class="video-iframe"></iframe> -->
 
-    <!-- HOW IT WORKS -->
-    <section class="how">
-      <div class="section-label">How it works</div>
-      <h2 class="section-title">Three steps to a shippable roadmap</h2>
-
-      <div class="steps">
-        <div class="step" v-for="(s, i) in steps" :key="i">
-          <div class="step-num">{{ String(i + 1).padStart(2, '0') }}</div>
-          <div class="step-connector" v-if="i < steps.length - 1"></div>
-          <div class="step-content">
-            <h3 class="step-title">{{ s.title }}</h3>
-            <p class="step-desc">{{ s.desc }}</p>
+          <!-- Placeholder shown until real video is linked -->
+          <div class="video-placeholder">
+            <div class="vp-glow"></div>
+            <div class="vp-screen">
+              <div class="vp-topbar">
+                <span class="vp-dot"></span><span class="vp-dot"></span><span class="vp-dot"></span>
+                <span class="vp-url">review2prd.app</span>
+              </div>
+              <div class="vp-content">
+                <div class="vp-row"><span class="vp-sev crit">Critical</span><span class="vp-text">Search broken on mobile data</span><span class="vp-status">🟢 In Sprint</span></div>
+                <div class="vp-row"><span class="vp-sev high">High</span><span class="vp-text">Lyrics panel crashes on Android 13</span><span class="vp-status">🔵 Open</span></div>
+                <div class="vp-row"><span class="vp-sev high">High</span><span class="vp-text">Downloads disappear on update</span><span class="vp-status">🟢 In Sprint</span></div>
+              </div>
+            </div>
+            <button class="vp-play" aria-label="Play demo" @click="handlePlayDemo">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+            </button>
+            <div class="vp-badge">Demo coming soon · Join the waitlist to be first</div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- ROADMAP / UPCOMING -->
-    <section class="roadmap">
-      <div class="section-label">Coming Soon</div>
-      <h2 class="section-title">The Future of Review2PRD</h2>
-
-      <div class="roadmap-grid">
-        <div class="roadmap-card featured">
-          <div class="roadmap-badge">Next Milestone</div>
-          <h3 class="roadmap-item-title">🔍 Competitor Gap Analysis</h3>
-          <p class="roadmap-item-desc">
-            Enter your app and a competitor's link. Our AI will automatically identify market gaps, feature weaknesses, and specific areas where you can outshine the competition based on their own users' complaints.
-          </p>
+    <!-- PROBLEM → SOLUTION -->
+    <section class="section ps-section">
+      <h2 class="center-heading">Stop copy-pasting reviews into Notion.</h2>
+      <p class="center-sub">Every answer your users need is already written in their one-star reviews. Review2PRD reads them at scale.</p>
+      <div class="ps-grid">
+        <div class="ps-col">
+          <div class="ps-badge before-badge">Without Review2PRD</div>
+          <ul class="ps-list">
+            <li>📂 Manually read hundreds of reviews</li>
+            <li>🤔 Guess which problems matter most</li>
+            <li>📝 Write PRDs from scratch every time</li>
+            <li>📬 Copy-paste quotes into dev tickets</li>
+            <li>⏳ 4–8 hours per cycle</li>
+          </ul>
         </div>
-        
-        <div class="roadmap-card">
-          <h3 class="roadmap-item-title">📈 Sentiment Timeline</h3>
-          <p class="roadmap-item-desc">Track how user sentiment shifts over time and across different app versions. See the direct impact of your feature releases on user satisfaction.</p>
+        <div class="ps-arrow">→</div>
+        <div class="ps-col">
+          <div class="ps-badge after-badge">With Review2PRD</div>
+          <ul class="ps-list">
+            <li>🤖 Auto-scrape 200+ reviews instantly</li>
+            <li>📊 AI clusters complaints into ranked issues</li>
+            <li>📋 Structured PRD with problem statement</li>
+            <li>🎫 Dev tickets with acceptance criteria</li>
+            <li>⚡ Under 2 minutes, every time</li>
+          </ul>
         </div>
+      </div>
+    </section>
 
-        <div class="roadmap-card">
-          <h3 class="roadmap-item-title">🔌 1-Click Sync</h3>
-          <p class="roadmap-item-desc">Direct integrations with Jira, Linear, and Trello. Push your generated tickets directly into your existing workflow without copy-pasting.</p>
+    <!-- FEATURES — alternating rows -->
+    <section class="section features-section">
+      <div class="section-eyebrow">What it does</div>
+      <h2 class="section-heading">From 300 one-star reviews<br />to a shipping-ready roadmap.</h2>
+
+      <div class="feature-list">
+        <div v-for="(f, i) in features" :key="f.title" class="feature-row" :class="{ 'feat-reverse': i % 2 !== 0 }">
+          <div class="feat-text">
+            <div class="feat-num">{{ String(i + 1).padStart(2, '0') }}</div>
+            <h3 class="feat-title">{{ f.title }}</h3>
+            <p class="feat-desc">{{ f.desc }}</p>
+          </div>
+          <div class="feat-visual">
+            <div class="ui-card">
+              <div class="ui-card-bar">
+                <span class="ui-bar-dot"></span><span class="ui-bar-dot"></span><span class="ui-bar-dot"></span>
+                <span class="ui-card-label">{{ f.mockLabel }}</span>
+              </div>
+              <div class="ui-card-body" v-html="f.mockContent"></div>
+            </div>
+          </div>
         </div>
+      </div>
+    </section>
 
-        <div class="roadmap-card">
-          <h3 class="roadmap-item-title">👥 Team Workspaces</h3>
-          <p class="roadmap-item-desc">Collaborate with your team on PRDs and Issue Boards. Shared history and real-time editing for product organizations.</p>
+    <!-- HOW IT WORKS -->
+    <section class="section how-section">
+      <div class="section-eyebrow">How it works</div>
+      <h2 class="section-heading">Three steps.<br />Under two minutes.</h2>
+      <div class="steps-grid">
+        <div class="step-item" v-for="(s, i) in steps" :key="i">
+          <div class="step-num">{{ String(i + 1).padStart(2, '0') }}</div>
+          <h3 class="step-title">{{ s.title }}</h3>
+          <p class="step-desc">{{ s.desc }}</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ROADMAP -->
+    <section class="section roadmap-section">
+      <div class="section-eyebrow">What's coming</div>
+      <h2 class="section-heading">We're just getting started.</h2>
+      <div class="roadmap-rows">
+        <div class="roadmap-item featured">
+          <div class="roadmap-tag">Next up</div>
+          <h3 class="roadmap-title">🔍 Competitor Gap Analysis</h3>
+          <p class="roadmap-desc">Enter your app and a competitor's link. The AI identifies market gaps and outlines exactly where you can win based on their users' complaints.</p>
+        </div>
+        <div class="roadmap-item" v-for="r in roadmapItems" :key="r.title">
+          <h3 class="roadmap-title">{{ r.title }}</h3>
+          <p class="roadmap-desc">{{ r.desc }}</p>
         </div>
       </div>
     </section>
 
     <!-- FINAL CTA -->
-    <section class="final-cta">
-      <div class="final-glow"></div>
-      <div class="section-label">Get started</div>
-      <h2 class="final-title">Ready to stop reading<br />and start shipping?</h2>
-      <p class="final-sub">Join product managers already using Review2PRD to close the gap between user pain and developer action.</p>
+    <section class="section final-section">
+      <h2 class="final-heading">Ready to stop guessing<br />and start shipping?</h2>
+      <p class="final-sub">Join product managers who use Review2PRD to close the gap between user pain and developer action.</p>
       <form class="final-form" @submit.prevent="handleEarlyAccess">
-        <input id="final-email" v-model="email" type="email" placeholder="Work email address" class="cta-input dark" required />
-        <button type="submit" class="cta-btn large" :disabled="ctaLoading">
-          {{ ctaLoading ? 'Adding you…' : 'Request Access' }}
-        </button>
+        <input id="final-email" v-model="email" type="email" placeholder="your@work.com" class="cta-input" required />
+        <button type="submit" class="cta-btn" :disabled="ctaLoading">{{ ctaLoading ? 'Adding you…' : 'Request access' }}</button>
       </form>
       <p v-if="ctaSuccess" class="cta-success">🎉 You're on the list!</p>
       <p v-if="ctaError" class="cta-error">{{ ctaError }}</p>
+<<<<<<< HEAD
+=======
       <!-- <RouterLink class="final-login-link" to="/login">Already have an account? Sign in →</RouterLink> -->
+>>>>>>> e2ebf6a85574ff93b0286a7d455853b5add0bee8
     </section>
 
     <!-- FOOTER -->
     <footer class="landing-footer">
-      <div class="footer-logo">Review<span class="accent">2</span>PRD</div>
-      <p class="footer-copy">Built with Ollama + Kimi K2.5 · Local-first AI for product teams</p>
+      <span class="footer-logo">Review<span class="accent">2</span>PRD</span>
+      <p class="footer-copy">Built for PMs who believe shipping the right thing matters more than shipping fast.</p>
     </footer>
+
   </div>
 </template>
 
@@ -198,100 +215,105 @@ async function handleEarlyAccess() {
   ctaLoading.value = true
   ctaError.value = ''
   ctaSuccess.value = false
+<<<<<<< HEAD
+=======
   
+>>>>>>> e2ebf6a85574ff93b0286a7d455853b5add0bee8
   try {
     const API_BASE = import.meta.env.VITE_API_URL || '/api'
     await axios.post(`${API_BASE}/waitlist`, { email: email.value })
     ctaSuccess.value = true
     email.value = ''
   } catch (err: any) {
-    ctaError.value = err.response?.data?.message || 'Something went wrong. Please try again.'
+<<<<<<< HEAD
+    ctaError.value = err.response?.data?.message || 'Something went wrong. Try again.'
   } finally {
     ctaLoading.value = false
   }
 }
 
+function handlePlayDemo() {
+  alert('Full demo video is coming soon! Join the waitlist to get notified.')
+=======
+    ctaError.value = err.response?.data?.message || 'Something went wrong. Please try again.'
+  } finally {
+    ctaLoading.value = false
+  }
+>>>>>>> e2ebf6a85574ff93b0286a7d455853b5add0bee8
+}
+
 const mockIssues = [
-  { id: 1, sev: 'critical', title: 'Search returns no results on poor connection', status: '🟢 In Sprint' },
+  { id: 1, sev: 'critical', title: 'Search broken on mobile data', status: '🟢 In Sprint' },
   { id: 2, sev: 'high', title: 'Lyrics panel crashes on Android 13', status: '🔵 Open' },
-  { id: 3, sev: 'high', title: 'Offline downloads disappear after update', status: '🟢 In Sprint' },
-  { id: 4, sev: 'medium', title: 'Podcast resume position resets randomly', status: '🔵 Open' },
+  { id: 3, sev: 'high', title: 'Downloads disappear on update', status: '🟢 In Sprint' },
+  { id: 4, sev: 'medium', title: 'Podcast position resets randomly', status: '🔵 Open' },
 ]
 
 const features = [
   {
-    icon: '🕷',
-    title: 'Scrape any app store',
-    desc: 'Paste a Google Play or App Store URL. We fetch 200+ reviews filtered by star rating — 1★ through 3★ — automatically.',
+    title: 'Scrape any app, automatically.',
+    desc: 'Paste a Google Play or App Store URL. Review2PRD fetches hundreds of real 1–3 star complaints — the reviews where users tell you exactly what\'s broken. No API key, no setup.',
+    mockLabel: 'Fetching reviews…',
+    mockContent: `<div class="m-row"><span class="m-star">1★</span><span>"Search is completely broken on mobile data…"</span></div><div class="m-row"><span class="m-star">2★</span><span>"Downloads disappear every time I update"</span></div><div class="m-row"><span class="m-star">1★</span><span>"Crashes on open when lyrics panel is pinned"</span></div><div class="m-stat">214 reviews · 3 clusters identified</div>`,
   },
   {
-    icon: '🧠',
-    title: 'AI-generated PRD',
-    desc: 'Local Kimi AI clusters complaints into a structured PRD with problem statement, user stories, requirements, and success metrics.',
+    title: 'AI writes your PRD in seconds.',
+    desc: 'Your AI reads every complaint, clusters them into themes, and produces a complete PRD — problem statement, user evidence, functional requirements, and success metrics. Structured, editable, and ready to share.',
+    mockLabel: 'PRD · Spotify for Android',
+    mockContent: `<div class="m-label">Problem Statement</div><div class="m-body">Users on Android 13+ experience repeated crashes when accessing the lyrics panel, affecting ~18% of reviews this month.</div><div class="m-label mt">Success Metrics</div><div class="m-body">Crash rate → 0% · Offline retention → 98%+</div>`,
   },
   {
-    icon: '🗂',
-    title: 'Issue Board',
-    desc: 'Each problem becomes a draggable card with severity, affected user %, and PM notes. Triage in seconds — Open, In Sprint, Won\'t Fix.',
+    title: 'An issue board, already prioritized.',
+    desc: 'Every clustered problem becomes a card — with severity, affected user %, effort estimate, and a real user quote. Drag to triage. Mark issues In Sprint or Won\'t Fix with one click.',
+    mockLabel: 'Issue Board',
+    mockContent: `<div class="m-issue m-crit"><span>Critical</span><span>Search broken · 31% of users</span></div><div class="m-issue m-high"><span>High</span><span>Downloads lost on update · 22%</span></div><div class="m-issue m-high"><span>High</span><span>Lyrics crash on Android 13 · 18%</span></div>`,
   },
   {
-    icon: '🎫',
-    title: 'Dev-ready tickets',
-    desc: 'One click generates a full developer spec per issue: user POV, what to build, acceptance criteria, edge cases. Copy as Markdown or JSON.',
-  },
-  {
-    icon: '📤',
-    title: 'Export anywhere',
-    desc: 'Export a Full Report for Notion/Confluence, a Sprint Pack for your current sprint, or raw JSON for Jira/Linear integrations.',
-  },
-  {
-    icon: '🔒',
-    title: 'Fully local AI',
-    desc: 'Runs on Ollama — your data never leaves your machine. No API keys, no rate limits, no per-token costs.',
+    title: 'Dev tickets — one click.',
+    desc: 'Click any issue to generate a full engineering spec: user perspective, what to build, acceptance criteria, edge cases, and out-of-scope. Copy as Markdown or JSON.',
+    mockLabel: 'Dev Ticket: Search broken',
+    mockContent: `<div class="m-label">Acceptance Criteria</div><div class="m-check">☐ Search works on 2G / 3G connections</div><div class="m-check">☐ Offline query resolves within 500ms</div><div class="m-check">☐ Error state shown when truly offline</div>`,
   },
 ]
 
 const steps = [
-  {
-    title: 'Paste an app store URL',
-    desc: 'Drop in a Google Play or App Store link (or a package name like com.spotify.music). Review2PRD handles the rest.',
-  },
-  {
-    title: 'AI generates your PRD + Issue Board',
-    desc: 'Within 2 minutes, you have a full PRD and an issue board with 5-7 discrete, ranked problem cards ready to triage.',
-  },
-  {
-    title: 'Triage, ticket, ship',
-    desc: 'Mark issues In Sprint, generate developer tickets with acceptance criteria, export your Sprint Pack, and get to work.',
-  },
+  { title: 'Paste a link', desc: 'Drop in a Google Play or App Store URL. We fetch real 1–3 star reviews automatically.' },
+  { title: 'AI generates the PRD', desc: 'Within 2 minutes: a full PRD, a prioritized issue board, and 5–7 ranked problem cards.' },
+  { title: 'Triage, ticket, ship', desc: 'Generate dev tickets with acceptance criteria, export your Sprint Pack, and get to work.' },
+]
+
+const roadmapItems = [
+  { title: '📈 Sentiment Timeline', desc: 'Visual charts showing how user satisfaction shifts across app versions and time. See the exact moment a bad release hit, and whether your fix worked.' },
+  { title: '🔌 1-Click Jira / Linear Sync', desc: 'Push your generated tickets directly into your existing workflow with one click. No copy-paste, no reformatting, no switching tabs.' },
+  { title: '🎛️ Custom Review Filtering', desc: 'Control exactly how deep the AI digs — set how many reviews to analyze and how far back (in days) to fetch. Perfect for post-launch audits or long-term trend analysis.' },
+  { title: '👥 Team Workspaces', desc: 'Shared PRD history, collaborative triage boards, real-time editing, and role-based access for your full product team or agency clients.' },
 ]
 </script>
 
 <style scoped>
-/* ── Base ─────────────────────────────────────── */
+/* ── Base ───────────────────────────────────── */
 .landing {
   min-height: 100vh;
-  background: #0a0a0a;
-  color: #f4f4f5;
-  font-family: 'Inter', -apple-system, sans-serif;
+  background: #1b1b18;
+  color: #e8e6e0;
+  font-family: 'Satoshi', 'Instrument Sans', system-ui, sans-serif;
   overflow-x: hidden;
 }
+.accent { color: #e8e4dc; }
 
-.accent { color: #6366f1; }
-
-/* ── Nav ──────────────────────────────────────── */
+/* ── Nav ─────────────────────────────────────── */
 .nav {
   position: sticky;
   top: 0;
   z-index: 50;
-  border-bottom: 1px solid #1e1e1e;
-  background: rgba(10,10,10,0.85);
-  backdrop-filter: blur(16px);
+  background: rgba(27, 27, 24, 0.92);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
 }
 .nav-inner {
   max-width: 1100px;
   margin: 0 auto;
-  padding: 0.875rem 1.5rem;
+  padding: 1rem 1.5rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -302,340 +324,471 @@ const steps = [
   gap: 0.625rem;
   font-size: 1.0625rem;
   font-weight: 700;
-  color: #f4f4f5;
-  text-decoration: none;
+  color: #e8e6e0;
 }
-.nav-logo-icon { width: 30px; height: 30px; }
-.nav-logo-icon svg { width: 100%; height: 100%; display: block; }
-.nav-signin {
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: #a1a1aa;
-  text-decoration: none;
-  padding: 0.4rem 0.875rem;
-  border: 1px solid #2a2a2a;
-  border-radius: 8px;
-  transition: all 0.2s;
-}
-.nav-signin:hover { color: #f4f4f5; border-color: #444; background: #111; }
 
-/* ── Hero ─────────────────────────────────────── */
+/* ── Hero — Split layout ─────────────────────── */
 .hero {
-  position: relative;
-  padding: 6rem 1.5rem 5rem;
-  text-align: center;
-  overflow: hidden;
-}
-.hero-glow {
-  position: absolute;
-  border-radius: 50%;
-  filter: blur(100px);
-  pointer-events: none;
-}
-.hero-glow-1 {
-  width: 500px; height: 500px;
-  background: rgba(99,102,241,0.18);
-  top: -100px; left: 50%;
-  transform: translateX(-50%);
-}
-.hero-glow-2 {
-  width: 300px; height: 300px;
-  background: rgba(139,92,246,0.12);
-  top: 200px; right: -50px;
-}
-.hero-inner {
-  position: relative;
-  max-width: 720px;
+  max-width: 1100px;
   margin: 0 auto;
-  display: flex;
-  flex-direction: column;
+  padding: 5rem 1.5rem 5rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
   align-items: center;
-  gap: 1.5rem;
+  min-height: 85vh;
 }
+@media (max-width: 768px) {
+  .hero { grid-template-columns: 1fr; min-height: auto; gap: 2.5rem; }
+}
+
 .hero-badge {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  font-size: 0.8125rem;
-  font-weight: 500;
-  color: #a78bfa;
-  background: rgba(99,102,241,0.1);
-  border: 1px solid rgba(99,102,241,0.25);
-  padding: 0.3rem 0.875rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #e8e4dc;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  padding: 0.3rem 0.75rem;
   border-radius: 100px;
+  margin-bottom: 1.5rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
 }
 .badge-dot {
-  width: 6px; height: 6px;
-  background: #6366f1;
+  width: 5px; height: 5px;
+  background: #e8e4dc;
   border-radius: 50%;
-  animation: pulse-dot 2s ease-in-out infinite;
+  animation: pulse 2s ease-in-out infinite;
 }
-@keyframes pulse-dot {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.5; transform: scale(0.7); }
-}
+@keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.3; } }
+
+/* THE key change: serif font for main headline */
 .hero-headline {
-  font-size: clamp(2.25rem, 6vw, 4rem);
-  font-weight: 800;
-  line-height: 1.1;
-  letter-spacing: -0.03em;
-  margin: 0;
+  font-family: 'Instrument Serif', Georgia, serif;
+  font-size: clamp(2.75rem, 5.5vw, 4.5rem);
+  font-weight: 400; /* Instrument Serif looks best at regular weight */
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  color: #ffffff;
+  margin: 0 0 1.5rem;
 }
-.headline-gradient {
-  background: linear-gradient(135deg, #6366f1 0%, #a78bfa 50%, #22d3ee 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
+
 .hero-sub {
-  font-size: 1.125rem;
-  color: #a1a1aa;
+  font-size: 1.0625rem;
+  color: #8a8a80;
   line-height: 1.7;
-  max-width: 560px;
-  margin: 0;
+  max-width: 460px;
+  margin: 0 0 2rem;
 }
 .hero-cta {
   display: flex;
   gap: 0.5rem;
-  width: 100%;
-  max-width: 480px;
   flex-wrap: wrap;
 }
 .cta-input {
   flex: 1;
   min-width: 200px;
-  background: #111;
-  border: 1px solid #2a2a2a;
-  border-radius: 10px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 7px;
   padding: 0.75rem 1rem;
-  color: #f4f4f5;
+  color: #e8e6e0;
   font-size: 0.9375rem;
   font-family: inherit;
   outline: none;
   transition: border-color 0.2s;
 }
-.cta-input::placeholder { color: #52525b; }
-.cta-input:focus { border-color: #6366f1; }
-.cta-input.dark { background: #0a0a0a; }
+.cta-input::placeholder { color: #4a4a44; }
+.cta-input:focus { border-color: rgba(255,255,255,0.3); }
 .cta-btn {
   padding: 0.75rem 1.375rem;
-  background: #6366f1;
-  color: white;
+  background: #ffffff;
+  color: #1b1b18;
   border: none;
-  border-radius: 10px;
+  border-radius: 7px;
   font-size: 0.9375rem;
-  font-weight: 600;
+  font-weight: 700;
   font-family: inherit;
   cursor: pointer;
   transition: all 0.2s;
+  white-space: nowrap;
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  white-space: nowrap;
 }
-.cta-btn:hover:not(:disabled) { background: #818cf8; transform: translateY(-1px); box-shadow: 0 8px 24px rgba(99,102,241,0.4); }
-.cta-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+.cta-btn:hover:not(:disabled) { background: #e8e4dc; transform: translateY(-1px); }
+.cta-btn:disabled { opacity: 0.5; cursor: not-allowed; }
 .cta-btn.large { padding: 0.875rem 1.75rem; font-size: 1rem; }
 .cta-spinner {
   width: 14px; height: 14px;
-  border: 2px solid rgba(255,255,255,0.3);
-  border-top-color: white;
+  border: 2px solid rgba(27,27,24,0.2);
+  border-top-color: #1b1b18;
   border-radius: 50%;
   animation: spin 0.7s linear infinite;
 }
 @keyframes spin { to { transform: rotate(360deg); } }
-.cta-success { color: #4ade80; font-size: 0.9rem; margin: 0; }
-.cta-error { color: #ef4444; font-size: 0.9rem; margin: 0; }
-.hero-note { font-size: 0.8125rem; color: #52525b; margin: 0; }
+.cta-success { color: #1db954; font-size: 0.875rem; margin: 0.75rem 0 0; }
+.cta-error { color: #e5484d; font-size: 0.875rem; margin: 0.75rem 0 0; }
+.hero-note { font-size: 0.8125rem; color: #4a4a44; margin: 0.75rem 0 0; }
 
-/* Hero preview mockup */
-.hero-preview {
-  width: 100%;
-  max-width: 620px;
-  background: #111;
-  border: 1px solid #1e1e1e;
+/* Hero card — matches the dark app dashboard */
+.hero-card {
+  background: #1b1b18; 
+  border: 1px solid rgba(255,255,255,0.06);
   border-radius: 14px;
   overflow: hidden;
-  box-shadow: 0 24px 80px rgba(0,0,0,0.6);
-  text-align: left;
-  margin-top: 0.5rem;
+  box-shadow: 0 32px 80px rgba(0,0,0,0.6);
 }
-.preview-bar {
-  background: #1a1a1a;
-  padding: 0.625rem 1rem;
+.card-topbar {
+  background: #232320;
+  padding: 0.7rem 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.dot { width: 10px; height: 10px; border-radius: 50%; }
+.dot.red { background: #ef4444; }
+.dot.yellow { background: #f59e0b; }
+.dot.green { background: #22c55e; }
+.card-title { flex: 1; text-align: center; font-size: 0.7rem; color: #8a8a80; font-family: 'DM Mono', monospace; }
+.hero-demo-img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+.card-body { padding: 0.875rem; display: flex; flex-direction: column; gap: 0.5rem; }
+.issue-row {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  border-bottom: 1px solid #222;
-}
-.preview-dot {
-  width: 10px; height: 10px;
-  border-radius: 50%;
-}
-.preview-dot.red { background: #ef4444; }
-.preview-dot.yellow { background: #f59e0b; }
-.preview-dot.green { background: #22c55e; }
-.preview-title {
-  flex: 1;
-  font-size: 0.75rem;
-  color: #52525b;
-  text-align: center;
-}
-.preview-body { padding: 0.75rem; display: flex; flex-direction: column; gap: 0.5rem; }
-.preview-issue {
-  display: flex;
-  align-items: center;
-  gap: 0.625rem;
-  background: #1a1a1a;
-  border: 1px solid #222;
-  border-radius: 8px;
+  background: #232320;
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 7px;
   padding: 0.6rem 0.875rem;
-  font-size: 0.8125rem;
+  font-size: 0.8rem;
 }
-.prev-sev {
-  font-size: 0.7rem;
-  font-weight: 700;
+.sev-tag {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.65rem;
+  font-weight: 600;
   text-transform: uppercase;
-  padding: 0.15rem 0.45rem;
-  border-radius: 4px;
+  padding: 0.1rem 0.4rem;
+  border-radius: 3px;
   flex-shrink: 0;
 }
-.prev-sev.critical { background: rgba(239,68,68,0.15); color: #f87171; }
-.prev-sev.high { background: rgba(245,158,11,0.15); color: #fbbf24; }
-.prev-sev.medium { background: rgba(59,130,246,0.12); color: #60a5fa; }
-.prev-title { flex: 1; color: #d4d4d8; }
-.prev-status { font-size: 0.75rem; color: #71717a; white-space: nowrap; }
+.sev-tag.critical { background: rgba(220,38,38,0.15); color: #f87171; }
+.sev-tag.high { background: rgba(217,119,6,0.15); color: #fbbf24; }
+.sev-tag.medium { background: rgba(59,130,246,0.15); color: #60a5fa; }
+.issue-text { flex: 1; color: #e8e6e0; font-weight: 500; text-align: left; }
+.issue-status { font-size: 0.7rem; color: #8a8a80; white-space: nowrap; }
 
-/* ── Problem → Solution ───────────────────────── */
-.ps-strip {
-  max-width: 900px;
+/* ── Sections shared ─────────────────────────── */
+.section {
+  max-width: 1100px;
   margin: 0 auto;
-  padding: 4rem 1.5rem;
+  padding: 6rem 1.5rem;
+  border-top: 1px solid rgba(255,255,255,0.06);
+}
+.section-eyebrow {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.72rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: #e8e4dc;
+  margin-bottom: 1.25rem;
+}
+.section-heading {
+  font-family: 'Instrument Serif', Georgia, serif;
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 400;
+  letter-spacing: -0.025em;
+  line-height: 1.1;
+  color: #ffffff;
+  margin: 0 0 3rem;
+}
+
+/* ── PS section ─────────────────────────────── */
+.ps-section { text-align: center; }
+.center-heading {
+  font-family: 'Instrument Serif', Georgia, serif;
+  font-size: clamp(1.75rem, 3.5vw, 2.5rem);
+  font-weight: 400;
+  color: #ffffff;
+  letter-spacing: -0.02em;
+  margin: 0 0 0.75rem;
+}
+.center-sub {
+  font-size: 1rem;
+  color: #6b6b64;
+  max-width: 520px;
+  margin: 0 auto 3rem;
+  line-height: 1.7;
+}
+.ps-grid {
   display: grid;
   grid-template-columns: 1fr auto 1fr;
   gap: 2rem;
-  align-items: center;
+  align-items: start;
+  text-align: left;
 }
 @media (max-width: 640px) {
-  .ps-strip { grid-template-columns: 1fr; }
-  .ps-divider { text-align: center; transform: rotate(90deg); }
+  .ps-grid { grid-template-columns: 1fr; }
+  .ps-arrow { display: none; }
 }
-.ps-col ul { list-style: none; padding: 0; margin: 0.75rem 0 0; display: flex; flex-direction: column; gap: 0.625rem; }
-.ps-col li { font-size: 0.9rem; color: #a1a1aa; line-height: 1.5; }
-.ps-label { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; padding: 0.25rem 0.75rem; border-radius: 100px; display: inline-block; }
-.before-label { background: rgba(239,68,68,0.1); color: #f87171; }
-.after-label { background: rgba(34,197,94,0.1); color: #4ade80; }
-.ps-divider { font-size: 2rem; color: #6366f1; font-weight: 300; }
-
-/* ── Features ─────────────────────────────────── */
-.features {
-  padding: 5rem 1.5rem;
-  max-width: 1100px;
-  margin: 0 auto;
-  text-align: center;
-}
-.section-label {
-  font-size: 0.75rem;
-  font-weight: 700;
+.ps-badge {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.7rem;
+  font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: #6366f1;
-  margin-bottom: 0.875rem;
+  letter-spacing: 0.08em;
+  padding: 0.25rem 0.625rem;
+  border-radius: 4px;
+  display: inline-block;
+  margin-bottom: 1rem;
 }
-.section-title {
-  font-size: clamp(1.75rem, 4vw, 2.5rem);
-  font-weight: 800;
-  letter-spacing: -0.025em;
-  margin: 0 0 3rem;
-}
-.features-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 1rem;
-  text-align: left;
-}
-.feature-card {
-  background: #111;
-  border: 1px solid #1e1e1e;
-  border-radius: 14px;
-  padding: 1.5rem;
-  transition: border-color 0.2s, transform 0.2s;
-}
-.feature-card:hover { border-color: #333; transform: translateY(-2px); }
-.feature-icon { font-size: 1.75rem; margin-bottom: 0.75rem; }
-.feature-title { font-size: 1rem; font-weight: 600; margin: 0 0 0.5rem; }
-.feature-desc { font-size: 0.875rem; color: #71717a; line-height: 1.6; margin: 0; }
+.before-badge { background: rgba(229,72,77,0.08); color: #e5484d; }
+.after-badge { background: rgba(255,255,255,0.05); color: #e8e4dc; }
+.ps-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.75rem; }
+.ps-list li { font-size: 0.9375rem; color: #8a8a80; line-height: 1.5; }
+.ps-arrow { font-size: 1.5rem; color: rgba(255,255,255,0.12); align-self: center; }
 
-/* ── How it works ─────────────────────────────── */
-.how {
-  padding: 5rem 1.5rem;
-  max-width: 700px;
-  margin: 0 auto;
+
+/* ── Video section ───────────────────────────── */
+.video-section {
+  border-top: 1px solid rgba(255,255,255,0.06);
+  padding: 5rem 1.5rem 6rem;
   text-align: center;
 }
-.steps {
+.video-inner { max-width: 900px; margin: 0 auto; }
+.video-heading {
+  font-family: 'Instrument Serif', Georgia, serif;
+  font-size: clamp(1.875rem, 4vw, 2.875rem);
+  font-weight: 400;
+  color: #ffffff;
+  letter-spacing: -0.025em;
+  line-height: 1.1;
+  margin: 0 0 1rem;
+}
+.video-sub { font-size: 1rem; color: #6b6b64; max-width: 520px; margin: 0 auto 2.5rem; line-height: 1.65; }
+.video-frame-wrapper { position: relative; width: 100%; aspect-ratio: 16/9; border-radius: 14px; overflow: hidden; }
+.video-iframe { width: 100%; height: 100%; display: block; }
+
+/* Placeholder */
+.video-placeholder {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: #141410;
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 14px;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
-  gap: 0;
-  margin-top: 3rem;
-  text-align: left;
+  align-items: center;
+  justify-content: center;
+  min-height: 380px;
 }
-.step {
-  display: flex;
-  gap: 1.25rem;
-  align-items: flex-start;
-  position: relative;
-}
-.step-num {
-  font-size: 0.875rem;
-  font-weight: 800;
-  color: #6366f1;
-  background: rgba(99,102,241,0.1);
-  border: 1px solid rgba(99,102,241,0.25);
-  border-radius: 8px;
-  padding: 0.35rem 0.6rem;
-  flex-shrink: 0;
-  font-variant-numeric: tabular-nums;
-  margin-top: 2px;
-}
-.step-connector {
+.vp-glow {
   position: absolute;
-  left: 1.6rem;
-  top: 2.2rem;
-  width: 1px;
-  height: calc(100% + 1.5rem);
-  background: linear-gradient(to bottom, #6366f1, transparent);
-  opacity: 0.25;
-}
-.step-content { padding-bottom: 2.5rem; }
-.step-title { font-size: 1.0625rem; font-weight: 600; margin: 0 0 0.375rem; }
-.step-desc { font-size: 0.9rem; color: #71717a; line-height: 1.6; margin: 0; }
-
-/* ── Final CTA ────────────────────────────────── */
-.final-cta {
-  position: relative;
-  padding: 6rem 1.5rem;
-  text-align: center;
-  overflow: hidden;
-}
-.final-glow {
-  position: absolute;
-  width: 600px; height: 300px;
-  background: rgba(99,102,241,0.12);
-  border-radius: 50%;
+  width: 400px; height: 400px;
+  background: rgba(232,228,220,0.04);
   filter: blur(80px);
+  border-radius: 50%;
   top: 50%; left: 50%;
   transform: translate(-50%, -50%);
   pointer-events: none;
 }
-.final-title {
-  font-size: clamp(1.75rem, 4vw, 2.75rem);
-  font-weight: 800;
+.vp-screen {
+  width: min(580px, 90%);
+  background: #1b1b18;
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.8);
+  opacity: 0.95;
+}
+.vp-topbar {
+  background: #232320;
+  padding: 0.55rem 0.875rem;
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.vp-dot { width: 8px; height: 8px; border-radius: 50%; background: #4a4a44; }
+.vp-url { flex: 1; text-align: center; font-size: 0.65rem; color: #8a8a80; font-family: 'DM Mono', monospace; }
+.vp-content { padding: 0.75rem; display: flex; flex-direction: column; gap: 0.375rem; }
+.vp-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: #232320;
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 6px;
+  padding: 0.55rem 0.75rem;
+  font-size: 0.78rem;
+}
+.vp-sev {
+  font-size: 0.62rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 0.1rem 0.4rem;
+  border-radius: 3px;
+  flex-shrink: 0;
+  font-family: 'DM Mono', monospace;
+}
+.vp-sev.crit { background: rgba(220,38,38,0.15); color: #f87171; }
+.vp-sev.high { background: rgba(217,119,6,0.15); color: #fbbf24; }
+.vp-text { flex: 1; color: #e8e6e0; }
+.vp-status { font-size: 0.7rem; color: #8a8a80; white-space: nowrap; }
+.vp-play {
+  position: absolute;
+  width: 56px; height: 56px;
+  background: #ffffff;
+  color: #1b1b18;
+  border: none;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+  transition: transform 0.2s;
+}
+.vp-play:hover { transform: scale(1.1); }
+.vp-play svg { width: 24px; height: 24px; margin-left: 3px; }
+.vp-badge {
+  position: absolute;
+  bottom: 1rem;
+  font-size: 0.75rem;
+  color: rgba(255,255,255,0.3);
+  font-family: 'DM Mono', monospace;
+  letter-spacing: 0.03em;
+}
+
+/* ── Feature rows ───────────────────────────── */
+.feature-list { display: flex; flex-direction: column; gap: 0; }
+.feature-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: center;
+  padding: 4rem 0;
+  border-top: 1px solid rgba(255,255,255,0.05);
+}
+.feature-row.feat-reverse { direction: rtl; }
+.feature-row.feat-reverse > * { direction: ltr; }
+@media (max-width: 768px) {
+  .feature-row, .feature-row.feat-reverse { grid-template-columns: 1fr; direction: ltr; gap: 2rem; }
+}
+.feat-num {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.75rem;
+  color: #e8e4dc;
+  margin-bottom: 0.875rem;
+  letter-spacing: 0.05em;
+}
+.feat-title {
+  font-family: 'Instrument Serif', Georgia, serif;
+  font-size: clamp(1.5rem, 2.5vw, 2rem);
+  font-weight: 400;
+  color: #ffffff;
+  margin: 0 0 1rem;
+  line-height: 1.2;
+}
+.feat-desc {
+  font-size: 1rem;
+  color: #6b6b64;
+  line-height: 1.7;
+  margin: 0;
+}
+
+/* Feature mockup — dark card matching app */
+.ui-card {
+  background: #1b1b18;
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 16px 48px rgba(0,0,0,0.6);
+}
+.ui-card-bar {
+  background: #232320;
+  padding: 0.6rem 0.875rem;
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.ui-bar-dot { width: 8px; height: 8px; border-radius: 50%; background: #4a4a44; }
+.ui-card-label {
+  flex: 1;
+  text-align: center;
+  font-size: 0.65rem;
+  color: #8a8a80;
+  font-family: 'DM Mono', monospace;
+}
+.ui-card-body { padding: 1.25rem; font-size: 0.8125rem; color: #e8e6e0; line-height: 1.5; }
+
+/* ── How it works ───────────────────────────── */
+.steps-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2.5rem;
+}
+@media (max-width: 768px) {
+  .steps-grid { grid-template-columns: 1fr; }
+}
+.step-num {
+  font-family: 'DM Mono', monospace;
+  font-size: 2rem;
+  font-weight: 400;
+  color: rgba(255,255,255,0.06);
+  letter-spacing: -0.02em;
+  margin-bottom: 1rem;
+}
+.step-title { font-size: 1.125rem; font-weight: 700; color: #e8e6e0; margin: 0 0 0.5rem; }
+.step-desc { font-size: 0.9375rem; color: #6b6b64; line-height: 1.65; margin: 0; }
+
+/* ── Roadmap ─────────────────────────────────── */
+.roadmap-rows { display: flex; flex-direction: column; gap: 0; }
+.roadmap-item {
+  padding: 1.75rem 0;
+  border-top: 1px solid rgba(255,255,255,0.05);
+}
+.roadmap-item.featured {
+  border-left: 2px solid #e8e4dc;
+  padding-left: 1.25rem;
+  border-top: none;
+  margin-bottom: 0.5rem;
+}
+.roadmap-tag {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #e8e4dc;
+  margin-bottom: 0.5rem;
+}
+.roadmap-title { font-size: 1.0625rem; font-weight: 600; color: #e8e6e0; margin: 0 0 0.375rem; }
+.roadmap-desc { font-size: 0.9rem; color: #6b6b64; line-height: 1.6; margin: 0; }
+
+/* ── Final CTA ──────────────────────────────── */
+.final-section { text-align: center; }
+.final-heading {
+  font-family: 'Instrument Serif', Georgia, serif;
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 400;
+  color: #ffffff;
   letter-spacing: -0.025em;
-  line-height: 1.15;
+  line-height: 1.1;
   margin: 0 0 1rem;
 }
-.final-sub { font-size: 1rem; color: #71717a; max-width: 480px; margin: 0 auto 2rem; line-height: 1.6; }
+.final-sub { font-size: 1rem; color: #6b6b64; max-width: 460px; margin: 0 auto 2rem; line-height: 1.65; }
 .final-form {
   display: flex;
   gap: 0.5rem;
@@ -644,61 +797,26 @@ const steps = [
   flex-wrap: wrap;
   justify-content: center;
 }
-.final-login-link {
-  display: block;
-  margin-top: 1.25rem;
-  font-size: 0.875rem;
-  color: #52525b;
-  text-decoration: none;
-  transition: color 0.2s;
-}
-.final-login-link:hover { color: #a1a1aa; }
 
-/* ── Roadmap ─────────────────────────────────── */
-.roadmap {
-  padding: 5rem 1.5rem;
-  max-width: 1100px;
-  margin: 0 auto;
+/* ── Footer ─────────────────────────────────── */
+.landing-footer {
+  border-top: 1px solid rgba(255,255,255,0.06);
+  padding: 2rem 1.5rem;
   text-align: center;
 }
-.roadmap-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1.5rem;
-  text-align: left;
-}
-@media (max-width: 768px) {
-  .roadmap-grid { grid-template-columns: 1fr; }
-}
-.roadmap-card {
-  background: #111;
-  border: 1px solid #1e1e1e;
-  border-radius: 16px;
-  padding: 1.5rem;
-  position: relative;
-}
-.roadmap-card.featured {
-  grid-column: span 2;
-  border-color: #6366f1;
-  background: linear-gradient(145deg, #111 0%, #1a1a1a 100%);
-}
-@media (max-width: 768px) {
-  .roadmap-card.featured { grid-column: span 1; }
-}
-.roadmap-badge {
-  position: absolute;
-  top: 1rem;
-  right: 1.5rem;
-  font-size: 0.7rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  color: #6366f1;
-  background: rgba(99,102,241,0.1);
-  padding: 0.25rem 0.625rem;
-  border-radius: 100px;
-  border: 1px solid rgba(99,102,241,0.2);
-}
-.roadmap-item-title { font-size: 1.125rem; font-weight: 700; margin: 0 0 0.75rem; color: #f4f4f5; }
-.roadmap-item-desc { font-size: 0.9375rem; color: #a1a1aa; line-height: 1.6; margin: 0; }
+.footer-logo { font-weight: 700; font-size: 1rem; color: #4a4a44; }
+.footer-copy { font-size: 0.8125rem; color: #2a2a26; margin: 0.375rem 0 0; }
 
+/* ── Mockup inner elements ───────────────────── */
+:deep(.m-row) { display: flex; gap: 0.5rem; margin-bottom: 0.5rem; align-items: flex-start; }
+:deep(.m-star) { color: #fbbf24; font-weight: 700; flex-shrink: 0; }
+:deep(.m-stat) { font-size: 0.7rem; color: #6b6b64; margin-top: 0.75rem; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 0.5rem; }
+:deep(.m-label) { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.05em; color: #6b6b64; margin-bottom: 0.25rem; }
+:deep(.m-label.mt) { margin-top: 0.875rem; }
+:deep(.m-body) { color: #e8e6e0; margin-bottom: 0.5rem; line-height: 1.6; }
+:deep(.m-issue) { display: flex; flex-direction: column; gap: 0.25rem; padding: 0.625rem; background: #232320; border: 1px solid rgba(255,255,255,0.06); border-radius: 6px; margin-bottom: 0.375rem; }
+:deep(.m-issue span:first-child) { font-size: 0.6rem; text-transform: uppercase; font-weight: 700; }
+:deep(.m-crit span:first-child) { color: #f87171; }
+:deep(.m-high span:first-child) { color: #fbbf24; }
+:deep(.m-check) { color: #e8e6e0; margin-bottom: 0.375rem; font-family: 'DM Mono', monospace; font-size: 0.75rem; display: flex; align-items: center; gap: 0.375rem; }
 </style>

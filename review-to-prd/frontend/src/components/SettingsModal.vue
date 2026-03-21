@@ -273,19 +273,19 @@ async function handleSave() {
 }
 
 .btn-primary {
-  background: var(--color-accent);
-  color: white;
-  border: none;
+  background: #ffffff;
+  color: #1b1b18;
+  border: 1px solid transparent;
 }
-.btn-primary:hover { opacity: 0.9; transform: translateY(-1px); }
+.btn-primary:hover { opacity: 0.9; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,0,0,0.25); }
 .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
 
 .btn-secondary {
-  background: var(--color-surface-2);
-  color: var(--color-text-primary);
-  border: 1px solid var(--color-border);
+  background: transparent;
+  color: #e8e6e0;
+  border: 1px solid rgba(255, 255, 255, 0.12);
 }
-.btn-secondary:hover { background: var(--color-surface-3); }
+.btn-secondary:hover { background: rgba(255, 255, 255, 0.06); color: #ffffff; }
 
 .btn-test {
   padding: 0.625rem 1rem;
@@ -294,11 +294,11 @@ async function handleSave() {
   cursor: pointer;
   font-size: 0.825rem;
   background: transparent;
-  color: var(--color-accent);
-  border: 1px solid var(--color-accent);
+  color: #e8e6e0;
+  border: 1px solid rgba(255, 255, 255, 0.12);
   transition: all 0.2s;
 }
-.btn-test:hover:not(:disabled) { background: var(--color-accent-muted); }
+.btn-test:hover:not(:disabled) { background: rgba(255, 255, 255, 0.06); color: #ffffff; }
 .btn-test:disabled { opacity: 0.5; cursor: not-allowed; }
 
 .footer-spacer { flex: 1; }

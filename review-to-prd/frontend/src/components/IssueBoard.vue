@@ -182,7 +182,7 @@ function updateNotes(id: string, notes: string) {
   font-size: 2rem;
   font-weight: 800;
   line-height: 1;
-  background: linear-gradient(135deg, var(--color-accent), #a78bfa);
+  background: linear-gradient(135deg, var(--color-accent), #5eead4);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -283,23 +283,25 @@ function updateNotes(id: string, notes: string) {
   font-family: inherit;
   cursor: pointer;
   transition: all 0.2s;
-  border: 1px solid var(--color-border);
-  background: var(--color-surface-2);
-  color: var(--color-text-secondary);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: transparent;
+  color: #e8e6e0;
 }
 .board-action-btn svg { width: 13px; height: 13px; }
 .board-action-btn:hover:not(:disabled) {
-  background: var(--color-surface-3);
-  color: var(--color-text-primary);
+  background: rgba(255, 255, 255, 0.06);
+  color: #ffffff;
 }
-.board-action-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+.board-action-btn:disabled { opacity: 0.4; cursor: not-allowed; border-color: transparent;}
 .board-action-btn.primary {
-  background: var(--color-accent);
-  color: white;
-  border-color: var(--color-accent);
+  background: #ffffff;
+  color: #1b1b18;
+  border-color: transparent;
+  font-weight: 600;
 }
-.board-action-btn.primary:hover {
-  background: var(--color-accent-hover);
+.board-action-btn.primary:hover:not(:disabled) {
+  background: #e8e4dc;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
 }
 
 /* Hint */

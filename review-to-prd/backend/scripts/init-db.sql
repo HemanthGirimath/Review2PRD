@@ -32,7 +32,7 @@ CREATE TABLE IF NOT EXISTS user_settings (
 -- Index for settings lookup
 CREATE INDEX IF NOT EXISTS idx_user_settings_user_id ON user_settings(user_id);
 
--- Waitlist
+-- Waitlist (early access email capture)
 CREATE TABLE IF NOT EXISTS waitlist (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     email TEXT UNIQUE NOT NULL,

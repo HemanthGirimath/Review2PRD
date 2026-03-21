@@ -81,7 +81,7 @@ const relativeTime = computed(() => {
   border: 1px solid var(--color-accent);
   border-radius: var(--radius-xl);
   padding: 0.875rem 1.25rem;
-  box-shadow: 0 8px 40px rgba(0,0,0,0.5), 0 0 0 1px rgba(99,102,241,0.15);
+  box-shadow: 0 8px 40px rgba(0,0,0,0.5), 0 0 0 1px rgba(232,228,220,0.1);
 }
 
 /* Transition */
