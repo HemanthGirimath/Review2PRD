@@ -9,6 +9,7 @@ import analyzeRouter from './routes/analyze';
 import ticketRouter from './routes/ticket';
 import analysesRouter from './routes/analyses';
 import settingsRouter from './routes/settings';
+import waitlistRouter from './routes/waitlist';
 
 const app = express();
 const PORT = 3001;
@@ -26,6 +27,7 @@ app.use('/api/analyze', analyzeRouter);
 app.use('/api/ticket', ticketRouter);
 app.use('/api/analyses', analysesRouter);
 app.use('/api/settings', settingsRouter);
+app.use('/api/waitlist', waitlistRouter);
 
 const frontendPath = path.join(__dirname, '../../frontend/dist');
 app.use(express.static(frontendPath));

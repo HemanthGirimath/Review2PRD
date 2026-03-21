@@ -38,14 +38,25 @@ async function callChatCompletion(userId: string, prompt: string, timeoutMs = 30
         
         const url = effectiveBaseUrl || (ai_provider === 'groq' ? 'https://api.groq.com/openai/v1/chat/completions' : 'https://api.openai.com/v1/chat/completions');
         
+        // o-series models (reasoning) have different parameter requirements
+        const isReasoningModel = ai_model.startsWith('o1-') || ai_model.startsWith('o3-');
+        
+        const payload: any = {
+            model: ai_model,
+            messages: [{ role: 'user', content: prompt }]
+        };
+
+        if (isReasoningModel) {
+            // Reasoning models dont support temperature and use max_completion_tokens
+            payload.max_completion_tokens = numPredict;
+        } else {
+            payload.temperature = 0.3;
+            payload.max_tokens = numPredict;
+        }
+
         const response = await axios.post(
             url,
-            {
-                model: ai_model,
-                messages: [{ role: 'user', content: prompt }],
-                temperature: 0.3,
-                max_tokens: numPredict
-            },
+            payload,
             {
                 timeout: timeoutMs,
                 headers: {
