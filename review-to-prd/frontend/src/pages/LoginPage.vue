@@ -15,32 +15,14 @@
       <div class="verify-icon">📬</div>
       <h2 class="auth-title">Check your inbox</h2>
       <p class="verify-msg">We sent a verification link to <strong>{{ email }}</strong>. Click it to activate your account, then come back to sign in.</p>
-      <button class="auth-submit-btn" style="margin-top:1rem" @click="verifyState = false; mode = 'signin'">
+      <button class="auth-submit-btn" style="margin-top:1rem" @click="verifyState = false">
         Go to Sign In
       </button>
     </div>
 
     <!-- Normal auth card -->
     <div v-else class="auth-card">
-      <!-- Tab toggle -->
-      <div class="auth-tabs">
-        <button
-          id="tab-signin"
-          class="auth-tab"
-          :class="{ active: mode === 'signin' }"
-          @click="mode = 'signin'"
-        >Sign In</button>
-        <button
-          id="tab-signup"
-          class="auth-tab"
-          :class="{ active: mode === 'signup' }"
-          @click="mode = 'signup'"
-        >Create Account</button>
-      </div>
-
-      <h2 class="auth-title">
-        {{ mode === 'signin' ? 'Welcome back' : 'Get started free' }}
-      </h2>
+      <h2 class="auth-title">Welcome back</h2>
 
       <!-- Error banner -->
       <div v-if="authError" class="auth-error">
@@ -84,7 +66,7 @@
         <div class="field-group">
           <label for="auth-password" class="field-label">
             Password
-            <RouterLink v-if="mode === 'signin'" to="/forgot" class="forgot-link">Forgot?</RouterLink>
+            <RouterLink to="/forgot" class="forgot-link">Forgot?</RouterLink>
           </label>
           <div class="password-wrapper">
             <input
@@ -110,15 +92,13 @@
           :disabled="loading || !supabaseConfigured"
         >
           <span v-if="loading" class="auth-spinner"></span>
-          <span v-else>{{ mode === 'signin' ? 'Sign In' : 'Create Account' }}</span>
+          <span v-else>Sign In</span>
         </button>
       </form>
 
       <p class="auth-switch">
-        {{ mode === 'signin' ? "Don't have an account?" : 'Already have an account?' }}
-        <button type="button" class="auth-switch-btn" @click="mode = mode === 'signin' ? 'signup' : 'signin'">
-          {{ mode === 'signin' ? 'Sign up →' : 'Sign in →' }}
-        </button>
+        Don't have an account?
+        <RouterLink to="/" class="auth-switch-link">Join the waitlist →</RouterLink>
       </p>
     </div><!-- end auth-card -->
   </div>
@@ -130,26 +110,17 @@ import { RouterLink } from 'vue-router'
 import { useAuth } from '../composables/useAuth'
 import { supabase } from '../lib/supabase'
 
-const mode = ref<'signin' | 'signup'>('signin')
 const email = ref('')
 const password = ref('')
 const showPw = ref(false)
 const verifyState = ref(false)  // true when awaiting email verification
 
-const { loading, authError, login, signup } = useAuth()
+const { loading, authError, login } = useAuth()
 
 const supabaseConfigured = computed(() => !!supabase)
 
 async function handleSubmit() {
-  if (mode.value === 'signin') {
-    await login(email.value, password.value)
-  } else {
-    await signup(email.value, password.value)
-    // Supabase sends a verification email — show confirm screen, don't redirect
-    if (!authError.value) {
-      verifyState.value = true
-    }
-  }
+  await login(email.value, password.value)
 }
 </script>
 
@@ -369,17 +340,14 @@ async function handleSubmit() {
   color: #52525b;
   margin: 1.25rem 0 0;
 }
-.auth-switch-btn {
-  background: none;
-  border: none;
+.auth-switch-link {
   color: #6366f1;
   font-size: 0.875rem;
-  font-family: inherit;
-  cursor: pointer;
-  padding: 0;
+  text-decoration: none;
   margin-left: 0.25rem;
+  transition: color 0.2s;
 }
-.auth-switch-btn:hover { color: #818cf8; text-decoration: underline; }
+.auth-switch-link:hover { color: #818cf8; text-decoration: underline; }
 
 /* Verify email screen */
 .verify-card { text-align: center; }

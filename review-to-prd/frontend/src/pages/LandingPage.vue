@@ -9,7 +9,7 @@
           </div>
           <span>Review<span class="accent">2</span>PRD</span>
         </div>
-        <RouterLink class="nav-signin" to="/login">Sign In →</RouterLink>
+        <!-- <RouterLink class="nav-signin" to="/login">Sign In →</RouterLink> -->
       </div>
     </nav>
 
@@ -50,6 +50,7 @@
           </button>
         </form>
         <p v-if="ctaSuccess" class="cta-success">🎉 You're on the list! We'll be in touch.</p>
+        <p v-if="ctaError" class="cta-error">{{ ctaError }}</p>
         <p class="hero-note">No credit card required · Works with your local Ollama</p>
 
         <!-- Mini preview -->
@@ -171,7 +172,8 @@
         </button>
       </form>
       <p v-if="ctaSuccess" class="cta-success">🎉 You're on the list!</p>
-      <RouterLink class="final-login-link" to="/login">Already have an account? Sign in →</RouterLink>
+      <p v-if="ctaError" class="cta-error">{{ ctaError }}</p>
+      <!-- <RouterLink class="final-login-link" to="/login">Already have an account? Sign in →</RouterLink> -->
     </section>
 
     <!-- FOOTER -->
@@ -184,20 +186,29 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { RouterLink } from 'vue-router'
+import axios from 'axios'
 
 const email = ref('')
 const ctaLoading = ref(false)
 const ctaSuccess = ref(false)
+const ctaError = ref('')
 
 async function handleEarlyAccess() {
   if (!email.value) return
   ctaLoading.value = true
-  // TODO: wire to Supabase or a mailing list
-  await new Promise(r => setTimeout(r, 800))
-  ctaSuccess.value = true
-  ctaLoading.value = false
-  email.value = ''
+  ctaError.value = ''
+  ctaSuccess.value = false
+  
+  try {
+    const API_BASE = import.meta.env.VITE_API_URL || '/api'
+    await axios.post(`${API_BASE}/waitlist`, { email: email.value })
+    ctaSuccess.value = true
+    email.value = ''
+  } catch (err: any) {
+    ctaError.value = err.response?.data?.message || 'Something went wrong. Please try again.'
+  } finally {
+    ctaLoading.value = false
+  }
 }
 
 const mockIssues = [
@@ -434,6 +445,7 @@ const steps = [
 }
 @keyframes spin { to { transform: rotate(360deg); } }
 .cta-success { color: #4ade80; font-size: 0.9rem; margin: 0; }
+.cta-error { color: #ef4444; font-size: 0.9rem; margin: 0; }
 .hero-note { font-size: 0.8125rem; color: #52525b; margin: 0; }
 
 /* Hero preview mockup */
