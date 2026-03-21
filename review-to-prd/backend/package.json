@@ -1,5 +1,8 @@
 {
     "name": "review-to-prd-backend",
+    "engines": {
+        "node": ">=22.0.0"
+    },
     "version": "1.0.0",
     "description": "Backend API for Review to PRD app",
     "main": "dist/index.js",
