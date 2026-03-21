@@ -46,13 +46,9 @@
              <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
              <span class="card-title">app.review2prd.com</span>
           </div>
-          <div class="card-body">
-            <div class="issue-row" v-for="i in mockIssues" :key="i.id">
-              <span class="sev-tag" :class="i.sev">{{ i.sev }}</span>
-              <span class="issue-text">{{ i.title }}</span>
-              <span class="issue-status">{{ i.status }}</span>
-            </div>
-          </div>
+          <video class="hero-demo-video" autoplay loop muted playsinline>
+            <source src="../assets/Review2PRD.mp4" type="video/mp4" />
+          </video>
         </div>
       </div>
     </section>
@@ -226,13 +222,6 @@ async function handleEarlyAccess() {
 function handlePlayDemo() {
   alert('Full demo video is coming soon! Join the waitlist to get notified.')
 }
-
-const mockIssues = [
-  { id: 1, sev: 'critical', title: 'Search broken on mobile data', status: '🟢 In Sprint' },
-  { id: 2, sev: 'high', title: 'Lyrics panel crashes on Android 13', status: '🔵 Open' },
-  { id: 3, sev: 'high', title: 'Downloads disappear on update', status: '🟢 In Sprint' },
-  { id: 4, sev: 'medium', title: 'Podcast position resets randomly', status: '🔵 Open' },
-]
 
 const features = [
   {
@@ -440,36 +429,11 @@ const roadmapItems = [
 .dot.yellow { background: #f59e0b; }
 .dot.green { background: #22c55e; }
 .card-title { flex: 1; text-align: center; font-size: 0.7rem; color: #8a8a80; font-family: 'DM Mono', monospace; }
-.hero-demo-img {
+.hero-demo-video {
   width: 100%;
   height: auto;
   display: block;
 }
-.card-body { padding: 0.875rem; display: flex; flex-direction: column; gap: 0.5rem; }
-.issue-row {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  background: #232320;
-  border: 1px solid rgba(255,255,255,0.06);
-  border-radius: 7px;
-  padding: 0.6rem 0.875rem;
-  font-size: 0.8rem;
-}
-.sev-tag {
-  font-family: 'DM Mono', monospace;
-  font-size: 0.65rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  padding: 0.1rem 0.4rem;
-  border-radius: 3px;
-  flex-shrink: 0;
-}
-.sev-tag.critical { background: rgba(220,38,38,0.15); color: #f87171; }
-.sev-tag.high { background: rgba(217,119,6,0.15); color: #fbbf24; }
-.sev-tag.medium { background: rgba(59,130,246,0.15); color: #60a5fa; }
-.issue-text { flex: 1; color: #e8e6e0; font-weight: 500; text-align: left; }
-.issue-status { font-size: 0.7rem; color: #8a8a80; white-space: nowrap; }
 
 /* ── Sections shared ─────────────────────────── */
 .section {
