@@ -80,6 +80,16 @@ Copy each ticket as Markdown (for Notion, Confluence, Jira) or as JSON (for any 
 - **Analysis history** — every analysis you run is saved to your account so you can revisit Spotify last week or Duolingo from last month whenever you need to
 - **Mobile friendly** — the Issue Board and all core features work on phones and tablets
 
+## Roadmap / Coming Soon
+
+We are actively developing Review2PRD based on user feedback. Here is what's coming next:
+
+- **Competitor Gap Analysis**: In-depth comparison by scraping competitor reviews to find what they do better and where they fail.
+- **Sentiment Timeline**: Visual charts showing how user satisfaction shifts after specific app updates.
+- **1-Click Sync Integrations**: Push your generated tickets directly into Jira, Linear, and Trello.
+- **Custom Review Filtering**: Allow users to configure exactly how many reviews to analyze and how far back (in days) to fetch them.
+- **Team Workspaces**: Shared history and collaborative PRD editing for product organizations.
+
 ---
 
 ## What it is not

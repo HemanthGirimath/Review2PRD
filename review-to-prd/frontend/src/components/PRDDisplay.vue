@@ -302,7 +302,7 @@ defineEmits<{
 .confidence-tag {
   background: var(--color-accent-muted);
   color: var(--color-accent-hover);
-  border: 1px solid rgba(99,102,241,0.25);
+  border: 1px solid rgba(232,228,220,0.1);
 }
 
 .date-tag {
@@ -426,7 +426,7 @@ defineEmits<{
 
 .section-icon.problem { background: rgba(239,68,68,0.12); }
 .section-icon.metrics { background: rgba(59,130,246,0.12); }
-.section-icon.stories { background: rgba(99,102,241,0.12); }
+.section-icon.stories { background: rgba(232,228,220,0.1); }
 .section-icon.reqs { background: rgba(245,158,11,0.12); }
 .section-icon.edge { background: rgba(245,158,11,0.12); }
 .section-icon.scope { background: rgba(239,68,68,0.08); }
@@ -602,7 +602,7 @@ defineEmits<{
   flex-shrink: 0;
 }
 
-.story-chip.as { background: rgba(99,102,241,0.15); color: var(--color-accent-hover); }
+.story-chip.as { background: rgba(232,228,220,0.1); color: var(--color-accent-hover); }
 .story-chip.want { background: rgba(34,197,94,0.12); color: #4ade80; }
 .story-chip.so { background: rgba(245,158,11,0.12); color: #fbbf24; }
 

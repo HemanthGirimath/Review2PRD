@@ -5,7 +5,7 @@
     <!-- Logo link back to landing -->
     <RouterLink to="/" class="auth-logo">
       <div class="auth-logo-icon">
-        <svg viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="10" fill="url(#alg)"/><path d="M8 10h16M8 16h10M8 22h13" stroke="white" stroke-width="2.5" stroke-linecap="round"/><circle cx="24" cy="22" r="4" fill="white" fill-opacity=".9"/><path d="M22.5 22l1 1 2-2" stroke="#6366f1" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><defs><linearGradient id="alg" x1="0" y1="0" x2="32" y2="32"><stop stop-color="#6366f1"/><stop offset="1" stop-color="#8b5cf6"/></linearGradient></defs></svg>
+        <svg viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="10" fill="url(#alg)"/><path d="M8 10h16M8 16h10M8 22h13" stroke="white" stroke-width="2.5" stroke-linecap="round"/><circle cx="24" cy="22" r="4" fill="white" fill-opacity=".9"/><path d="M22.5 22l1 1 2-2" stroke="#e8e4dc" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><defs><linearGradient id="alg" x1="0" y1="0" x2="32" y2="32"><stop stop-color="#e8e4dc"/><stop offset="1" stop-color="#8b5cf6"/></linearGradient></defs></svg>
       </div>
       <span>Review<span class="accent">2</span>PRD</span>
     </RouterLink>
@@ -156,7 +156,7 @@ async function handleSubmit() {
 <style scoped>
 .auth-page {
   min-height: 100vh;
-  background: #0a0a0a;
+  background: #1b1b18;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -168,7 +168,7 @@ async function handleSubmit() {
 .auth-glow {
   position: absolute;
   width: 500px; height: 500px;
-  background: rgba(99,102,241,0.12);
+  background: rgba(232,228,220,0.04);
   filter: blur(100px);
   border-radius: 50%;
   top: 50%; left: 50%;
@@ -181,19 +181,19 @@ async function handleSubmit() {
   gap: 0.5rem;
   font-size: 1rem;
   font-weight: 700;
-  color: #f4f4f5;
+  color: #e8e6e0;
   text-decoration: none;
   margin-bottom: 2rem;
 }
 .auth-logo-icon { width: 28px; height: 28px; }
 .auth-logo-icon svg { width: 100%; height: 100%; }
-.accent { color: #6366f1; }
+.accent { color: #e8e4dc; }
 
 .auth-card {
   width: 100%;
   max-width: 400px;
-  background: #111;
-  border: 1px solid #1e1e1e;
+  background: #232320;
+  border: 1px solid rgba(255,255,255,0.06);
   border-radius: 20px;
   padding: 2rem;
   position: relative;
@@ -201,7 +201,7 @@ async function handleSubmit() {
 
 .auth-tabs {
   display: flex;
-  background: #1a1a1a;
+  background: #2a2a26;
   border-radius: 10px;
   padding: 3px;
   gap: 2px;
@@ -217,12 +217,12 @@ async function handleSubmit() {
   font-family: inherit;
   cursor: pointer;
   background: transparent;
-  color: #71717a;
+  color: #6a6a64;
   transition: all 0.2s;
 }
 .auth-tab.active {
   background: #222;
-  color: #f4f4f5;
+  color: #e8e6e0;
   box-shadow: 0 1px 3px rgba(0,0,0,0.3);
 }
 
@@ -230,7 +230,7 @@ async function handleSubmit() {
   font-size: 1.375rem;
   font-weight: 700;
   margin: 0 0 1.25rem;
-  color: #f4f4f5;
+  color: #e8e6e0;
 }
 
 .auth-error {
@@ -266,8 +266,8 @@ async function handleSubmit() {
   justify-content: center;
   gap: 0.625rem;
   padding: 0.75rem;
-  background: #1a1a1a;
-  border: 1px solid #2a2a2a;
+  background: #2a2a26;
+  border: 1px solid #38382e;
   border-radius: 10px;
   color: #e4e4e7;
   font-size: 0.9375rem;
@@ -285,7 +285,7 @@ async function handleSubmit() {
   align-items: center;
   gap: 0.75rem;
   margin: 1.25rem 0;
-  color: #3f3f46;
+  color: #4a4a44;
   font-size: 0.8125rem;
 }
 .auth-divider::before, .auth-divider::after {
@@ -302,24 +302,24 @@ async function handleSubmit() {
   justify-content: space-between;
   font-size: 0.8125rem;
   font-weight: 500;
-  color: #a1a1aa;
+  color: #8a8a80;
 }
-.forgot-link { color: #6366f1; text-decoration: none; font-size: 0.8125rem; }
-.forgot-link:hover { color: #818cf8; }
+.forgot-link { color: #e8e4dc; text-decoration: none; font-size: 0.8125rem; }
+.forgot-link:hover { color: #f5f0e8; }
 .field-input {
-  background: #1a1a1a;
-  border: 1px solid #2a2a2a;
+  background: #2a2a26;
+  border: 1px solid #38382e;
   border-radius: 8px;
   padding: 0.7rem 0.875rem;
-  color: #f4f4f5;
+  color: #e8e6e0;
   font-size: 0.9375rem;
   font-family: inherit;
   outline: none;
   transition: border-color 0.2s;
   width: 100%;
 }
-.field-input::placeholder { color: #3f3f46; }
-.field-input:focus { border-color: #6366f1; }
+.field-input::placeholder { color: #5a5a52; }
+.field-input:focus { border-color: rgba(232,228,220,0.35); }
 .password-wrapper { position: relative; }
 .password-wrapper .field-input { padding-right: 2.5rem; }
 .pw-toggle {
@@ -338,12 +338,12 @@ async function handleSubmit() {
 .auth-submit-btn {
   width: 100%;
   padding: 0.8rem;
-  background: #6366f1;
-  color: white;
+  background: #e8e4dc;
+  color: #1b1b18;
   border: none;
   border-radius: 10px;
   font-size: 1rem;
-  font-weight: 600;
+  font-weight: 700;
   font-family: inherit;
   cursor: pointer;
   transition: all 0.2s;
@@ -352,12 +352,12 @@ async function handleSubmit() {
   justify-content: center;
   margin-top: 0.25rem;
 }
-.auth-submit-btn:hover:not(:disabled) { background: #818cf8; }
+.auth-submit-btn:hover:not(:disabled) { background: #f5f0e8; }
 .auth-submit-btn:disabled { opacity: 0.5; cursor: not-allowed; }
 .auth-spinner {
   width: 16px; height: 16px;
-  border: 2px solid rgba(255,255,255,0.3);
-  border-top-color: white;
+  border: 2px solid rgba(27,27,24,0.2);
+  border-top-color: #1b1b18;
   border-radius: 50%;
   animation: spin 0.7s linear infinite;
 }
@@ -366,29 +366,29 @@ async function handleSubmit() {
 .auth-switch {
   text-align: center;
   font-size: 0.875rem;
-  color: #52525b;
+  color: #4a4a44;
   margin: 1.25rem 0 0;
 }
 .auth-switch-btn {
   background: none;
   border: none;
-  color: #6366f1;
+  color: #e8e4dc;
   font-size: 0.875rem;
   font-family: inherit;
   cursor: pointer;
   padding: 0;
   margin-left: 0.25rem;
 }
-.auth-switch-btn:hover { color: #818cf8; text-decoration: underline; }
+.auth-switch-btn:hover { color: #f5f0e8; text-decoration: underline; }
 
 /* Verify email screen */
 .verify-card { text-align: center; }
 .verify-icon { font-size: 3rem; margin-bottom: 0.75rem; }
 .verify-msg {
   font-size: 0.9375rem;
-  color: #a1a1aa;
+  color: #8a8a80;
   line-height: 1.6;
   margin: 0 0 0.5rem;
 }
-.verify-msg strong { color: #f4f4f5; }
+.verify-msg strong { color: #e8e6e0; }
 </style>

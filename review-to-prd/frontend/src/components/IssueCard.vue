@@ -136,7 +136,7 @@ defineEmits<{
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: var(--color-text-muted);
+  color: #8a8a7a;
   background: var(--color-surface-2);
   padding: 0.2rem 0.5rem;
   border-radius: 4px;
@@ -170,6 +170,7 @@ defineEmits<{
   line-height: 1.55;
   display: -webkit-box;
   -webkit-line-clamp: 2;
+  line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
@@ -204,6 +205,7 @@ defineEmits<{
   line-height: 1.5;
   display: -webkit-box;
   -webkit-line-clamp: 2;
+  line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
@@ -267,7 +269,7 @@ defineEmits<{
   padding: 0.4rem 0.875rem;
   background: var(--color-accent-muted);
   color: var(--color-accent-hover);
-  border: 1px solid rgba(99,102,241,0.3);
+  border: 1px solid rgba(232,228,220,0.1);
   border-radius: 6px;
   font-size: 0.8125rem;
   font-weight: 600;
@@ -286,7 +288,7 @@ defineEmits<{
 
 .btn-spinner {
   width: 12px; height: 12px;
-  border: 2px solid rgba(99,102,241,0.3);
+  border: 2px solid rgba(232,228,220,0.1);
   border-top-color: var(--color-accent);
   border-radius: 50%;
   animation: spin 0.7s linear infinite;

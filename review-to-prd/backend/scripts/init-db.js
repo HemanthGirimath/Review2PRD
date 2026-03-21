@@ -72,14 +72,14 @@ async function init() {
       SELECT table_name
       FROM information_schema.tables
       WHERE table_schema = 'public'
-        AND table_name IN ('analyses', 'user_settings')
+        AND table_name IN ('analyses', 'user_settings', 'waitlist')
       ORDER BY table_name
     `);
 
     const foundTables = verifyResult.rows.map((r) => r.table_name);
     console.log(`📋 Tables found (${foundTables.length}): ${foundTables.join(', ') || 'none'}`);
 
-    const expectedTables = ['analyses', 'user_settings'];
+    const expectedTables = ['analyses', 'user_settings', 'waitlist'];
     const missingTables = expectedTables.filter((t) => !foundTables.includes(t));
 
     if (missingTables.length > 0) {

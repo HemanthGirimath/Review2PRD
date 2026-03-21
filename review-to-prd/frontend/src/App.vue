@@ -53,11 +53,10 @@
       <div class="logo-group">
         <div class="logo-icon">
           <svg viewBox="0 0 32 32" fill="none">
-            <rect width="32" height="32" rx="10" fill="url(#grad)" />
-            <path d="M8 10h16M8 16h10M8 22h13" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
-            <circle cx="24" cy="22" r="4" fill="white" fill-opacity=".9"/>
-            <path d="M22.5 22l1 1 2-2" stroke="#6366f1" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-            <defs><linearGradient id="grad" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse"><stop stop-color="#6366f1"/><stop offset="1" stop-color="#8b5cf6"/></linearGradient></defs>
+            <rect width="32" height="32" rx="8" fill="#e8e4dc" />
+            <path d="M8 10h16M8 16h10M8 22h13" stroke="#1b1b18" stroke-width="2.5" stroke-linecap="round"/>
+            <circle cx="24" cy="22" r="4" fill="#1b1b18" fill-opacity=".9"/>
+            <path d="M22.5 22l1 1 2-2" stroke="#e8e4dc" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
         </div>
         <div>
@@ -381,18 +380,18 @@ async function handleGenerate() {
 *, *::before, *::after { box-sizing: border-box; }
 
 :root {
-  --color-bg: #0a0a0a;
-  --color-surface: #111111;
-  --color-surface-2: #1a1a1a;
-  --color-surface-3: #222222;
-  --color-border: #2a2a2a;
-  --color-border-subtle: #1e1e1e;
-  --color-text-primary: #f4f4f5;
-  --color-text-secondary: #a1a1aa;
-  --color-text-muted: #52525b;
-  --color-accent: #6366f1;
-  --color-accent-hover: #818cf8;
-  --color-accent-muted: rgba(99,102,241,0.12);
+  --color-bg: #1b1b18;
+  --color-surface: #232320;
+  --color-surface-2: #2a2a26;
+  --color-surface-3: #323230;
+  --color-border: #38382e;
+  --color-border-subtle: #2e2e28;
+  --color-text-primary: #e8e6e0;
+  --color-text-secondary: #8a8a80;
+  --color-text-muted: #4a4a44;
+  --color-accent: #e8e4dc;
+  --color-accent-hover: #f5f0e8;
+  --color-accent-muted: rgba(255,255,255,0.06);
   --color-danger: #ef4444;
   --color-warning: #f59e0b;
   --color-info: #3b82f6;
@@ -407,7 +406,7 @@ body {
   margin: 0;
   background: var(--color-bg);
   color: var(--color-text-primary);
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-family: 'Satoshi', 'Instrument Sans', system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   min-height: 100vh;
 }
@@ -422,7 +421,7 @@ body {
   top: 0;
   z-index: 100;
   height: 60px;
-  background: rgba(10, 10, 10, 0.9);
+  background: rgba(27, 27, 24, 0.92);
   backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--color-border-subtle);
   display: flex;
@@ -509,7 +508,7 @@ body {
   height: 64px;
   border-radius: 16px;
   overflow: hidden;
-  box-shadow: 0 12px 32px rgba(99, 102, 241, 0.3);
+  box-shadow: 0 12px 32px rgba(255,255,255,0.08);
 }
 
 .logo-name {
@@ -635,9 +634,9 @@ body {
   white-space: nowrap;
 }
 .toggle-btn.active {
-  background: var(--color-accent);
-  color: white;
-  box-shadow: 0 2px 8px rgba(99,102,241,0.35);
+  background: #e8e4dc;
+  color: #1b1b18;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
 }
 .toggle-badge {
   font-size: 0.7rem;

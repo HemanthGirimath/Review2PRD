@@ -182,7 +182,7 @@ function updateNotes(id: string, notes: string) {
   font-size: 2rem;
   font-weight: 800;
   line-height: 1;
-  background: linear-gradient(135deg, var(--color-accent), #a78bfa);
+  background: linear-gradient(135deg, var(--color-accent), #5eead4);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
