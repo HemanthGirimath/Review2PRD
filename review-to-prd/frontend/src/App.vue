@@ -483,7 +483,7 @@ body {
   font-size: 0.7rem;
   font-weight: 700;
   background: var(--color-accent);
-  color: white;
+  color: var(--color-bg);
   padding: 1px 5px;
   border-radius: 10px;
   margin-left: 2px;
@@ -641,6 +641,10 @@ body {
   color: #1b1b18;
   font-weight: 600;
   box-shadow: 0 1px 4px rgba(0,0,0,0.3);
+}
+.toggle-btn.active .toggle-badge {
+  background: rgba(0,0,0,0.1);
+  color: #1b1b18;
 }
 .toggle-badge {
   font-size: 0.7rem;
