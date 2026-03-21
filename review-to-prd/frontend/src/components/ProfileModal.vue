@@ -113,15 +113,15 @@ watch(() => props.visible, (val) => {
 .profile-avatar {
   width: 56px;
   height: 56px;
-  background: var(--color-accent);
-  color: white;
+  background: #ffffff;
+  color: #1b1b18;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 1.5rem;
   font-weight: 700;
-  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
 .profile-info h4 {
@@ -133,7 +133,7 @@ watch(() => props.visible, (val) => {
 .account-type {
   margin: 0.25rem 0 0;
   font-size: 0.8125rem;
-  color: var(--color-accent);
+  color: #8a8a80;
   font-weight: 600;
 }
 
@@ -172,7 +172,7 @@ watch(() => props.visible, (val) => {
 }
 
 .status-badge.online { background: rgba(34, 197, 94, 0.1); color: var(--color-success); }
-.status-badge.checking { background: rgba(99, 102, 241, 0.1); color: var(--color-accent); }
+.status-badge.checking { background: rgba(232, 228, 220, 0.1); color: #e8e6e0; }
 
 .status-details {
   margin-bottom: 1rem;
@@ -201,35 +201,36 @@ watch(() => props.visible, (val) => {
 .btn-check {
   width: 100%;
   padding: 0.625rem;
-  background: var(--color-surface-3);
-  border: 1px solid var(--color-border);
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 8px;
-  color: var(--color-text-primary);
+  color: #e8e6e0;
   font-size: 0.8125rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s;
 }
 
-.btn-check:hover:not(:disabled) { background: var(--color-surface); border-color: var(--color-accent); }
-.btn-check:disabled { opacity: 0.6; cursor: not-allowed; }
+.btn-check:hover:not(:disabled) { background: rgba(255, 255, 255, 0.06); border-color: rgba(255, 255, 255, 0.2); color: #ffffff; }
+.btn-check:disabled { opacity: 0.6; cursor: not-allowed; border-color: transparent;}
 
 .btn-configure-shortcut {
   width: 100%;
   margin-top: 0.75rem;
   padding: 0.625rem;
   background: transparent;
-  border: 1px dashed var(--color-border);
+  border: 1px dashed rgba(255, 255, 255, 0.2);
   border-radius: 8px;
-  color: var(--color-accent);
+  color: #e8e6e0;
   font-size: 0.8125rem;
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s;
 }
 .btn-configure-shortcut:hover {
-  background: var(--color-accent-muted);
-  border-color: var(--color-accent);
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.3);
+  color: #ffffff;
 }
 
 .modal-footer {
@@ -240,12 +241,17 @@ watch(() => props.visible, (val) => {
 
 .btn-primary {
   padding: 0.625rem 1.5rem;
-  background: var(--color-accent);
-  color: white;
-  border: none;
+  background: #ffffff;
+  color: #1b1b18;
+  border: 1px solid transparent;
   border-radius: 8px;
   font-weight: 600;
   cursor: pointer;
+  transition: all 0.2s;
+}
+.btn-primary:hover {
+  background: #e8e4dc;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
 }
 
 /* Base Modal Styles */

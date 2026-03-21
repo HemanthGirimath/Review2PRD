@@ -463,19 +463,21 @@ body {
   align-items: center;
   gap: 0.5rem;
   padding: 0.45rem 0.875rem;
-  background: var(--color-surface-2);
-  border: 1px solid var(--color-border);
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: var(--radius-md);
-  color: var(--color-text-secondary);
+  color: #e8e6e0;
   font-size: 0.8125rem;
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s;
   white-space: nowrap;
 }
-
-.nav-btn:hover { background: var(--color-surface-3); color: var(--color-text-primary); }
-.nav-btn svg { width: 14px; height: 14px; opacity: 0.7; }
+.nav-btn:hover { 
+  background: rgba(255, 255, 255, 0.06); 
+  color: #ffffff; 
+}
+.nav-btn svg { width: 14px; height: 14px; opacity: 0.8; }
 
 .nav-history-badge {
   font-size: 0.7rem;
@@ -611,8 +613,8 @@ body {
 /* View toggle */
 .view-toggle {
   display: flex;
-  background: var(--color-surface-2);
-  border: 1px solid var(--color-border);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: var(--radius-md);
   padding: 3px;
   gap: 2px;
@@ -629,37 +631,44 @@ body {
   cursor: pointer;
   border: none;
   background: transparent;
-  color: var(--color-text-muted);
+  color: #8a8a80;
   transition: all 0.2s;
   white-space: nowrap;
 }
+.toggle-btn:hover:not(.active) { color: #e8e6e0; }
 .toggle-btn.active {
-  background: #e8e4dc;
+  background: #ffffff;
   color: #1b1b18;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  font-weight: 600;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.3);
 }
 .toggle-badge {
   font-size: 0.7rem;
   font-weight: 700;
-  background: rgba(255,255,255,0.2);
+  background: rgba(255,255,255,0.15);
   padding: 1px 5px;
   border-radius: 10px;
 }
+.toggle-btn.active .toggle-badge {
+  background: rgba(0,0,0,0.1);
+  color: #1b1b18;
+}
 
 .reset-btn {
-  padding: 0.4rem 0.875rem;
-  background: var(--color-surface-2);
-  border: 1px solid var(--color-border);
+  padding: 0.45rem 0.875rem;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: var(--radius-md);
-  color: var(--color-text-secondary);
+  color: #e8e6e0;
   font-size: 0.8125rem;
+  font-weight: 500;
   font-family: inherit;
   cursor: pointer;
   transition: all 0.2s;
 }
 .reset-btn:hover {
-  background: var(--color-surface-3);
-  color: var(--color-text-primary);
+  background: rgba(255, 255, 255, 0.06);
+  color: #ffffff;
 }
 
 /* Main */
@@ -704,10 +713,11 @@ body {
   padding-left: 0.75rem;
 }
 .user-profile-trigger {
-  background: none;
-  border: none;
+  background: transparent;
+  border: 1px solid transparent;
   font-size: 0.75rem;
-  color: var(--color-text-muted);
+  font-weight: 500;
+  color: #e8e6e0;
   max-width: 120px;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -715,11 +725,12 @@ body {
   font-family: inherit;
   cursor: pointer;
   padding: 4px 8px;
-  border-radius: 4px;
+  border-radius: 6px;
+  transition: all 0.2s;
 }
 .user-profile-trigger:hover {
-  background: var(--color-surface-2);
-  color: var(--color-text-primary);
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.1);
 }
 .logout-btn {
   display: flex;
@@ -727,9 +738,9 @@ body {
   justify-content: center;
   width: 28px; height: 28px;
   border-radius: 6px;
-  border: 1px solid var(--color-border);
-  background: var(--color-surface-2);
-  color: var(--color-text-muted);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: transparent;
+  color: #8a8a80;
   cursor: pointer;
   transition: all 0.15s;
   padding: 0;

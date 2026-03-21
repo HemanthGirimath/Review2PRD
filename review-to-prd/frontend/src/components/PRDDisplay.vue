@@ -248,13 +248,13 @@ defineEmits<{
 }
 
 .app-icon-placeholder.empty {
-  background: linear-gradient(135deg, var(--color-accent), #8b5cf6);
+  background: linear-gradient(135deg, #38382e, #2a2a26);
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 1.5rem;
   font-weight: 700;
-  color: white;
+  color: #e8e6e0;
 }
 
 .app-name {
@@ -337,24 +337,26 @@ defineEmits<{
 }
 
 .action-btn.secondary {
-  background: var(--color-surface-2);
-  color: var(--color-text-secondary);
-  border: 1px solid var(--color-border);
+  background: transparent;
+  color: #e8e6e0;
+  border: 1px solid rgba(255, 255, 255, 0.12);
 }
 
 .action-btn.secondary:hover {
-  background: var(--color-surface-3);
-  color: var(--color-text-primary);
+  background: rgba(255, 255, 255, 0.06);
+  color: #ffffff;
 }
 
 .action-btn.primary {
-  background: var(--color-accent);
-  color: white;
-  box-shadow: 0 2px 10px var(--color-accent-glow);
+  background: #ffffff;
+  color: #1b1b18;
+  font-weight: 600;
+  border: 1px solid transparent;
 }
 
 .action-btn.primary:hover {
-  background: var(--color-accent-hover);
+  background: #e8e4dc;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
 }
 
 /* Effort bar */

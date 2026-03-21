@@ -43,8 +43,8 @@
       <div class="hero-right">
         <div class="hero-card">
           <div class="card-topbar">
-            <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
-            <span class="card-title">Review2PRD — Spotify</span>
+             <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+             <span class="card-title">app.review2prd.com</span>
           </div>
           <div class="card-body">
             <div class="issue-row" v-for="i in mockIssues" :key="i.id">
@@ -83,7 +83,7 @@
                 <div class="vp-row"><span class="vp-sev high">High</span><span class="vp-text">Downloads disappear on update</span><span class="vp-status">🟢 In Sprint</span></div>
               </div>
             </div>
-            <button class="vp-play" aria-label="Play demo">
+            <button class="vp-play" aria-label="Play demo" @click="handlePlayDemo">
               <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
             </button>
             <div class="vp-badge">Demo coming soon · Join the waitlist to be first</div>
@@ -221,6 +221,10 @@ async function handleEarlyAccess() {
   } finally {
     ctaLoading.value = false
   }
+}
+
+function handlePlayDemo() {
+  alert('Full demo video is coming soon! Join the waitlist to get notified.')
 }
 
 const mockIssues = [
@@ -415,35 +419,41 @@ const roadmapItems = [
 .cta-error { color: #e5484d; font-size: 0.875rem; margin: 0.75rem 0 0; }
 .hero-note { font-size: 0.8125rem; color: #4a4a44; margin: 0.75rem 0 0; }
 
-/* Hero card — light cream, creates contrast */
+/* Hero card — matches the dark app dashboard */
 .hero-card {
-  background: #f5f0e8; /* warm cream — exactly like Claude's UI mockups */
+  background: #1b1b18; 
+  border: 1px solid rgba(255,255,255,0.06);
   border-radius: 14px;
   overflow: hidden;
-  box-shadow: 0 32px 80px rgba(0,0,0,0.5);
+  box-shadow: 0 32px 80px rgba(0,0,0,0.6);
 }
 .card-topbar {
-  background: #ede8de;
+  background: #232320;
   padding: 0.7rem 1rem;
   display: flex;
   align-items: center;
   gap: 0.4rem;
-  border-bottom: 1px solid rgba(0,0,0,0.08);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
 }
 .dot { width: 10px; height: 10px; border-radius: 50%; }
 .dot.red { background: #ef4444; }
 .dot.yellow { background: #f59e0b; }
 .dot.green { background: #22c55e; }
-.card-title { flex: 1; text-align: center; font-size: 0.7rem; color: #8a7a6a; font-family: 'DM Mono', monospace; }
-.card-body { padding: 0.75rem; display: flex; flex-direction: column; gap: 0.375rem; }
+.card-title { flex: 1; text-align: center; font-size: 0.7rem; color: #8a8a80; font-family: 'DM Mono', monospace; }
+.hero-demo-img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+.card-body { padding: 0.875rem; display: flex; flex-direction: column; gap: 0.5rem; }
 .issue-row {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  background: #fff;
-  border: 1px solid rgba(0,0,0,0.07);
+  background: #232320;
+  border: 1px solid rgba(255,255,255,0.06);
   border-radius: 7px;
-  padding: 0.55rem 0.75rem;
+  padding: 0.6rem 0.875rem;
   font-size: 0.8rem;
 }
 .sev-tag {
@@ -455,11 +465,11 @@ const roadmapItems = [
   border-radius: 3px;
   flex-shrink: 0;
 }
-.sev-tag.critical { background: rgba(220,38,38,0.1); color: #dc2626; }
-.sev-tag.high { background: rgba(217,119,6,0.1); color: #d97706; }
-.sev-tag.medium { background: rgba(37,99,235,0.08); color: #2563eb; }
-.issue-text { flex: 1; color: #2d2d2a; font-size: 0.8rem; }
-.issue-status { font-size: 0.7rem; color: #6b6b64; white-space: nowrap; }
+.sev-tag.critical { background: rgba(220,38,38,0.15); color: #f87171; }
+.sev-tag.high { background: rgba(217,119,6,0.15); color: #fbbf24; }
+.sev-tag.medium { background: rgba(59,130,246,0.15); color: #60a5fa; }
+.issue-text { flex: 1; color: #e8e6e0; font-weight: 500; text-align: left; }
+.issue-status { font-size: 0.7rem; color: #8a8a80; white-space: nowrap; }
 
 /* ── Sections shared ─────────────────────────── */
 .section {
@@ -580,29 +590,30 @@ const roadmapItems = [
 }
 .vp-screen {
   width: min(580px, 90%);
-  background: #f5f0e8;
+  background: #1b1b18;
+  border: 1px solid rgba(255,255,255,0.06);
   border-radius: 10px;
   overflow: hidden;
-  box-shadow: 0 20px 60px rgba(0,0,0,0.5);
-  opacity: 0.9;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.8);
+  opacity: 0.95;
 }
 .vp-topbar {
-  background: #ede8de;
+  background: #232320;
   padding: 0.55rem 0.875rem;
   display: flex;
   align-items: center;
   gap: 0.375rem;
-  border-bottom: 1px solid rgba(0,0,0,0.08);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
 }
-.vp-dot { width: 8px; height: 8px; border-radius: 50%; background: #c8c0b4; }
-.vp-url { flex: 1; text-align: center; font-size: 0.65rem; color: #8a7a6a; font-family: 'DM Mono', monospace; }
+.vp-dot { width: 8px; height: 8px; border-radius: 50%; background: #4a4a44; }
+.vp-url { flex: 1; text-align: center; font-size: 0.65rem; color: #8a8a80; font-family: 'DM Mono', monospace; }
 .vp-content { padding: 0.75rem; display: flex; flex-direction: column; gap: 0.375rem; }
 .vp-row {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  background: #fff;
-  border: 1px solid rgba(0,0,0,0.07);
+  background: #232320;
+  border: 1px solid rgba(255,255,255,0.06);
   border-radius: 6px;
   padding: 0.55rem 0.75rem;
   font-size: 0.78rem;
@@ -616,10 +627,10 @@ const roadmapItems = [
   flex-shrink: 0;
   font-family: 'DM Mono', monospace;
 }
-.vp-sev.crit { background: rgba(220,38,38,0.1); color: #dc2626; }
-.vp-sev.high { background: rgba(217,119,6,0.1); color: #d97706; }
-.vp-text { flex: 1; color: #2d2d2a; }
-.vp-status { font-size: 0.7rem; color: #6b6b64; white-space: nowrap; }
+.vp-sev.crit { background: rgba(220,38,38,0.15); color: #f87171; }
+.vp-sev.high { background: rgba(217,119,6,0.15); color: #fbbf24; }
+.vp-text { flex: 1; color: #e8e6e0; }
+.vp-status { font-size: 0.7rem; color: #8a8a80; white-space: nowrap; }
 .vp-play {
   position: absolute;
   width: 56px; height: 56px;
@@ -682,33 +693,33 @@ const roadmapItems = [
   margin: 0;
 }
 
-/* Feature mockup — cream card like Claude's */
+/* Feature mockup — dark card matching app */
 .ui-card {
-  background: #f5f0e8;
+  background: #1b1b18;
+  border: 1px solid rgba(255,255,255,0.06);
   border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 16px 48px rgba(0,0,0,0.4);
+  box-shadow: 0 16px 48px rgba(0,0,0,0.6);
 }
 .ui-card-bar {
-  background: #ede8de;
+  background: #232320;
   padding: 0.6rem 0.875rem;
   display: flex;
   align-items: center;
   gap: 0.375rem;
-  border-bottom: 1px solid rgba(0,0,0,0.06);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
 }
-.ui-bar-dot { width: 8px; height: 8px; border-radius: 50%; background: #c8c0b4; }
+.ui-bar-dot { width: 8px; height: 8px; border-radius: 50%; background: #4a4a44; }
 .ui-card-label {
   flex: 1;
   text-align: center;
   font-size: 0.65rem;
-  color: #8a7a6a;
+  color: #8a8a80;
   font-family: 'DM Mono', monospace;
 }
-.ui-card-body { padding: 1rem; font-size: 0.8125rem; color: #4a4540; line-height: 1.5; }
+.ui-card-body { padding: 1.25rem; font-size: 0.8125rem; color: #e8e6e0; line-height: 1.5; }
 
 /* ── How it works ───────────────────────────── */
-.how-section {}
 .steps-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -782,4 +793,15 @@ const roadmapItems = [
 .footer-copy { font-size: 0.8125rem; color: #2a2a26; margin: 0.375rem 0 0; }
 
 /* ── Mockup inner elements ───────────────────── */
+:deep(.m-row) { display: flex; gap: 0.5rem; margin-bottom: 0.5rem; align-items: flex-start; }
+:deep(.m-star) { color: #fbbf24; font-weight: 700; flex-shrink: 0; }
+:deep(.m-stat) { font-size: 0.7rem; color: #6b6b64; margin-top: 0.75rem; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 0.5rem; }
+:deep(.m-label) { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.05em; color: #6b6b64; margin-bottom: 0.25rem; }
+:deep(.m-label.mt) { margin-top: 0.875rem; }
+:deep(.m-body) { color: #e8e6e0; margin-bottom: 0.5rem; line-height: 1.6; }
+:deep(.m-issue) { display: flex; flex-direction: column; gap: 0.25rem; padding: 0.625rem; background: #232320; border: 1px solid rgba(255,255,255,0.06); border-radius: 6px; margin-bottom: 0.375rem; }
+:deep(.m-issue span:first-child) { font-size: 0.6rem; text-transform: uppercase; font-weight: 700; }
+:deep(.m-crit span:first-child) { color: #f87171; }
+:deep(.m-high span:first-child) { color: #fbbf24; }
+:deep(.m-check) { color: #e8e6e0; margin-bottom: 0.375rem; font-family: 'DM Mono', monospace; font-size: 0.75rem; display: flex; align-items: center; gap: 0.375rem; }
 </style>

@@ -233,7 +233,8 @@ const canGenerate = computed(() => {
 .input-form {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 1.5rem;
+  padding: 2.5rem 2rem;
 }
 
 /* ── Smart input wrapper ─────────────────────── */
