@@ -145,7 +145,7 @@ const relativeTime = computed(() => {
 }
 .resume-btn.primary {
   background: var(--color-accent);
-  color: white;
+  color: var(--color-bg);
   border: 1px solid var(--color-accent);
 }
 .resume-btn.primary:hover {

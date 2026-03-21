@@ -69,25 +69,12 @@
           <!-- Replace src with your Loom/YouTube embed URL when ready -->
           <!-- <iframe src="https://www.loom.com/embed/YOUR_VIDEO_ID" frameborder="0" allowfullscreen class="video-iframe"></iframe> -->
 
-          <!-- Placeholder shown until real video is linked -->
-          <div class="video-placeholder">
-            <div class="vp-glow"></div>
-            <div class="vp-screen">
-              <div class="vp-topbar">
-                <span class="vp-dot"></span><span class="vp-dot"></span><span class="vp-dot"></span>
-                <span class="vp-url">review2prd.app</span>
-              </div>
-              <div class="vp-content">
-                <div class="vp-row"><span class="vp-sev crit">Critical</span><span class="vp-text">Search broken on mobile data</span><span class="vp-status">🟢 In Sprint</span></div>
-                <div class="vp-row"><span class="vp-sev high">High</span><span class="vp-text">Lyrics panel crashes on Android 13</span><span class="vp-status">🔵 Open</span></div>
-                <div class="vp-row"><span class="vp-sev high">High</span><span class="vp-text">Downloads disappear on update</span><span class="vp-status">🟢 In Sprint</span></div>
-              </div>
-            </div>
-            <button class="vp-play" aria-label="Play demo" @click="handlePlayDemo">
-              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-            </button>
-            <div class="vp-badge">Demo coming soon · Join the waitlist to be first</div>
-          </div>
+          <video ref="demoVideo" class="video-iframe" autoplay loop muted playsinline @click="toggleFullscreen">
+            <source src="../assets/Review2PRD.mp4" type="video/mp4" />
+          </video>
+          <button class="video-fs-btn" @click="toggleFullscreen" title="Fullscreen">
+             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
+          </button>
         </div>
       </div>
     </section>
@@ -206,6 +193,19 @@ const ctaLoading = ref(false)
 const ctaSuccess = ref(false)
 const ctaError = ref('')
 
+const demoVideo = ref<HTMLVideoElement | null>(null)
+
+function toggleFullscreen() {
+  if (!demoVideo.value) return
+  if (document.fullscreenElement) {
+    document.exitFullscreen()
+  } else {
+    demoVideo.value.requestFullscreen().catch(err => {
+      console.warn('Fullscreen error:', err)
+    })
+  }
+}
+
 async function handleEarlyAccess() {
   if (!email.value) return
   ctaLoading.value = true
@@ -223,9 +223,6 @@ async function handleEarlyAccess() {
   }
 }
 
-function handlePlayDemo() {
-  alert('Full demo video is coming soon! Join the waitlist to get notified.')
-}
 
 const mockIssues = [
   { id: 1, sev: 'critical', title: 'Search broken on mobile data', status: '🟢 In Sprint' },
@@ -440,11 +437,6 @@ const roadmapItems = [
 .dot.yellow { background: #f59e0b; }
 .dot.green { background: #22c55e; }
 .card-title { flex: 1; text-align: center; font-size: 0.7rem; color: #8a8a80; font-family: 'DM Mono', monospace; }
-.hero-demo-img {
-  width: 100%;
-  height: auto;
-  display: block;
-}
 .card-body { padding: 0.875rem; display: flex; flex-direction: column; gap: 0.5rem; }
 .issue-row {
   display: flex;
@@ -561,100 +553,36 @@ const roadmapItems = [
 }
 .video-sub { font-size: 1rem; color: #6b6b64; max-width: 520px; margin: 0 auto 2.5rem; line-height: 1.65; }
 .video-frame-wrapper { position: relative; width: 100%; aspect-ratio: 16/9; border-radius: 14px; overflow: hidden; }
-.video-iframe { width: 100%; height: 100%; display: block; }
-
-/* Placeholder */
-.video-placeholder {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  background: #141410;
-  border: 1px solid rgba(255,255,255,0.07);
-  border-radius: 14px;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: 380px;
+.video-iframe { width: 100%; height: 100%; display: block; cursor: pointer; }
+.video-iframe::-webkit-media-controls-volume-slider,
+.video-iframe::-webkit-media-controls-mute-button,
+.video-iframe::-webkit-media-controls-volume-control-container,
+.video-iframe::-webkit-media-controls-volume-slider-container {
+  display: none !important;
 }
-.vp-glow {
+.video-fs-btn {
   position: absolute;
-  width: 400px; height: 400px;
-  background: rgba(232,228,220,0.04);
-  filter: blur(80px);
-  border-radius: 50%;
-  top: 50%; left: 50%;
-  transform: translate(-50%, -50%);
-  pointer-events: none;
-}
-.vp-screen {
-  width: min(580px, 90%);
-  background: #1b1b18;
-  border: 1px solid rgba(255,255,255,0.06);
-  border-radius: 10px;
-  overflow: hidden;
-  box-shadow: 0 20px 60px rgba(0,0,0,0.8);
-  opacity: 0.95;
-}
-.vp-topbar {
-  background: #232320;
-  padding: 0.55rem 0.875rem;
-  display: flex;
-  align-items: center;
-  gap: 0.375rem;
-  border-bottom: 1px solid rgba(255,255,255,0.06);
-}
-.vp-dot { width: 8px; height: 8px; border-radius: 50%; background: #4a4a44; }
-.vp-url { flex: 1; text-align: center; font-size: 0.65rem; color: #8a8a80; font-family: 'DM Mono', monospace; }
-.vp-content { padding: 0.75rem; display: flex; flex-direction: column; gap: 0.375rem; }
-.vp-row {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  background: #232320;
-  border: 1px solid rgba(255,255,255,0.06);
-  border-radius: 6px;
-  padding: 0.55rem 0.75rem;
-  font-size: 0.78rem;
-}
-.vp-sev {
-  font-size: 0.62rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  padding: 0.1rem 0.4rem;
-  border-radius: 3px;
-  flex-shrink: 0;
-  font-family: 'DM Mono', monospace;
-}
-.vp-sev.crit { background: rgba(220,38,38,0.15); color: #f87171; }
-.vp-sev.high { background: rgba(217,119,6,0.15); color: #fbbf24; }
-.vp-text { flex: 1; color: #e8e6e0; }
-.vp-status { font-size: 0.7rem; color: #8a8a80; white-space: nowrap; }
-.vp-play {
-  position: absolute;
-  width: 56px; height: 56px;
-  background: #ffffff;
-  color: #1b1b18;
-  border: none;
-  border-radius: 50%;
+  bottom: 1.25rem;
+  right: 1.25rem;
+  background: rgba(0,0,0,0.6);
+  color: white;
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 8px;
+  padding: 0.6rem;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.4);
-  transition: transform 0.2s;
+  transition: all 0.2s;
+  backdrop-filter: blur(8px);
+  opacity: 0;
+  transform: translateY(10px);
 }
-.vp-play:hover { transform: scale(1.1); }
-.vp-play svg { width: 24px; height: 24px; margin-left: 3px; }
-.vp-badge {
-  position: absolute;
-  bottom: 1rem;
-  font-size: 0.75rem;
-  color: rgba(255,255,255,0.3);
-  font-family: 'DM Mono', monospace;
-  letter-spacing: 0.03em;
-}
+.video-frame-wrapper:hover .video-fs-btn { opacity: 1; transform: translateY(0); }
+.video-fs-btn:hover { background: rgba(0,0,0,0.8); border-color: rgba(255,255,255,0.4); transform: scale(1.05) !important; }
+.video-fs-btn svg { width: 20px; height: 20px; }
+
+
 
 /* ── Feature rows ───────────────────────────── */
 .feature-list { display: flex; flex-direction: column; gap: 0; }
