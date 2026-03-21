@@ -186,10 +186,6 @@
       </form>
       <p v-if="ctaSuccess" class="cta-success">🎉 You're on the list!</p>
       <p v-if="ctaError" class="cta-error">{{ ctaError }}</p>
-<<<<<<< HEAD
-=======
-      <!-- <RouterLink class="final-login-link" to="/login">Already have an account? Sign in →</RouterLink> -->
->>>>>>> e2ebf6a85574ff93b0286a7d455853b5add0bee8
     </section>
 
     <!-- FOOTER -->
@@ -215,17 +211,12 @@ async function handleEarlyAccess() {
   ctaLoading.value = true
   ctaError.value = ''
   ctaSuccess.value = false
-<<<<<<< HEAD
-=======
-  
->>>>>>> e2ebf6a85574ff93b0286a7d455853b5add0bee8
   try {
     const API_BASE = import.meta.env.VITE_API_URL || '/api'
     await axios.post(`${API_BASE}/waitlist`, { email: email.value })
     ctaSuccess.value = true
     email.value = ''
   } catch (err: any) {
-<<<<<<< HEAD
     ctaError.value = err.response?.data?.message || 'Something went wrong. Try again.'
   } finally {
     ctaLoading.value = false
@@ -234,12 +225,6 @@ async function handleEarlyAccess() {
 
 function handlePlayDemo() {
   alert('Full demo video is coming soon! Join the waitlist to get notified.')
-=======
-    ctaError.value = err.response?.data?.message || 'Something went wrong. Please try again.'
-  } finally {
-    ctaLoading.value = false
-  }
->>>>>>> e2ebf6a85574ff93b0286a7d455853b5add0bee8
 }
 
 const mockIssues = [
