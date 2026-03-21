@@ -340,25 +340,16 @@ async function handleSubmit() {
   color: #4a4a44;
   margin: 1.25rem 0 0;
 }
-<<<<<<< HEAD
 .auth-switch-btn {
   background: none;
   border: none;
   color: #e8e4dc;
-=======
-.auth-switch-link {
-  color: #6366f1;
->>>>>>> e2ebf6a85574ff93b0286a7d455853b5add0bee8
   font-size: 0.875rem;
   text-decoration: none;
   margin-left: 0.25rem;
   transition: color 0.2s;
 }
-<<<<<<< HEAD
 .auth-switch-btn:hover { color: #f5f0e8; text-decoration: underline; }
-=======
-.auth-switch-link:hover { color: #818cf8; text-decoration: underline; }
->>>>>>> e2ebf6a85574ff93b0286a7d455853b5add0bee8
 
 /* Verify email screen */
 .verify-card { text-align: center; }
