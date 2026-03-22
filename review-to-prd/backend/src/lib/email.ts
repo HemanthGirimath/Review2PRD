@@ -1,8 +1,10 @@
 import nodemailer from 'nodemailer';
 
-// Create a reusable transporter using Gmail's SMTP service
+// Create a reusable transporter using Gmail's SMTP service explicitly for container compatibility
 const transporter = nodemailer.createTransport({
-    service: 'gmail',
+    host: 'smtp.gmail.com',
+    port: 465,
+    secure: true, // Use SSL (port 465) to bypass certain Docker/Railway network restrictions
     auth: {
         user: process.env.GMAIL_USER, // e.g., 'your.email@gmail.com'
         pass: process.env.GMAIL_APP_PASSWORD // The 16-character App Password, NOT your real password

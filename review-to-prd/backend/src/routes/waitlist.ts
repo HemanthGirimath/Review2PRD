@@ -12,10 +12,14 @@ router.post('/', async (req, res) => {
     }
 
     try {
-        await query(
-            'INSERT INTO waitlist (email) VALUES ($1) ON CONFLICT (email) DO NOTHING',
+        const result = await query(
+            'INSERT INTO waitlist (email) VALUES ($1) ON CONFLICT (email) DO NOTHING RETURNING id',
             [email]
         );
+
+        if (result.rowCount === 0) {
+            return res.status(409).json({ success: false, message: 'You are already on the waitlist!' });
+        }
         
         // Asynchronously send the welcome email so it doesn't block the request
         sendWaitlistWelcomeEmail(email).catch(err => {
