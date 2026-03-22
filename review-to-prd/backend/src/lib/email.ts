@@ -9,8 +9,9 @@ export async function sendWaitlistWelcomeEmail(toEmail: string) {
     }
 
     try {
+        const fromEmail = process.env.RESEND_FROM_EMAIL || 'Review2PRD <onboarding@resend.dev>';
         const { data, error } = await resend.emails.send({
-            from: 'Review2PRD <onboarding@resend.dev>', // Update this to your verified domain later: e.g. hello@app.review2prd.com
+            from: fromEmail,
             to: toEmail,
             subject: "You're on the list! Welcome to Review2PRD",
             html: `
