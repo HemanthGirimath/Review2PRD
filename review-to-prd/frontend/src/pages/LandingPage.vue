@@ -278,7 +278,7 @@ const roadmapItems = [
   min-height: 100vh;
   background: #1b1b18;
   color: #e8e6e0;
-  font-family: 'Satoshi', 'Instrument Sans', system-ui, sans-serif;
+  font-family: 'Inter', system-ui, sans-serif;
   overflow-x: hidden;
 }
 .accent { color: #e8e4dc; }
@@ -349,11 +349,11 @@ const roadmapItems = [
 
 /* THE key change: serif font for main headline */
 .hero-headline {
-  font-family: 'Instrument Serif', Georgia, serif;
+  font-family: 'Crimson Pro', Georgia, serif;
   font-size: clamp(2.75rem, 5.5vw, 4.5rem);
-  font-weight: 400; /* Instrument Serif looks best at regular weight */
+  font-weight: 600;
   line-height: 1.05;
-  letter-spacing: -0.02em;
+
   color: #ffffff;
   margin: 0 0 1.5rem;
 }
@@ -480,10 +480,10 @@ const roadmapItems = [
   margin-bottom: 1.25rem;
 }
 .section-heading {
-  font-family: 'Instrument Serif', Georgia, serif;
+  font-family: 'Crimson Pro', Georgia, serif;
   font-size: clamp(2rem, 4vw, 3rem);
-  font-weight: 400;
-  letter-spacing: -0.025em;
+  font-weight: 600;
+  letter-spacing: -0.01em;
   line-height: 1.1;
   color: #ffffff;
   margin: 0 0 3rem;
@@ -492,11 +492,11 @@ const roadmapItems = [
 /* ── PS section ─────────────────────────────── */
 .ps-section { text-align: center; }
 .center-heading {
-  font-family: 'Instrument Serif', Georgia, serif;
+  font-family: 'Crimson Pro', Georgia, serif;
   font-size: clamp(1.75rem, 3.5vw, 2.5rem);
-  font-weight: 400;
+  font-weight: 600;
   color: #ffffff;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.01em;
   margin: 0 0 0.75rem;
 }
 .center-sub {
@@ -543,11 +543,11 @@ const roadmapItems = [
 }
 .video-inner { max-width: 900px; margin: 0 auto; }
 .video-heading {
-  font-family: 'Instrument Serif', Georgia, serif;
+  font-family: 'Crimson Pro', Georgia, serif;
   font-size: clamp(1.875rem, 4vw, 2.875rem);
-  font-weight: 400;
+  font-weight: 600;
   color: #ffffff;
-  letter-spacing: -0.025em;
+  letter-spacing: -0.01em;
   line-height: 1.1;
   margin: 0 0 1rem;
 }
@@ -607,9 +607,9 @@ const roadmapItems = [
   letter-spacing: 0.05em;
 }
 .feat-title {
-  font-family: 'Instrument Serif', Georgia, serif;
+  font-family: 'Crimson Pro', Georgia, serif;
   font-size: clamp(1.5rem, 2.5vw, 2rem);
-  font-weight: 400;
+  font-weight: 600;
   color: #ffffff;
   margin: 0 0 1rem;
   line-height: 1.2;
@@ -693,11 +693,11 @@ const roadmapItems = [
 /* ── Final CTA ──────────────────────────────── */
 .final-section { text-align: center; }
 .final-heading {
-  font-family: 'Instrument Serif', Georgia, serif;
+  font-family: 'Crimson Pro', Georgia, serif;
   font-size: clamp(2rem, 4vw, 3rem);
-  font-weight: 400;
+  font-weight: 600;
   color: #ffffff;
-  letter-spacing: -0.025em;
+  letter-spacing: -0.01em;
   line-height: 1.1;
   margin: 0 0 1rem;
 }

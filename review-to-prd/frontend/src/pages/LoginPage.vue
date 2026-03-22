@@ -198,8 +198,9 @@ async function handleSubmit() {
 }
 
 .auth-title {
-  font-size: 1.375rem;
-  font-weight: 700;
+  font-family: 'Crimson Pro', Georgia, serif;
+  font-size: 1.5rem;
+  font-weight: 600;
   margin: 0 0 1.25rem;
   color: #e8e6e0;
 }
