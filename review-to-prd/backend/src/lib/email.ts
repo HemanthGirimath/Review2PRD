@@ -1,17 +1,23 @@
-import { Resend } from 'resend';
+import nodemailer from 'nodemailer';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+// Create a reusable transporter using Gmail's SMTP service
+const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: process.env.GMAIL_USER, // e.g., 'your.email@gmail.com'
+        pass: process.env.GMAIL_APP_PASSWORD // The 16-character App Password, NOT your real password
+    }
+});
 
 export async function sendWaitlistWelcomeEmail(toEmail: string) {
-    if (!process.env.RESEND_API_KEY) {
-        console.warn('RESEND_API_KEY is not set. Skipping waitlist welcome email for:', toEmail);
+    if (!process.env.GMAIL_USER || !process.env.GMAIL_APP_PASSWORD) {
+        console.warn('GMAIL_USER or GMAIL_APP_PASSWORD is not set. Skipping waitlist welcome email for:', toEmail);
         return;
     }
 
     try {
-        const fromEmail = process.env.RESEND_FROM_EMAIL || 'Review2PRD <onboarding@resend.dev>';
-        const { data, error } = await resend.emails.send({
-            from: fromEmail,
+        const info = await transporter.sendMail({
+            from: `"Review2PRD" <${process.env.GMAIL_USER}>`,
             to: toEmail,
             subject: "You're on the list! Welcome to Review2PRD",
             html: `
@@ -35,12 +41,8 @@ export async function sendWaitlistWelcomeEmail(toEmail: string) {
             `
         });
 
-        if (error) {
-            console.error('Failed to send waitlist email via Resend:', error);
-        } else {
-            console.log(`Waitlist welcome email sent successfully to ${toEmail} (ID: ${data?.id})`);
-        }
+        console.log(`Waitlist welcome email sent successfully to ${toEmail} (Message ID: ${info.messageId})`);
     } catch (err) {
-        console.error('Unexpected error sending waitlist email:', err);
+        console.error('Unexpected error sending waitlist email via Nodemailer:', err);
     }
 }
