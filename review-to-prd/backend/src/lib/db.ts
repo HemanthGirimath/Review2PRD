@@ -47,6 +47,19 @@ export async function query(text: string, params: any[] = []) {
     const db = JSON.parse(fs.readFileSync(JSON_DB_PATH, 'utf-8'));
     if (!db.settings) db.settings = []; // Migration for existing files
     
+    if (text.includes('INSERT INTO waitlist')) {
+        const [email] = params;
+        if (!db.waitlist) db.waitlist = [];
+        const exists = db.waitlist.find((w: any) => w.email === email);
+        if (exists) {
+            return { rowCount: 0 };
+        }
+        const newRow = { id: Math.random().toString(36).substring(2, 15), email, created_at: new Date().toISOString() };
+        db.waitlist.push(newRow);
+        fs.writeFileSync(JSON_DB_PATH, JSON.stringify(db, null, 2));
+        return { rowCount: 1, rows: [newRow] };
+    }
+
     if (text.includes('INSERT INTO analyses')) {
         const [user_id, app_name, platform, input_value, input_mode, prd, issues, ticket_cache] = params;
         const newRow = {
