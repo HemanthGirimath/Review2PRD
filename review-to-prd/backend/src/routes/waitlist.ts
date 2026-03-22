@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import { query } from '../lib/db';
+import { sendWaitlistWelcomeEmail } from '../lib/email';
 
 const router = Router();
 
@@ -15,6 +16,12 @@ router.post('/', async (req, res) => {
             'INSERT INTO waitlist (email) VALUES ($1) ON CONFLICT (email) DO NOTHING',
             [email]
         );
+        
+        // Asynchronously send the welcome email so it doesn't block the request
+        sendWaitlistWelcomeEmail(email).catch(err => {
+            console.error('Error sending welcome email in background:', err);
+        });
+
         res.status(200).json({ success: true, message: 'Successfully joined the waitlist!' });
     } catch (error) {
         console.error('Waitlist error:', error);
