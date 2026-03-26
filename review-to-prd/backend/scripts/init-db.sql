@@ -26,6 +26,7 @@ CREATE TABLE IF NOT EXISTS user_settings (
     ai_model VARCHAR(100) DEFAULT 'kimi-k2.5:cloud',
     api_key TEXT,
     base_url TEXT DEFAULT 'http://localhost:11434',
+    plan_type VARCHAR(20) DEFAULT 'free',
     updated_at TIMESTAMPTZ DEFAULT now()
 );
 

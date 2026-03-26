@@ -223,7 +223,7 @@
     </Teleport>
 
     <footer class="app-footer">
-      <p>Built with Ollama + Kimi K2.5 · <span>Review2PRD</span></p>
+      <p>Built with Ollama + {{ modelName }} · <span>Review2PRD</span></p>
     </footer>
   </div>
 </template>
@@ -241,6 +241,7 @@ import ProfileModal from './components/ProfileModal.vue'
 import ResumeModal from './components/ResumeModal.vue'
 import { usePRD } from './composables/usePRD'
 import { useAuth } from './composables/useAuth'
+import { useSettings } from './composables/useSettings'
 import { useSessionCache, type PersistedSession } from './composables/useSessionCache'
 import { saveAnalysis, listAnalyses, deleteAnalysis, type SavedAnalysis } from './lib/analyses'
 import { supabase } from './lib/supabase'
@@ -257,6 +258,7 @@ const {
 const router = useRouter()
 const { user, logout } = useAuth()
 const { savedSession, dismiss, clear } = useSessionCache()
+const { fetchSettings, modelName } = useSettings()
 
 const supabaseConfigured = computed(() => !!supabase)
 const userEmail = computed(() => user.value?.email?.split('@')[0] || '')
@@ -273,6 +275,9 @@ async function handleLogout() {
 }
 
 onMounted(async () => {
+  // 0. Fetch AI settings to show the right model in footer
+  await fetchSettings()
+
   // 1. Load history list for Recent Analyses grid
   await fetchHistory()
 
