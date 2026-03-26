@@ -10,6 +10,7 @@ import {
     saveSession, clearSession,
     type PersistedSession
 } from './useSessionCache'
+import { useSettings } from './useSettings'
 import { supabase } from '../lib/supabase'
 
 const API_BASE = '/api'
@@ -36,6 +37,7 @@ export function usePRD() {
     const generatingTicketId = ref<string | null>(null)
     const error = ref<string | null>(null)
     const loadingMessage = ref('')
+    const { modelName } = useSettings()
 
     const isLoading = computed(() => ['scraping', 'analyzing', 'extracting'].includes(step.value))
 
@@ -92,7 +94,7 @@ export function usePRD() {
             scrapeData.value = { appInfo: scrapeResult.appInfo, reviews: scrapeResult.reviews, negativeCount: scrapeResult.negativeCount }
 
             step.value = 'analyzing'
-            loadingMessage.value = `Analyzing ${scrapeResult.negativeCount} complaints with Kimi AI…`
+            loadingMessage.value = `Analyzing ${scrapeResult.negativeCount} complaints with ${modelName.value} AI…`
             await runAnalysis(scrapeResult.reviews!, scrapeResult.appInfo)
         } catch (err: any) {
             error.value = err.response?.data?.message || err.response?.data?.error || err.message || 'Unexpected error'
@@ -102,7 +104,7 @@ export function usePRD() {
 
     async function analyzeManual() {
         step.value = 'analyzing'
-        loadingMessage.value = 'Analyzing feedback with Kimi AI…'
+        loadingMessage.value = `Analyzing feedback with ${modelName.value} AI…`
         try {
             await runAnalysis([], undefined, manualText.value)
         } catch (err: any) {

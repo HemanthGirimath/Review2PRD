@@ -92,10 +92,12 @@
 <script setup lang="ts">
 import { ref, reactive, computed, onMounted, watch } from 'vue'
 import { getSettings, saveSettings, testConnection, type UserSettings } from '../lib/settings'
+import { useSettings } from '../composables/useSettings'
 
 const props = defineProps<{ visible: boolean }>()
 const emit = defineEmits(['close', 'updated'])
 
+const { fetchSettings } = useSettings()
 const saving = ref(false)
 const error = ref('')
 const form = reactive<UserSettings>({
@@ -104,6 +106,7 @@ const form = reactive<UserSettings>({
   api_key: '',
   base_url: 'http://localhost:11434'
 })
+
 
 const testing = ref(false)
 const testResult = ref<{ success: boolean; message: string } | null>(null)
@@ -172,6 +175,7 @@ async function handleTest() {
   try {
     // Save first to ensure the backend uses the latest keys/url
     await saveSettings({ ...form })
+    await fetchSettings()
     const res = await testConnection()
     testResult.value = res
   } catch (err: any) {
@@ -187,6 +191,7 @@ async function handleSave() {
   try {
     const ok = await saveSettings({ ...form })
     if (ok) {
+      await fetchSettings()
       emit('updated')
       emit('close')
     } else {

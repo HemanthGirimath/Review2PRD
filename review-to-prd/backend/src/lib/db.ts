@@ -105,7 +105,16 @@ export async function query(text: string, params: any[] = []) {
     if (text.includes('INSERT INTO user_settings') || text.includes('UPSERT') || text.includes('ON CONFLICT')) {
         const [user_id, ai_provider, ai_model, api_key, base_url] = params;
         const index = db.settings.findIndex((s: any) => s.user_id === user_id);
-        const newRow = { user_id, ai_provider, ai_model, api_key, base_url, updated_at: new Date().toISOString() };
+        const existing = index > -1 ? db.settings[index] : {};
+        const newRow = { 
+            user_id, 
+            ai_provider, 
+            ai_model, 
+            api_key, 
+            base_url, 
+            plan_type: existing.plan_type || 'free',
+            updated_at: new Date().toISOString() 
+        };
         if (index > -1) {
             db.settings[index] = newRow;
         } else {

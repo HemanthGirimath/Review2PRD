@@ -12,22 +12,30 @@ router.post('/', async (req: Request, res: Response) => {
         const userId = await getUserIdFromToken(req.headers.authorization);
         if (!userId) return res.status(401).json({ error: 'Unauthorized' });
 
-        // Enforce Freemium limit: 3 analyses per month
+        // Enforce Freemium limit: 3 analyses per month (bypass for 'pro')
         try {
-            const countResult = await query(
-                `SELECT count(*) as count FROM analyses 
-                 WHERE user_id = $1 
-                 AND date_trunc('month', analyzed_at) = date_trunc('month', now())`,
+            const settingsResult = await query(
+                'SELECT plan_type FROM user_settings WHERE user_id = $1',
                 [userId]
             );
-            
-            const currentCount = parseInt(countResult.rows[0].count, 10) || 0;
-            if (currentCount >= 3) {
-                return res.status(403).json({ 
-                    success: false, 
-                    error: 'LIMIT_REACHED', 
-                    message: 'You have reached your free limit of 3 analyses this month. Upgrade to Pro for unlimited access.' 
-                });
+            const planType = settingsResult.rows[0]?.plan_type || 'free';
+
+            if (planType !== 'pro') {
+                const countResult = await query(
+                    `SELECT count(*) as count FROM analyses 
+                     WHERE user_id = $1 
+                     AND date_trunc('month', analyzed_at) = date_trunc('month', now())`,
+                    [userId]
+                );
+                
+                const currentCount = parseInt(countResult.rows[0].count, 10) || 0;
+                if (currentCount >= 3) {
+                    return res.status(403).json({ 
+                        success: false, 
+                        error: 'LIMIT_REACHED', 
+                        message: 'You have reached your free limit of 3 analyses this month. Upgrade to Pro for unlimited access.' 
+                    });
+                }
             }
         } catch (dbError) {
             console.error('Error checking analysis limit:', dbError);
