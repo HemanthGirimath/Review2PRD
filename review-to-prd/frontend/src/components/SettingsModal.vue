@@ -17,7 +17,9 @@
               <label>Provider</label>
               <select v-model="form.ai_provider" class="settings-select">
                 <option value="ollama">Ollama (Local / Custom)</option>
+                <option value="ollama-cloud">Ollama Cloud (Kimi / OSS)</option>
                 <option value="openai">OpenAI</option>
+                <option value="deepseek">DeepSeek (High Quality & Cheap)</option>
                 <option value="groq">Groq (Fast & Free Tier)</option>
               </select>
             </div>
@@ -123,9 +125,18 @@ const presets = {
     { label: 'Mixtral 8x7B', value: 'mixtral-8x7b-32768' },
     { label: 'DeepSeek R1 (Distill)', value: 'deepseek-r1-distill-llama-70b' },
   ],
+  deepseek: [
+    { label: 'DeepSeek Chat (V3)', value: 'deepseek-chat' },
+    { label: 'DeepSeek Reasoner (R1)', value: 'deepseek-reasoner' },
+  ],
+  'ollama-cloud': [
+    { label: 'Kimi K2.5 (High Utility)', value: 'kimi-k2.5-cloud' },
+    { label: 'Ollama OSS 120B (Pro)', value: 'gpt-oss:120b-cloud' },
+    { label: 'Ollama OSS 20B (Fast)', value: 'gpt-oss:20b-cloud' },
+    { label: 'DeepSeek V3.1 671B', value: 'deepseek-v3.1:671b-cloud' },
+  ],
   ollama: [
-    { label: 'Kimi K2.5 (Default)', value: 'kimi-k2.5:cloud' },
-    { label: 'DeepSeek R1 14B', value: 'deepseek-r1:14b' },
+    { label: 'DeepSeek R1 14B (Small)', value: 'deepseek-r1:14b' },
     { label: 'Llama 3.2 3B', value: 'llama3.2:3b' },
   ]
 }
@@ -163,8 +174,11 @@ watch(() => form.ai_provider, () => {
 
 function resetToProviderDefaults() {
   const p = form.ai_provider
-  form.ai_model = presets[p][0].value
-  form.base_url = p === 'ollama' ? 'http://localhost:11434' : ''
+  form.ai_model = presets[p as keyof typeof presets][0].value
+  if (p === 'ollama') form.base_url = 'http://localhost:11434'
+  else if (p === 'ollama-cloud') form.base_url = 'https://ollama.com'
+  else if (p === 'deepseek') form.base_url = 'https://api.deepseek.com'
+  else form.base_url = ''
   customModel.value = ''
 }
 

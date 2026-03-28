@@ -21,25 +21,56 @@ async function getUserSettings(userId: string) {
 async function callChatCompletion(userId: string, prompt: string, timeoutMs = 300000, numPredict = 4096): Promise<string> {
     const settings = await getUserSettings(userId);
     const { ai_provider, ai_model, api_key, base_url } = settings;
+    
+    // Safety check: Railway cannot reach localhost
+    const isLocalhost = (base_url || '').includes('localhost') || (base_url || '').includes('127.0.0.1');
+    const isProduction = process.env.NODE_ENV === 'production' || !!process.env.RAILWAY_STATIC_URL;
+    
+    if (isLocalhost && isProduction) {
+        throw new Error('Since this app is hosted on Railway, it cannot reach "localhost". You must use a tunnel (like Ngrok) or use a public/cloud URL for your AI provider.');
+    }
 
-    if (ai_provider === 'ollama') {
-        const url = `${base_url || 'http://localhost:11434'}/api/generate`;
+    const effectiveAiProvider = ai_provider === 'ollama-cloud' ? 'ollama' : ai_provider;
+
+    if (effectiveAiProvider === 'ollama') {
+        // Construct Ollama URL smartly
+        let url = base_url || (ai_provider === 'ollama' ? 'http://localhost:11434' : 'https://ollama.com');
+        if (!url.includes('/api/') && !url.includes('/v1/')) {
+            url = `${url.replace(/\/$/, '')}/api/generate`;
+        }
+        
+        const headers: any = { 'Content-Type': 'application/json' };
+        if (api_key) {
+            headers['Authorization'] = `Bearer ${api_key}`;
+        }
+        
         const response = await axios.post(
             url,
             { model: ai_model, prompt, stream: false, options: { temperature: 0.3, num_predict: numPredict } },
-            { timeout: timeoutMs, headers: { 'Content-Type': 'application/json' } }
+            { timeout: timeoutMs, headers }
         );
         return response.data.response || '';
     } else {
-        // OpenAI / Groq / OpenRouter compatible API
-        // Safety: Ignore local Ollama URL if we are trying to use a cloud provider
-        const isLocalOllama = base_url?.includes('localhost:11434') || base_url?.includes('127.0.0.1:11434');
-        const effectiveBaseUrl = (ai_provider !== 'ollama' && isLocalOllama) ? '' : base_url;
+        // OpenAI / Groq / DeepSeek / compatible API
+        let url = base_url || '';
         
-        const url = effectiveBaseUrl || (ai_provider === 'groq' ? 'https://api.groq.com/openai/v1/chat/completions' : 'https://api.openai.com/v1/chat/completions');
+        if (!url) {
+            if (ai_provider === 'groq') url = 'https://api.groq.com/openai/v1/chat/completions';
+            else if (ai_provider === 'deepseek') url = 'https://api.deepseek.com/chat/completions';
+            else url = 'https://api.openai.com/v1/chat/completions';
+        } else {
+            // If user provided a base URL but no endpoint, append the standard one
+            if (!url.includes('/chat/completions') && !url.includes('/generate')) {
+                url = `${url.replace(/\/$/, '')}/chat/completions`;
+                // Some providers like DeepSeek prefer /v1/chat/completions
+                if (ai_provider === 'deepseek' && !url.includes('/v1/')) {
+                  // Actually deepseek works with /chat/completions
+                }
+            }
+        }
         
         // o-series models (reasoning) have different parameter requirements
-        const isReasoningModel = ai_model.startsWith('o1-') || ai_model.startsWith('o3-');
+        const isReasoningModel = ai_model.startsWith('o1-') || ai_model.startsWith('o3-') || ai_model.includes('reasoner');
         
         const payload: any = {
             model: ai_model,
@@ -47,7 +78,6 @@ async function callChatCompletion(userId: string, prompt: string, timeoutMs = 30
         };
 
         if (isReasoningModel) {
-            // Reasoning models dont support temperature and use max_completion_tokens
             payload.max_completion_tokens = numPredict;
         } else {
             payload.temperature = 0.3;
@@ -228,15 +258,19 @@ export async function generateDevTicket(issue: Issue, appInfo: AppInfo | undefin
 export async function testConnection(userId: string): Promise<{ success: boolean; message: string }> {
     try {
         const settings = await getUserSettings(userId);
-        const prompt = "Respond only with the word 'Connected' if you can read this message. No other text.";
-        const response = await callChatCompletion(userId, prompt, 30000, 10);
-        if (response.toLowerCase().includes('connected')) {
+        const prompt = "Please respond only with the single word 'Connected'.";
+        const responseText = await callChatCompletion(userId, prompt, 30000, 20);
+        
+        console.log(`[ai] Connection test response from ${settings.ai_model}: "${responseText.trim()}"`);
+
+        // Lenient check: if it says connected anywhere or returns a decent length string
+        if (responseText.toLowerCase().includes('connected') || responseText.trim().length > 0) {
             return { 
                 success: true, 
                 message: `Successfully connected to ${settings.ai_provider} (${settings.ai_model})` 
             };
         }
-        return { success: false, message: 'Connected to provider, but received unexpected response from model. Check your model name.' };
+        return { success: false, message: 'Connected to provider, but received an empty response. Check your model name or cloud usage limits.' };
     } catch (err: any) {
         console.warn('[ai] Connection test failed:', err.message);
         let msg = 'Connection failed';

@@ -48,3 +48,26 @@ export async function sendWaitlistWelcomeEmail(toEmail: string) {
         console.error('Unexpected error sending waitlist email via Nodemailer:', err);
     }
 }
+export async function sendWaitlistAdminNotification(userEmail: string) {
+    if (!process.env.GMAIL_USER || !process.env.GMAIL_APP_PASSWORD) {
+        return;
+    }
+
+    try {
+        await transporter.sendMail({
+            from: `"Review2PRD Admin" <${process.env.GMAIL_USER}>`,
+            to: process.env.GMAIL_USER, // Send it to yourself
+            subject: "New Waitlist Signup! 🚀",
+            html: `
+                <div style="font-family: Arial, sans-serif; padding: 20px;">
+                    <h2>New signup for Review2PRD! 🎉</h2>
+                    <p><strong>Email:</strong> ${userEmail}</p>
+                    <p>Time: ${new Date().toLocaleString()}</p>
+                </div>
+            `
+        });
+        console.log(`Admin notification sent for ${userEmail}`);
+    } catch (err) {
+        console.error('Error sending admin notification:', err);
+    }
+}

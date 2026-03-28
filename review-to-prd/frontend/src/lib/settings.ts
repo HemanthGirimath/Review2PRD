@@ -4,7 +4,7 @@ import { supabase } from './supabase'
 const API_BASE = '/api/settings'
 
 export interface UserSettings {
-    ai_provider: 'ollama' | 'openai' | 'groq'
+    ai_provider: 'ollama' | 'openai' | 'groq' | 'deepseek' | 'ollama-cloud'
     ai_model: string
     api_key: string
     base_url: string

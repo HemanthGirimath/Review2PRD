@@ -188,6 +188,8 @@
 import { ref } from 'vue'
 import axios from 'axios'
 
+import posthog from 'posthog-js'
+
 const email = ref('')
 const ctaLoading = ref(false)
 const ctaSuccess = ref(false)
@@ -214,6 +216,14 @@ async function handleEarlyAccess() {
   try {
     const API_BASE = import.meta.env.VITE_API_URL || '/api'
     await axios.post(`${API_BASE}/waitlist`, { email: email.value })
+    
+    // PostHog Tracking
+    posthog.identify(email.value, { email: email.value })
+    posthog.capture('waitlist_signup', { 
+        email: email.value,
+        source: 'landing_hero' 
+    })
+
     ctaSuccess.value = true
     email.value = ''
   } catch (err: any) {
@@ -222,6 +232,7 @@ async function handleEarlyAccess() {
     ctaLoading.value = false
   }
 }
+
 
 
 const mockIssues = [
