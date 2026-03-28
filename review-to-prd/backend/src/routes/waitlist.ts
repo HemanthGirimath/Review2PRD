@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { query } from '../lib/db';
-import { sendWaitlistWelcomeEmail } from '../lib/email';
+import { sendWaitlistWelcomeEmail, sendWaitlistAdminNotification } from '../lib/email';
 
 const router = Router();
 
@@ -21,9 +21,13 @@ router.post('/', async (req, res) => {
             return res.status(409).json({ success: false, message: 'You are already on the waitlist!' });
         }
         
-        // Asynchronously send the welcome email so it doesn't block the request
+        // Asynchronously send the welcome and notification emails
         sendWaitlistWelcomeEmail(email).catch(err => {
-            console.error('Error sending welcome email in background:', err);
+            console.error('Error sending welcome email:', err);
+        });
+        
+        sendWaitlistAdminNotification(email).catch(err => {
+            console.error('Error sending admin notification:', err);
         });
 
         res.status(200).json({ success: true, message: 'Successfully joined the waitlist!' });
