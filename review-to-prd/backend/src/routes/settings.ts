@@ -30,7 +30,10 @@ router.get('/', async (req, res) => {
         }
 
         const settings = result.rows[0];
-        // Don't leak full API key if not needed, or just return it for now since it's personal
+        // Mask the API key for security
+        if (settings.api_key && settings.api_key.length > 8) {
+            settings.api_key = settings.api_key.substring(0, 4) + '...' + settings.api_key.substring(settings.api_key.length - 4);
+        }
         res.json({ success: true, data: settings });
     } catch (err: any) {
         console.error('[settings] Get error:', err.message);
@@ -46,6 +49,15 @@ router.post('/', async (req, res) => {
 
         const { ai_provider, ai_model, api_key, base_url } = req.body;
 
+        // Ensure we don't overwrite the real key with a masked one from the frontend
+        let finalApiKey = api_key;
+        if (api_key && api_key.includes('...')) {
+            const currentSettings = await query('SELECT api_key FROM user_settings WHERE user_id = $1', [userId]);
+            if (currentSettings && currentSettings.rows && currentSettings.rowCount && currentSettings.rowCount > 0) {
+                finalApiKey = currentSettings.rows[0].api_key;
+            }
+        }
+
         // Upsert logic for Postgres, JSON fallback handled in db.query
         await query(
             `INSERT INTO user_settings (user_id, ai_provider, ai_model, api_key, base_url, updated_at)
@@ -56,7 +68,7 @@ router.post('/', async (req, res) => {
                 api_key = EXCLUDED.api_key,
                 base_url = EXCLUDED.base_url,
                 updated_at = CURRENT_TIMESTAMP`,
-            [userId, ai_provider, ai_model, api_key, base_url]
+            [userId, ai_provider, ai_model, finalApiKey, base_url]
         );
 
         res.json({ success: true });

@@ -13,6 +13,7 @@
 const { Pool } = require('pg');
 const fs = require('fs');
 const path = require('path');
+require('dotenv').config();
 
 const databaseUrl = process.env.DATABASE_URL;
 
@@ -75,14 +76,14 @@ async function init() {
       SELECT table_name
       FROM information_schema.tables
       WHERE table_schema = 'public'
-        AND table_name IN ('analyses', 'user_settings', 'waitlist')
+        AND table_name IN ('analyses', 'user_settings', 'waitlist', 'usage_logs')
       ORDER BY table_name
     `);
 
     const foundTables = verifyResult.rows.map((r) => r.table_name);
     console.log(`📋 Tables found (${foundTables.length}): ${foundTables.join(', ') || 'none'}`);
 
-    const expectedTables = ['analyses', 'user_settings', 'waitlist'];
+    const expectedTables = ['analyses', 'user_settings', 'waitlist', 'usage_logs'];
     const missingTables = expectedTables.filter((t) => !foundTables.includes(t));
 
     if (missingTables.length > 0) {
