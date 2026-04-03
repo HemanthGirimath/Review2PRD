@@ -2,11 +2,15 @@ import { Router, Request, Response } from 'express';
 import { parseGooglePlayId, scrapeGooglePlay } from '../services/googlePlay';
 import { parseAppStoreUrl, scrapeAppStore } from '../services/appStore';
 import { ScrapeRequest } from '../types';
+import { getUserIdFromToken } from '../lib/auth';
 
 const router = Router();
 
 // POST /api/scrape
 router.post('/', async (req: Request, res: Response) => {
+    const userId = await getUserIdFromToken(req.headers.authorization);
+    if (!userId) return res.status(401).json({ error: 'Unauthorized' });
+
     console.log('[scrape] body received:', JSON.stringify(req.body));
 
     const { url, platform }: ScrapeRequest = req.body;

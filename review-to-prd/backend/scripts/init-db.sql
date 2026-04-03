@@ -39,3 +39,14 @@ CREATE TABLE IF NOT EXISTS waitlist (
     email TEXT UNIQUE NOT NULL,
     created_at TIMESTAMPTZ DEFAULT now()
 );
+
+-- Usage Logs (to track freemium limits independently of history)
+CREATE TABLE IF NOT EXISTS usage_logs (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    user_id UUID NOT NULL,
+    usage_type TEXT NOT NULL,
+    created_at TIMESTAMPTZ DEFAULT now()
+);
+
+CREATE INDEX IF NOT EXISTS idx_usage_logs_user_id ON usage_logs(user_id);
+CREATE INDEX IF NOT EXISTS idx_usage_logs_created_at ON usage_logs(created_at);

@@ -15,7 +15,7 @@ if (!fs.existsSync(dataDir)) {
 
 // Initialize JSON DB if missing
 if (!fs.existsSync(JSON_DB_PATH)) {
-    fs.writeFileSync(JSON_DB_PATH, JSON.stringify({ analyses: [], settings: [] }, null, 2));
+    fs.writeFileSync(JSON_DB_PATH, JSON.stringify({ analyses: [], settings: [], usage_logs: [] }, null, 2));
 }
 
 let pool: Pool | null = null;
@@ -122,6 +122,31 @@ export async function query(text: string, params: any[] = []) {
         }
         fs.writeFileSync(JSON_DB_PATH, JSON.stringify(db, null, 2));
         return { rows: [newRow] };
+    }
+
+    if (text.includes('INSERT INTO usage_logs')) {
+        const [user_id, usage_type] = params;
+        if (!db.usage_logs) db.usage_logs = [];
+        const newRow = {
+            id: Math.random().toString(36).substring(2, 15),
+            user_id,
+            usage_type,
+            created_at: new Date().toISOString()
+        };
+        db.usage_logs.push(newRow);
+        fs.writeFileSync(JSON_DB_PATH, JSON.stringify(db, null, 2));
+        return { rows: [newRow] };
+    }
+
+    if (text.includes('SELECT count(*) as count FROM usage_logs')) {
+        const [userId] = params;
+        if (!db.usage_logs) db.usage_logs = [];
+        const count = db.usage_logs.filter((l: any) => 
+            l.user_id === userId && 
+            new Date(l.created_at).getMonth() === new Date().getMonth() &&
+            new Date(l.created_at).getFullYear() === new Date().getFullYear()
+        ).length;
+        return { rows: [{ count: count.toString() }] };
     }
 
     throw new Error('Unsupported JSON fallback query: ' + text);

@@ -22,9 +22,9 @@ router.post('/', async (req: Request, res: Response) => {
 
             if (planType !== 'pro') {
                 const countResult = await query(
-                    `SELECT count(*) as count FROM analyses 
+                    `SELECT count(*) as count FROM usage_logs 
                      WHERE user_id = $1 
-                     AND date_trunc('month', analyzed_at) = date_trunc('month', now())`,
+                     AND date_trunc('month', created_at) = date_trunc('month', now())`,
                     [userId]
                 );
                 
@@ -53,6 +53,12 @@ router.post('/', async (req: Request, res: Response) => {
 
         console.log(`[analyze] ${reviews?.length || 0} reviews, userId: ${userId}`);
         const result = await analyzeWithAI(reviews || [], appInfo, manualText, userId);
+        
+        // Log usage (even if save to history is separate) to prevent limit bypass via deletion
+        if (result.success !== false) {
+            await query('INSERT INTO usage_logs (user_id, usage_type) VALUES ($1, $2)', [userId, 'analyze']);
+        }
+        
         return res.json(result);
     } catch (err: any) {
         console.error('[analyze] Error:', err.message);
