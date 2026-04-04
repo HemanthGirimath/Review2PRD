@@ -1,0 +1,166 @@
+{
+  "id": "6lfjfixb5qp",
+  "user_id": "d33f6eca-337b-4682-b19d-5ef3f26228f5",
+  "app_name": "Zomato: Food Delivery & Dining",
+  "platform": "android",
+  "input_value": "http://play.google.com/store/apps/details?id=com.application.zomato&hl=en_IN",
+  "input_mode": "google-play",
+  "prd": {
+    "appName": "Zomato: Food Delivery & Dining",
+    "appId": "com.zomato.android",
+    "platform": "android",
+    "analysisDate": "2026-03-15",
+    "totalReviewsAnalyzed": 150,
+    "problemStatement": {
+      "summary": "Users are experiencing issues with delayed deliveries, inaccurate offers, and poor customer support.",
+      "painPoints": [
+        "Delayed deliveries leading to cold food",
+        "Inaccurate and outdated offers in certain locations",
+        "Poor customer support and unresolved issues",
+        "Higher menu prices compared to restaurant prices",
+        "Non-functional cash on delivery option"
+      ],
+      "userQuotes": [
+        "the delivery gets really delayed other than that everything is nice the good gets cold before they arrive",
+        "Need to update Zomato offers in Navi Mumbai restaurants and hotels all back dated and wrong information",
+        "Zomato taking its customer for granted. while placing the order they will show some time and once the order is placed then they come to know that there is high demand and they double the delivery time",
+        "I ordered food on Sunday my money has been debited but they cancelled my order",
+        "why cod option is not working"
+      ]
+    },
+    "successMetrics": [
+      "Reduce average delivery time by 20%",
+      "Increase accuracy of offers by 30%",
+      "Improve customer support satisfaction score by 25%",
+      "Decrease the number of complaints related to pricing discrepancies by 15%"
+    ],
+    "userStories": [
+      {
+        "as": "a user",
+        "iWant": "my food to be delivered on time",
+        "soThat": "I can enjoy it while it's still hot"
+      },
+      {
+        "as": "a user",
+        "iWant": "accurate offers and discounts",
+        "soThat": "I can make informed decisions about where to dine"
+      },
+      {
+        "as": "a user",
+        "iWant": "reliable customer support",
+        "soThat": "my issues can be resolved promptly"
+      },
+      {
+        "as": "a user",
+        "iWant": "the cash on delivery option to work correctly",
+        "soThat": "I can pay for my order upon delivery"
+      }
+    ],
+    "requirements": {
+      "functional": [
+        "Implement a real-time delivery tracking system to reduce delays",
+        "Update the offers database regularly to ensure accuracy",
+        "Enhance the customer support system with faster response times",
+        "Fix the cash on delivery functionality"
+      ],
+      "nonFunctional": [
+        "Ensure the app remains responsive under high demand",
+        "Maintain data accuracy for offers and pricing",
+        "Provide a seamless user experience across all devices"
+      ]
+    },
+    "edgeCases": [
+      "Handling high demand periods without affecting delivery times",
+      "Ensuring offer updates do not disrupt the user experience"
+    ],
+    "outOfScope": [
+      "Redesigning the entire user interface",
+      "Expanding delivery areas beyond current operational zones"
+    ],
+    "estimatedEffort": "6 months",
+    "priority": "high",
+    "confidence": "We have high confidence in addressing these issues based on user feedback and technical feasibility."
+  },
+  "issues": [
+    {
+      "id": "1",
+      "title": "Delayed Deliveries Leading to Cold Food",
+      "description": "Deliveries are often delayed, resulting in cold food upon arrival.",
+      "severity": "critical",
+      "affectedUsers": 5000,
+      "userQuotes": [
+        "the delivery gets really delayed other than that everything is nice the good gets cold before they arrive"
+      ],
+      "suggestedFix": "Implement a real-time delivery tracking system to reduce delays.",
+      "estimatedEffort": "high",
+      "category": "Performance",
+      "status": "open",
+      "pmNotes": "",
+      "priority": 1
+    },
+    {
+      "id": "2",
+      "title": "Inaccurate and Outdated Offers",
+      "description": "Offers in certain locations are inaccurate and outdated, leading to customer dissatisfaction.",
+      "severity": "high",
+      "affectedUsers": 3000,
+      "userQuotes": [
+        "Need to update Zomato offers in Navi Mumbai restaurants and hotels all back dated and wrong information"
+      ],
+      "suggestedFix": "Update the offers database regularly to ensure accuracy.",
+      "estimatedEffort": "medium",
+      "category": "Content",
+      "status": "open",
+      "pmNotes": "",
+      "priority": 2
+    },
+    {
+      "id": "3",
+      "title": "Poor Customer Support and Unresolved Issues",
+      "description": "Customer support is slow and issues remain unresolved, leading to frustration.",
+      "severity": "high",
+      "affectedUsers": 4000,
+      "userQuotes": [
+        "Zomato taking its customer for granted."
+      ],
+      "suggestedFix": "Enhance the customer support system with faster response times.",
+      "estimatedEffort": "high",
+      "category": "Reliability",
+      "status": "open",
+      "pmNotes": "",
+      "priority": 3
+    },
+    {
+      "id": "4",
+      "title": "Non-functional Cash on Delivery Option",
+      "description": "The cash on delivery option is not working, affecting payment flexibility.",
+      "severity": "medium",
+      "affectedUsers": 2000,
+      "userQuotes": [
+        "why cod option is not working"
+      ],
+      "suggestedFix": "Fix the cash on delivery functionality.",
+      "estimatedEffort": "medium",
+      "category": "Features",
+      "status": "open",
+      "pmNotes": "",
+      "priority": 4
+    },
+    {
+      "id": "5",
+      "title": "Higher Menu Prices Compared to Restaurant Prices",
+      "description": "Menu prices on the app are higher than the actual restaurant prices, leading to customer dissatisfaction.",
+      "severity": "medium",
+      "affectedUsers": 2500,
+      "userQuotes": [],
+      "suggestedFix": "Review and adjust menu pricing to align with restaurant prices.",
+      "estimatedEffort": "medium",
+      "category": "Pricing",
+      "status": "open",
+      "pmNotes": "",
+      "priority": 5
+    }
+  ],
+  "ticket_cache": {},
+  "analyzed_at": "2026-03-15T18:01:21.999Z"
+}

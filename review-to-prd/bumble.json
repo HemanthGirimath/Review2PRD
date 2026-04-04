@@ -1,0 +1,194 @@
+{
+  "id": "a529qv2nrbf",
+  "user_id": "d33f6eca-337b-4682-b19d-5ef3f26228f5",
+  "app_name": "Bumble Dating App: Meet & Date",
+  "platform": "android",
+  "input_value": "https://play.google.com/store/apps/details?id=com.bumble.app&hl=en",
+  "input_mode": "google-play",
+  "prd": {
+    "appName": "Bumble Dating App: Meet & Date",
+    "appId": "com.bumble.app",
+    "platform": "android",
+    "analysisDate": "2026-03-15",
+    "totalReviewsAnalyzed": 150,
+    "problemStatement": {
+      "summary": "Users are experiencing critical authentication failures (SMS verification), aggressive and misleading monetization tactics that erode trust, and algorithm opacity that hides potential matches. The app suffers from technical instability on mid-tier devices, proliferation of fake/scam profiles, and a free tier that feels intentionally crippled, resulting in high user frustration and churn.",
+      "painPoints": [
+        "Critical authentication failures: SMS verification codes not delivered, login loops, and tedious verification processes blocking access",
+        "Misleading monetization: Hidden 'likes' revealed only after subscription purchase, algorithm appearing to suppress matches until payment",
+        "Discovery algorithm opacity: Users report likes existing within filters but not being shown in swipe queue, distance filtering unavailable or broken",
+        "Fake profile proliferation: Photo-verified fake accounts, scammers, and Instagram self-promoters degrading community trust",
+        "Technical performance issues: App freezing during onboarding, slow loading on 2-year-old devices, video playback failures",
+        "Poor customer support: Unexplained account bans, lack of transparency in moderation decisions, no remediation for billing issues",
+        "Notification failures: Missing match notifications causing 24-hour expiration of connections",
+        "Restrictive free tier: Severe limitations making app non-functional without payment, yet payment required to evaluate value"
+      ],
+      "userQuotes": [
+        "The App doesn't allow us to log in with the phone number, don't know it's an error, asks for code and when we enter the code, log in doesn't happen",
+        "you have no people left to view in your selected distance, then as soon as your subscription ends, you see xyz number of people have liked you",
+        "I have 14 likes that are simply not being shown to me. I know that they are within my filters because when I change my filters the like number changes",
+        "absolute total garbage app. soooooo many fake spam bot accounts. purchases are non refundable",
+        "I could not even finish creating a profile. It performs terribly, my phone is 2 years old, but the app takes forever to launch"
+      ]
+    },
+    "successMetrics": [
+      "SMS verification success rate > 99% with < 30 second delivery time",
+      "Authentication flow completion rate > 95% (current appears significantly lower based on volume of complaints)",
+      "Fake profile removal time < 24 hours from report submission",
+      "Free user engagement: At least 1 'like' reveal per day to free users to demonstrate value",
+      "App cold start time < 3 seconds on Android devices up to 3 years old",
+      "Customer support first response time < 4 hours for critical access issues"
+    ],
+    "userStories": [
+      {
+        "as": "new user",
+        "iWant": "to complete phone number authentication without technical errors or missing verification codes",
+        "soThat": "I can access the app and create my profile without frustration"
+      },
+      {
+        "as": "free tier user",
+        "iWant": "to see at least one profile who liked me daily without payment",
+        "soThat": "I can evaluate the app's value before committing to a subscription"
+      },
+      {
+        "as": "subscriber",
+        "iWant": "the algorithm to show me all potential matches within my set distance and filter criteria",
+        "soThat": "I don't feel deceived by hidden likes or suppressed visibility"
+      },
+      {
+        "as": "active user",
+        "iWant": "reliable push notifications for matches and messages",
+        "soThat": "I don't miss 24-hour connection windows due to technical delays"
+      },
+      {
+        "as": "community member",
+        "iWant": "to report fake profiles and receive confirmation of action taken",
+        "soThat": "I can trust that the platform is actively moderating bad actors"
+      },
+      {
+        "as": "wrongfully banned user",
+        "iWant": "a transparent appeal process with specific reasons for bans and human review",
+        "soThat": "I can recover my account if banned by error or false reports"
+      }
+    ],
+    "requirements": {
+      "functional": [
+        "Implement robust SMS authentication with fallback methods (voice call, email linkage) and retry logic for code delivery failures",
+        "Add 'Distance Filter' controls in discovery settings allowing users to set minimum and maximum radius",
+        "Provide at least one free 'Who Liked You' profile reveal per day to free users to demonstrate algorithm value",
+        "Fix notification reliability for match creation, message receipt, and expiration warnings with delivery confirmation",
+        "Implement enhanced fake profile detection using image recognition (reverse search) and behavioral analysis, with user-facing report status updates",
+        "Create account ban appeal workflow with human review, specific violation citations, and evidence submission capability",
+        "Add 'Not Interested' feedback option to improve algorithm matching without requiring payment",
+        "Implement session management fixes to prevent login to recycled phone number accounts"
+      ],
+      "nonFunctional": [
+        "App cold start time must be under 3 seconds on Android devices up to 2 years old; onboarding flow must not freeze on mid-tier devices",
+        "Authentication service uptime 99.9% with automatic failover for SMS gateway providers",
+        "WCAG 2.1 AA accessibility compliance for all authentication and core discovery flows",
+        "Support for Android API levels covering devices up to 5 years old (not just latest flagship)",
+        "End-to-end encryption for verification codes and authentication tokens"
+      ]
+    },
+    "edgeCases": [
+      "Phone number recycled from previous user: Must verify current ownership and offer account data separation/reset options",
+      "Verification code delivery failure in low-network or international regions: Must provide alternative authentication methods",
+      "User banned due to mass false reports: Appeal process must handle malicious reporting patterns and restore wrongly banned accounts",
+      "Payment processed but subscription not activated: Automatic reconciliation and grace period access",
+      "Match expires due to notification delay: Grace period extension or automatic rematch request for technical failures"
+    ],
+    "outOfScope": [
+      "Complete UI/UX redesign - focus is on fixing broken flows, not aesthetic changes",
+      "iOS platform parity fixes - this PRD addresses Android-specific issues only",
+      "New matching algorithms or AI features - scope is fixing existing algorithm transparency, not replacing it",
+      "International expansion or localization beyond fixing existing translation issues"
+    ],
+    "estimatedEffort": "4-6 weeks",
+    "priority": "critical",
+    "confidence": "90%"
+  },
+  "issues": [
+    {
+      "id": "issue-1",
+      "title": "SMS verification delivery failures",
+      "description": "Users experience complete account access blockage due to SMS verification codes not being delivered, resulting in infinite login loops. Phone number recycling causes security issues where users log into previous owners' accounts.",
+      "severity": "critical",
+      "affectedUsers": 40,
+      "userQuotes": [
+        "The App doesn't allow us to log in with the phone number, don't know it's an error, asks for code and when we enter the code, log in doesn't happen"
+      ],
+      "suggestedFix": "Implement robust SMS authentication with voice call fallback, email linkage, and retry logic while fixing session management for recycled phone numbers.",
+      "estimatedEffort": "2 weeks",
+      "category": "Reliability",
+      "status": "open",
+      "pmNotes": "",
+      "priority": 1
+    },
+    {
+      "id": "issue-2",
+      "title": "Onboarding flow freezing and crashes",
+      "description": "App freezes during profile creation onboarding, preventing new users from completing registration. Performance degradation on 2-year-old Android devices causes excessive launch times and UI unresponsiveness.",
+      "severity": "critical",
+      "affectedUsers": 25,
+      "userQuotes": [
+        "I could not even finish creating a profile. It performs terribly, my phone is 2 years old, but the app takes forever to launch"
+      ],
+      "suggestedFix": "Optimize onboarding memory usage, implement progressive asset loading, and reduce startup initialization time for older devices.",
+      "estimatedEffort": "1 week",
+      "category": "Performance",
+      "status": "open",
+      "pmNotes": "",
+      "priority": 2
+    },
+    {
+      "id": "issue-3",
+      "title": "Discovery algorithm opacity",
+      "description": "Users report existing likes within their set filters that are not displayed in the swipe queue, creating suspicion of algorithmic suppression. Distance filtering controls are either unavailable or malfunctioning, preventing proper match radius configuration.",
+      "severity": "high",
+      "affectedUsers": 35,
+      "userQuotes": [
+        "I have 14 likes that are simply not being shown to me. I know that they are within my filters because when I change my filters the like number changes"
+      ],
+      "suggestedFix": "Fix discovery algorithm to properly surface all matches within user-defined filters and implement functional minimum/maximum distance radius controls.",
+      "estimatedEffort": "1-2 weeks",
+      "category": "Features",
+      "status": "open",
+      "pmNotes": "",
+      "priority": 3
+    },
+    {
+      "id": "issue-4",
+      "title": "Subscription gating of hidden likes",
+      "description": "The app conceals the existence of likes until subscription purchase, then reveals them immediately upon cancellation, suggesting algorithmic manipulation. This creates user distrust and perceived bait-and-switch tactics regarding the free tier value proposition.",
+      "severity": "high",
+      "affectedUsers": 30,
+      "userQuotes": [
+        "you have no people left to view in your selected distance, then as soon as your subscription ends, you see xyz number of people have liked you"
+      ],
+      "suggestedFix": "Provide at least one free 'Who Liked You' profile reveal daily to demonstrate algorithm value without requiring payment upfront.",
+      "estimatedEffort": "3-5 days",
+      "category": "Pricing",
+      "status": "open",
+      "pmNotes": "",
+      "priority": 4
+    },
+    {
+      "id": "issue-5",
+      "title": "Bot account and scammer proliferation",
+      "description": "Photo-verified fake accounts, scammers, and Instagram self-promoters are degrading community trust and safety. Users encounter bot accounts despite verification systems, with no effective reporting feedback loop.",
+      "severity": "high",
+      "affectedUsers": 20,
+      "userQuotes": [
+        "absolute total garbage app. soooooo many fake spam bot accounts. purchases are non refundable"
+      ],
+      "suggestedFix": "Implement enhanced fake profile detection using reverse image search and behavioral analysis, with user-facing report status updates.",
+      "estimatedEffort": "2 weeks",
+      "category": "Content",
+      "status": "open",
+      "pmNotes": "",
+      "priority": 5
+    }
+  ],
+  "ticket_cache": {},
+  "analyzed_at": "2026-03-15T15:12:55.700Z"
+}

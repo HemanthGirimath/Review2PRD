@@ -28,16 +28,38 @@
           Paste a Google Play or App Store link. Get a structured PRD, a prioritized issue board, and developer-ready tickets in under 2&nbsp;minutes.
         </p>
 
-        <form class="hero-cta" @submit.prevent="handleEarlyAccess">
-          <input id="hero-email" v-model="email" type="email" placeholder="your@work.com" class="cta-input" required />
-          <button type="submit" class="cta-btn" :disabled="ctaLoading">
-            <span v-if="ctaLoading" class="cta-spinner"></span>
-            <span v-else>Get early access</span>
-          </button>
-        </form>
-        <p v-if="ctaSuccess" class="cta-success">🎉 You're on the list!</p>
-        <p v-if="ctaError" class="cta-error">{{ ctaError }}</p>
-        <p class="hero-note">No credit card · Bring your own AI key or use Ollama locally</p>
+        <div class="hero-cta">
+          <form class="early-access-form" @submit.prevent="handleWaitlist">
+            <input 
+              v-model="waitlistEmail" 
+              type="email" 
+              class="ea-input" 
+              placeholder="Enter your email" 
+              required
+              :disabled="waitlistStatus === 'loading' || waitlistStatus === 'success'"
+            />
+            <button 
+              type="submit" 
+              class="cta-btn large"
+              :disabled="waitlistStatus === 'loading' || waitlistStatus === 'success'"
+            >
+              <span v-if="waitlistStatus === 'idle' || waitlistStatus === 'error'">Join Waitlist</span>
+              <span v-else-if="waitlistStatus === 'loading'">Joining...</span>
+              <span v-else>Added! ✓</span>
+            </button>
+          </form>
+          <div v-if="waitlistMessage" class="ea-message" :class="waitlistStatus">{{ waitlistMessage }}</div>
+          
+          <div style="margin-top: 1rem;">
+            <router-link to="/demo" class="cta-link-secondary">
+              Or see interactive demo →
+            </router-link>
+          </div>
+        </div>
+        <div class="hero-note-highlight" style="margin-top: 1.5rem; display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 0.875rem; background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.2); border-radius: 99px; font-size: 0.875rem;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+          <span style="color: #a1a1aa">No credit card required · <strong style="color: #10b981; font-weight: 600;">Completely free to try</strong></span>
+        </div>
       </div>
 
       <div class="hero-right">
@@ -139,7 +161,7 @@
       <h2 class="section-heading">Three steps.<br />Under two minutes.</h2>
       <div class="steps-grid">
         <div class="step-item" v-for="(s, i) in steps" :key="i">
-          <div class="step-num">{{ String(i + 1).padStart(2, '0') }}</div>
+          <div class="feat-num">{{ String(i + 1).padStart(2, '0') }}</div>
           <h3 class="step-title">{{ s.title }}</h3>
           <p class="step-desc">{{ s.desc }}</p>
         </div>
@@ -167,18 +189,34 @@
     <section class="section final-section">
       <h2 class="final-heading">Ready to stop guessing<br />and start shipping?</h2>
       <p class="final-sub">Join product managers who use Review2PRD to close the gap between user pain and developer action.</p>
-      <form class="final-form" @submit.prevent="handleEarlyAccess">
-        <input id="final-email" v-model="email" type="email" placeholder="your@work.com" class="cta-input" required />
-        <button type="submit" class="cta-btn" :disabled="ctaLoading">{{ ctaLoading ? 'Adding you…' : 'Request access' }}</button>
-      </form>
-      <p v-if="ctaSuccess" class="cta-success">🎉 You're on the list!</p>
-      <p v-if="ctaError" class="cta-error">{{ ctaError }}</p>
+      <div class="final-form">
+        <form class="early-access-form" @submit.prevent="handleWaitlist" style="justify-content: center; max-width: 400px; margin: 0 auto;">
+          <input 
+            v-model="waitlistEmail" 
+            type="email" 
+            class="ea-input" 
+            placeholder="Enter your work email" 
+            required
+            :disabled="waitlistStatus === 'loading' || waitlistStatus === 'success'"
+          />
+          <button 
+            type="submit" 
+            class="cta-btn large"
+            :disabled="waitlistStatus === 'loading' || waitlistStatus === 'success'"
+          >
+            <span v-if="waitlistStatus === 'idle' || waitlistStatus === 'error'">Join Waitlist</span>
+            <span v-else-if="waitlistStatus === 'loading'">Joining...</span>
+            <span v-else>Added! ✓</span>
+          </button>
+        </form>
+        <div v-if="waitlistMessage" class="ea-message" :class="waitlistStatus" style="text-align: center;">{{ waitlistMessage }}</div>
+      </div>
     </section>
 
     <!-- FOOTER -->
     <footer class="landing-footer">
       <span class="footer-logo">Review<span class="accent">2</span>PRD</span>
-      <p class="footer-copy">Built for PMs who believe shipping the right thing matters more than shipping fast.</p>
+      <p class="footer-copy">Built for people who believe shipping the right thing matters more than shipping fast.</p>
     </footer>
 
   </div>
@@ -187,13 +225,26 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import axios from 'axios'
-
 import posthog from 'posthog-js'
 
-const email = ref('')
-const ctaLoading = ref(false)
-const ctaSuccess = ref(false)
-const ctaError = ref('')
+const waitlistEmail = ref('')
+const waitlistStatus = ref<'idle'|'loading'|'success'|'error'>('idle')
+const waitlistMessage = ref('')
+
+async function handleWaitlist() {
+  if (!waitlistEmail.value) return
+  waitlistStatus.value = 'loading'
+  
+  try {
+    posthog.capture('waitlist_signup', { email: waitlistEmail.value })
+    waitlistStatus.value = 'success'
+    waitlistMessage.value = 'You are on the list! We will be in touch.'
+    waitlistEmail.value = ''
+  } catch (err) {
+    waitlistStatus.value = 'error'
+    waitlistMessage.value = 'Something went wrong. Please try again.'
+  }
+}
 
 const demoVideo = ref<HTMLVideoElement | null>(null)
 
@@ -208,33 +259,6 @@ function toggleFullscreen() {
   }
 }
 
-async function handleEarlyAccess() {
-  if (!email.value) return
-  ctaLoading.value = true
-  ctaError.value = ''
-  ctaSuccess.value = false
-  try {
-    const API_BASE = import.meta.env.VITE_API_URL || '/api'
-    await axios.post(`${API_BASE}/waitlist`, { email: email.value })
-    
-    // PostHog Tracking
-    posthog.identify(email.value, { email: email.value })
-    posthog.capture('waitlist_signup', { 
-        email: email.value,
-        source: 'landing_hero' 
-    })
-
-    ctaSuccess.value = true
-    email.value = ''
-  } catch (err: any) {
-    ctaError.value = err.response?.data?.message || 'Something went wrong. Try again.'
-  } finally {
-    ctaLoading.value = false
-  }
-}
-
-
-
 const mockIssues = [
   { id: 1, sev: 'critical', title: 'Search broken on mobile data', status: '🟢 In Sprint' },
   { id: 2, sev: 'high', title: 'Lyrics panel crashes on Android 13', status: '🔵 Open' },
@@ -245,7 +269,7 @@ const mockIssues = [
 const features = [
   {
     title: 'Scrape any app, automatically.',
-    desc: 'Paste a Google Play or App Store URL. Review2PRD fetches hundreds of real 1–3 star complaints — the reviews where users tell you exactly what\'s broken. No API key, no setup.',
+    desc: 'Paste a Google Play or App Store URL. Review2PRD fetches hundreds of real 1–3 star complaints — the reviews where users tell you exactly what\'s broken. Enterprise-grade privacy: Run locally with Ollama or securely plug in your OpenAI key.',
     mockLabel: 'Fetching reviews…',
     mockContent: `<div class="m-row"><span class="m-star">1★</span><span>"Search is completely broken on mobile data…"</span></div><div class="m-row"><span class="m-star">2★</span><span>"Downloads disappear every time I update"</span></div><div class="m-row"><span class="m-star">1★</span><span>"Crashes on open when lyrics panel is pinned"</span></div><div class="m-stat">214 reviews · 3 clusters identified</div>`,
   },
@@ -522,6 +546,7 @@ const roadmapItems = [
   grid-template-columns: 1fr auto 1fr;
   gap: 2rem;
   align-items: start;
+  place-items: center;
   text-align: left;
 }
 @media (max-width: 640px) {
@@ -612,8 +637,13 @@ const roadmapItems = [
 }
 .feat-num {
   font-family: 'DM Mono', monospace;
-  font-size: 0.75rem;
-  color: #e8e4dc;
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: #10b981;
+  background: rgba(16, 185, 129, 0.1);
+  padding: 0.25rem 0.625rem;
+  border-radius: 99px;
+  display: inline-block;
   margin-bottom: 0.875rem;
   letter-spacing: 0.05em;
 }
@@ -728,8 +758,30 @@ const roadmapItems = [
   padding: 2rem 1.5rem;
   text-align: center;
 }
-.footer-logo { font-weight: 700; font-size: 1rem; color: #4a4a44; }
-.footer-copy { font-size: 0.8125rem; color: #2a2a26; margin: 0.375rem 0 0; }
+.footer-logo { font-weight: 700; font-size: 1rem; color: #e8e6e0; }
+.footer-copy { font-size: 0.8125rem; color: #a1a1aa; margin: 0.375rem 0 0; }
+
+/* ── Early Access Form ── */
+.early-access-form {
+  display: flex; gap: 0.5rem; margin-bottom: 0.5rem; max-width: 400px;
+}
+.ea-input {
+  flex: 1; padding: 0.75rem 1rem; border-radius: 6px;
+  border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.03);
+  color: #e8e6e0; font-size: 0.9375rem; transition: border-color 0.2s;
+  min-width: 0;
+}
+.ea-input:focus { border-color: rgba(255,255,255,0.3); outline: none; }
+.ea-input::placeholder { color: #6b6b64; }
+.ea-message { font-size: 0.8125rem; margin-top: 0.5rem; }
+.ea-message.success { color: #10b981; }
+.ea-message.error { color: #ef4444; }
+
+.cta-link-secondary {
+  color: #a1a1aa; text-decoration: none; font-size: 0.9375rem;
+  transition: color 0.2s;
+}
+.cta-link-secondary:hover { color: #e8e6e0; text-decoration: underline; }
 
 /* ── Mockup inner elements ───────────────────── */
 :deep(.m-row) { display: flex; gap: 0.5rem; margin-bottom: 0.5rem; align-items: flex-start; }
