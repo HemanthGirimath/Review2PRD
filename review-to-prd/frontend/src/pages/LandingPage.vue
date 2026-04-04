@@ -29,7 +29,7 @@
         </p>
 
         <div class="hero-cta">
-          <form class="early-access-form" @submit.prevent="handleWaitlist">
+          <form class="early-access-form" @submit.prevent="handleWaitlist('landing_hero')">
             <input 
               v-model="waitlistEmail" 
               type="email" 
@@ -58,7 +58,7 @@
         </div>
         <div class="hero-note-highlight" style="margin-top: 1.5rem; display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 0.875rem; background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.2); border-radius: 99px; font-size: 0.875rem;">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
-          <span style="color: #a1a1aa">No credit card required · <strong style="color: #10b981; font-weight: 600;">Completely free to try</strong></span>
+          <span style="color: #a1a1aa">Special Offer · <strong style="color: #10b981; font-weight: 600;">Get 5 free runs, join the waitlist.</strong></span>
         </div>
       </div>
 
@@ -185,12 +185,72 @@
       </div>
     </section>
 
+    <!-- PRICING -->
+    <section class="section pricing-section" id="pricing">
+      <div class="section-eyebrow" style="text-align: center;">Pricing</div>
+      <h2 class="section-heading" style="text-align: center;">Simple, transparent pricing. No subscriptions.</h2>
+      <p class="section-sub" style="text-align: center; max-width: 600px; margin: 0 auto 3rem;">We charge for the workflow, not your API keys. Pay a 1-time flat fee for a year of access.</p>
+      
+      <div class="pricing-grid">
+        
+        <!-- Free Tier -->
+        <div class="pricing-card">
+          <h3 class="pricing-tier">Starter</h3>
+          <div class="pricing-price">$0</div>
+          <p class="pricing-desc">Try Review2PRD with your own app.</p>
+          <ul class="pricing-features">
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+              3 Free AI Analyses
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+              Export standard JSON/Markdown
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+              Prioritized Issue Boards
+            </li>
+            <li style="margin-top: 0.5rem; padding-top: 0.5rem; border-top: 1px dashed rgba(255,255,255,0.1);">
+              <strong style="color: #10b981;">Bonus: Join waitlist for 2 extra free runs (5 total).</strong>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Pro Tier -->
+        <div class="pricing-card featured-pricing">
+          <div class="pricing-badge">1-Year License</div>
+          <h3 class="pricing-tier">Pro</h3>
+          <div class="pricing-price">$29<span>/year</span></div>
+          <p class="pricing-desc">A single annual fee to unlock the full workflow for your product team.</p>
+          <ul class="pricing-features">
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+              <strong>Unlimited AI Analyses</strong>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+              1-Click Jira / Linear sync (Soon)
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+              Competitor Gap Analysis (Soon)
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+              Sentiment Timeline (Soon)
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
     <!-- FINAL CTA -->
     <section class="section final-section">
       <h2 class="final-heading">Ready to stop guessing<br />and start shipping?</h2>
-      <p class="final-sub">Join product managers who use Review2PRD to close the gap between user pain and developer action.</p>
+      <p class="final-sub">Join product managers who use Review2PRD to close the gap between user pain and developer action.<br /><strong style="color: #10b981;">Bonus: Sign up for the waitlist today to receive 2 extra free runs on launch (5 total).</strong></p>
       <div class="final-form">
-        <form class="early-access-form" @submit.prevent="handleWaitlist" style="justify-content: center; max-width: 400px; margin: 0 auto;">
+        <form class="early-access-form" @submit.prevent="handleWaitlist('final_cta')" style="justify-content: center; max-width: 400px; margin: 0 auto;">
           <input 
             v-model="waitlistEmail" 
             type="email" 
@@ -231,18 +291,30 @@ const waitlistEmail = ref('')
 const waitlistStatus = ref<'idle'|'loading'|'success'|'error'>('idle')
 const waitlistMessage = ref('')
 
-async function handleWaitlist() {
+async function handleWaitlist(source: string = 'landing_hero') {
   if (!waitlistEmail.value) return
   waitlistStatus.value = 'loading'
   
   try {
-    posthog.capture('waitlist_signup', { email: waitlistEmail.value })
+    posthog.identify(waitlistEmail.value, { email: waitlistEmail.value })
+    posthog.capture('waitlist_signup', { 
+      email: waitlistEmail.value,
+      source: source
+    })
+    
+    // Save to PostgreSQL via backend route
+    await axios.post('/api/waitlist', { email: waitlistEmail.value })
+    
     waitlistStatus.value = 'success'
     waitlistMessage.value = 'You are on the list! We will be in touch.'
     waitlistEmail.value = ''
-  } catch (err) {
+  } catch (err: any) {
     waitlistStatus.value = 'error'
-    waitlistMessage.value = 'Something went wrong. Please try again.'
+    if (err.response?.status === 409) {
+      waitlistMessage.value = 'You are already on the waitlist!'
+    } else {
+      waitlistMessage.value = 'Something went wrong. Please try again.'
+    }
   }
 }
 
@@ -750,6 +822,110 @@ const roadmapItems = [
   margin: 0 auto;
   flex-wrap: wrap;
   justify-content: center;
+}
+
+/* ── Pricing Section ────────────────────────── */
+.pricing-section {
+  padding: 6rem 1.5rem;
+  background: #151513;
+  border-top: 1px solid rgba(255,255,255,0.05);
+}
+.pricing-grid {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  max-width: 900px;
+  margin: 0 auto;
+  align-items: stretch;
+}
+@media (max-width: 768px) {
+  .pricing-grid {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+.pricing-card {
+  position: relative;
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 12px;
+  padding: 2.5rem;
+  width: 100%;
+  max-width: 400px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s, border-color 0.2s;
+}
+.pricing-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(255,255,255,0.15);
+}
+.featured-pricing {
+  background: rgba(255,255,255,0.04);
+  border-color: rgba(232,228,220,0.2);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+}
+.pricing-badge {
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #e8e4dc;
+  color: #1b1b18;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0.25rem 0.75rem;
+  border-radius: 99px;
+}
+.pricing-tier {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #ffffff;
+  margin: 0 0 0.5rem;
+}
+.pricing-price {
+  font-size: 3rem;
+  font-family: 'DM Mono', monospace;
+  font-weight: 700;
+  color: #e8e4dc;
+  margin-bottom: 1rem;
+}
+.pricing-price span {
+  font-size: 1rem;
+  color: #8a8a80;
+  font-weight: 400;
+  margin-left: 0.25rem;
+}
+.pricing-desc {
+  font-size: 0.9375rem;
+  color: #a1a1aa;
+  line-height: 1.5;
+  margin-bottom: 2rem;
+}
+.pricing-features {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.pricing-features li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.625rem;
+  font-size: 0.9375rem;
+  color: #e8e6e0;
+}
+.pricing-features svg {
+  width: 1.25rem;
+  height: 1.25rem;
+  color: #10b981;
+  flex-shrink: 0;
+  margin-top: 0.125rem;
 }
 
 /* ── Footer ─────────────────────────────────── */
