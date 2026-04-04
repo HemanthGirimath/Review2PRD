@@ -221,15 +221,15 @@ import { usePRD } from '../composables/usePRD'
 import { useAuth } from '../composables/useAuth'
 import { useSettings } from '../composables/useSettings'
 import { useSessionCache, type PersistedSession } from '../composables/useSessionCache'
-import { saveAnalysis, listAnalyses, deleteAnalysis, type SavedAnalysis } from '../lib/analyses'
+import { listAnalyses, deleteAnalysis, type SavedAnalysis } from '../lib/analyses'
 import { supabase } from '../lib/supabase'
 import type { Issue } from '../types'
 
 const {
-  step, inputMode, inputValue, manualText, appName, activeView,
+  step, activeView,
   scrapeData, prd, issues, ticketCache, generatingTicketId,
-  error, loadingMessage, isLoading, triageStats,
-  generate, reset, restoreSession, generateTicket,
+  loadingMessage, isLoading, triageStats,
+  reset, restoreSession, generateTicket,
   exportFullReport, exportSprintPack, exportJSON,
 } = usePRD()
 

@@ -1,5 +1,3 @@
-import type { PRD, Issue, DevTicket } from '../types'
-
 export const fakeSpotifyRes = {
   "id": "6lfjfixb5qp",
   "user_id": "d33f6eca-337b-4682-b19d-5ef3f26228f5",
