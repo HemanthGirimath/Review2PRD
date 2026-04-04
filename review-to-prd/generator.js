@@ -1,0 +1,1 @@
+const fs=require('fs'); const bumble=require('./bumble.json'); const zomato=require('./zomato.json'); const code = `import type { PRD, Issue, DevTicket } from '../types'\n\nexport const fakeSpotifyRes = ${JSON.stringify(zomato, null, 2)} as any\n\nexport const fakeBumbleRes = ${JSON.stringify(bumble, null, 2)} as any`; fs.writeFileSync('frontend/src/lib/fakeData.ts', code);
