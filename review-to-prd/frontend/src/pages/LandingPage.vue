@@ -49,14 +49,13 @@
             </button>
           </form>
           <div v-if="waitlistMessage" class="ea-message" :class="waitlistStatus">{{ waitlistMessage }}</div>
-          
-          <div style="margin-top: 1rem;">
+          <div class="hero-cta-secondary">
             <router-link to="/demo" class="cta-link-secondary">
               Or see interactive demo →
             </router-link>
           </div>
         </div>
-        <div class="hero-note-highlight" style="margin-top: 1.5rem; display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 0.875rem; background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.2); border-radius: 99px; font-size: 0.875rem;">
+        <div class="hero-note-highlight">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
           <span style="color: #a1a1aa">Special Offer · <strong style="color: #10b981; font-weight: 600;">Get 5 free runs, join the waitlist.</strong></span>
         </div>
@@ -217,12 +216,12 @@
           </ul>
         </div>
 
-        <!-- Pro Tier -->
+        <!-- Individual Tier (formerly Pro) -->
         <div class="pricing-card featured-pricing">
-          <div class="pricing-badge">1-Year License</div>
-          <h3 class="pricing-tier">Pro</h3>
+          <div class="pricing-badge">Most Popular</div>
+          <h3 class="pricing-tier">Individual</h3>
           <div class="pricing-price">$29<span>/year</span></div>
-          <p class="pricing-desc">A single annual fee to unlock the full workflow for your product team.</p>
+          <p class="pricing-desc">A single annual fee to unlock the full workflow for individual PMs and founders.</p>
           <ul class="pricing-features">
             <li>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
@@ -239,6 +238,32 @@
             <li>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
               Sentiment Timeline (Soon)
+            </li>
+          </ul>
+        </div>
+
+        <!-- Enterprise Tier -->
+        <div class="pricing-card enterprise-pricing">
+          <div class="pricing-badge enterprise-badge">Team Plan</div>
+          <h3 class="pricing-tier">Enterprise</h3>
+          <div class="pricing-price">$99<span>/year</span></div>
+          <p class="pricing-desc">Built for product teams — shared workspaces, team triage, and priority support.</p>
+          <ul class="pricing-features">
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+              <strong>Everything in Individual</strong>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+              Team Workspaces &amp; Shared PRDs
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+              Role-Based Access Control
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+              Priority Support &amp; Onboarding
             </li>
           </ul>
         </div>
@@ -474,8 +499,9 @@ const roadmapItems = [
 }
 .hero-cta {
   display: flex;
-  gap: 0.5rem;
-  flex-wrap: wrap;
+  flex-direction: column;
+  gap: 0.75rem;
+  align-items: flex-start;
 }
 .cta-input {
   flex: 1;
@@ -834,11 +860,12 @@ const roadmapItems = [
   display: flex;
   justify-content: center;
   gap: 2rem;
-  max-width: 900px;
+  max-width: 1200px;
   margin: 0 auto;
   align-items: stretch;
+  flex-wrap: wrap;
 }
-@media (max-width: 768px) {
+@media (max-width: 960px) {
   .pricing-grid {
     flex-direction: column;
     align-items: center;
@@ -851,7 +878,7 @@ const roadmapItems = [
   border-radius: 12px;
   padding: 2.5rem;
   width: 100%;
-  max-width: 400px;
+  max-width: 360px;
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -866,6 +893,14 @@ const roadmapItems = [
   border-color: rgba(232,228,220,0.2);
   box-shadow: 0 8px 32px rgba(0,0,0,0.2);
 }
+.enterprise-pricing {
+  background: rgba(99,102,241,0.04);
+  border-color: rgba(99,102,241,0.25);
+  box-shadow: 0 8px 32px rgba(99,102,241,0.1);
+}
+.enterprise-pricing:hover {
+  border-color: rgba(99,102,241,0.4);
+}
 .pricing-badge {
   position: absolute;
   top: -12px;
@@ -879,6 +914,11 @@ const roadmapItems = [
   letter-spacing: 0.05em;
   padding: 0.25rem 0.75rem;
   border-radius: 99px;
+  white-space: nowrap;
+}
+.enterprise-badge {
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  color: #ffffff;
 }
 .pricing-tier {
   font-size: 1.25rem;
@@ -927,6 +967,9 @@ const roadmapItems = [
   flex-shrink: 0;
   margin-top: 0.125rem;
 }
+.enterprise-pricing .pricing-features svg {
+  color: #818cf8;
+}
 
 /* ── Footer ─────────────────────────────────── */
 .landing-footer {
@@ -958,6 +1001,22 @@ const roadmapItems = [
   transition: color 0.2s;
 }
 .cta-link-secondary:hover { color: #e8e6e0; text-decoration: underline; }
+
+.hero-cta-secondary {
+  margin-top: 0.25rem;
+}
+
+.hero-note-highlight {
+  margin-top: 1.5rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.875rem;
+  background: rgba(16, 185, 129, 0.1);
+  border: 1px solid rgba(16, 185, 129, 0.2);
+  border-radius: 99px;
+  font-size: 0.875rem;
+}
 
 /* ── Mockup inner elements ───────────────────── */
 :deep(.m-row) { display: flex; gap: 0.5rem; margin-bottom: 0.5rem; align-items: flex-start; }
