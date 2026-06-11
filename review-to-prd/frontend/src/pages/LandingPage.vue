@@ -29,7 +29,7 @@
         </p>
 
         <div class="hero-cta">
-          <form class="early-access-form" @submit.prevent="handleWaitlist('landing_hero')">
+          <form class="early-access-form" @submit.prevent="handleWaitlist">
             <input 
               v-model="waitlistEmail" 
               type="email" 
@@ -277,7 +277,7 @@
       <h2 class="final-heading">Ready to stop guessing<br />and start shipping?</h2>
       <p class="final-sub">Join product managers who use Review2PRD to close the gap between user pain and developer action.<br /><strong style="color: #10b981;">Bonus: Sign up for the waitlist today to receive 2 extra free runs on launch (5 total).</strong></p>
       <div class="final-form">
-        <form class="early-access-form" @submit.prevent="handleWaitlist('final_cta')" style="justify-content: center; max-width: 400px; margin: 0 auto;">
+        <form class="early-access-form" @submit.prevent="handleWaitlist" style="justify-content: center; max-width: 400px; margin: 0 auto;">
           <input 
             v-model="waitlistEmail" 
             type="email" 
@@ -317,7 +317,7 @@ const waitlistEmail = ref('')
 const waitlistStatus = ref<'idle'|'loading'|'success'|'error'>('idle')
 const waitlistMessage = ref('')
 
-async function handleWaitlist(source: string = 'landing_hero') {
+async function handleWaitlist() {
   if (!waitlistEmail.value) return
   waitlistStatus.value = 'loading'
   
