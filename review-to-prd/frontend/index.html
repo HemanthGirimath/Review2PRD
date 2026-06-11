@@ -6,8 +6,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Review2PRD — Transform user complaints into actionable PRDs</title>
     <meta name="description" content="AI-powered tool that transforms app store reviews and user feedback into structured Product Requirements Documents." />
+
+    <!-- Step 1: Connect to Google Fonts servers early (saves ~100ms DNS lookup) -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <!-- Step 2: Preload the 3 actual font files so browser starts downloading IMMEDIATELY
+         instead of waiting until CSS is parsed (this was the main LCP killer, causing 3.4s delay) -->
+    <link rel="preload" as="font" type="font/woff2" crossorigin
+      href="https://fonts.gstatic.com/s/inter/v20/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa1ZL7W0Q5nw.woff2" />
+    <link rel="preload" as="font" type="font/woff2" crossorigin
+      href="https://fonts.gstatic.com/s/crimsonpro/v28/q5uDsoa5M_tv7IihmnkabARboYF6CsKj.woff2" />
+    <link rel="preload" as="font" type="font/woff2" crossorigin
+      href="https://fonts.gstatic.com/s/dmmono/v16/aFTU7PB1QTsUX8KYthqQBK6PYK0.woff2" />
+
+    <!-- Step 3: Load the CSS stylesheet (this tells browser which fonts are needed) -->
     <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@600;700&family=Inter:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
   </head>
   <body>

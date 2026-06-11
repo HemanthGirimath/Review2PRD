@@ -90,7 +90,9 @@
           <!-- Replace src with your Loom/YouTube embed URL when ready -->
           <!-- <iframe src="https://www.loom.com/embed/YOUR_VIDEO_ID" frameborder="0" allowfullscreen class="video-iframe"></iframe> -->
 
-          <video ref="demoVideo" class="video-iframe" autoplay loop muted playsinline @click="toggleFullscreen">
+          <!-- preload="none" stops the browser from downloading the video during initial page load,
+               which was competing with fonts and delaying LCP -->
+          <video ref="demoVideo" class="video-iframe" autoplay loop muted playsinline preload="none" @click="toggleFullscreen">
             <source src="../assets/Review2PRD.mp4" type="video/mp4" />
           </video>
           <button class="video-fs-btn" @click="toggleFullscreen" title="Fullscreen">
@@ -310,7 +312,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import axios from 'axios'
-import posthog from 'posthog-js'
 
 const waitlistEmail = ref('')
 const waitlistStatus = ref<'idle'|'loading'|'success'|'error'>('idle')
@@ -321,12 +322,6 @@ async function handleWaitlist(source: string = 'landing_hero') {
   waitlistStatus.value = 'loading'
   
   try {
-    posthog.identify(waitlistEmail.value, { email: waitlistEmail.value })
-    posthog.capture('waitlist_signup', { 
-      email: waitlistEmail.value,
-      source: source
-    })
-    
     // Save to PostgreSQL via backend route
     await axios.post('/api/waitlist', { email: waitlistEmail.value })
     
@@ -634,7 +629,7 @@ const roadmapItems = [
 }
 .center-sub {
   font-size: 1rem;
-  color: #6b6b64;
+  color: #8a8a82; /* was #6b6b64 — contrast was 3.21:1, now passes 4.5:1 WCAG AA */
   max-width: 520px;
   margin: 0 auto 3rem;
   line-height: 1.7;
@@ -662,7 +657,7 @@ const roadmapItems = [
   display: inline-block;
   margin-bottom: 1rem;
 }
-.before-badge { background: rgba(229,72,77,0.08); color: #e5484d; }
+.before-badge { background: rgba(229,72,77,0.08); color: #f07070; } /* was #e5484d — contrast 4.07:1, now passes 4.5:1 on dark bg */
 .after-badge { background: rgba(255,255,255,0.05); color: #e8e4dc; }
 .ps-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.75rem; }
 .ps-list li { font-size: 0.9375rem; color: #8a8a80; line-height: 1.5; }
@@ -685,7 +680,7 @@ const roadmapItems = [
   line-height: 1.1;
   margin: 0 0 1rem;
 }
-.video-sub { font-size: 1rem; color: #6b6b64; max-width: 520px; margin: 0 auto 2.5rem; line-height: 1.65; }
+.video-sub { font-size: 1rem; color: #8a8a82; max-width: 520px; margin: 0 auto 2.5rem; line-height: 1.65; } /* was #6b6b64 */
 .video-frame-wrapper { position: relative; width: 100%; aspect-ratio: 16/9; border-radius: 14px; overflow: hidden; }
 .video-iframe { width: 100%; height: 100%; display: block; cursor: pointer; }
 .video-iframe::-webkit-media-controls-volume-slider,
@@ -755,7 +750,7 @@ const roadmapItems = [
 }
 .feat-desc {
   font-size: 1rem;
-  color: #6b6b64;
+  color: #8a8a82; /* was #6b6b64 — WCAG AA fix */
   line-height: 1.7;
   margin: 0;
 }
@@ -804,7 +799,7 @@ const roadmapItems = [
   margin-bottom: 1rem;
 }
 .step-title { font-size: 1.125rem; font-weight: 700; color: #e8e6e0; margin: 0 0 0.5rem; }
-.step-desc { font-size: 0.9375rem; color: #6b6b64; line-height: 1.65; margin: 0; }
+.step-desc { font-size: 0.9375rem; color: #8a8a82; line-height: 1.65; margin: 0; } /* was #6b6b64 */
 
 /* ── Roadmap ─────────────────────────────────── */
 .roadmap-rows { display: flex; flex-direction: column; gap: 0; }
@@ -827,7 +822,7 @@ const roadmapItems = [
   margin-bottom: 0.5rem;
 }
 .roadmap-title { font-size: 1.0625rem; font-weight: 600; color: #e8e6e0; margin: 0 0 0.375rem; }
-.roadmap-desc { font-size: 0.9rem; color: #6b6b64; line-height: 1.6; margin: 0; }
+.roadmap-desc { font-size: 0.9rem; color: #8a8a82; line-height: 1.6; margin: 0; } /* was #6b6b64 */
 
 /* ── Final CTA ──────────────────────────────── */
 .final-section { text-align: center; }
@@ -840,7 +835,7 @@ const roadmapItems = [
   line-height: 1.1;
   margin: 0 0 1rem;
 }
-.final-sub { font-size: 1rem; color: #6b6b64; max-width: 460px; margin: 0 auto 2rem; line-height: 1.65; }
+.final-sub { font-size: 1rem; color: #8a8a82; max-width: 460px; margin: 0 auto 2rem; line-height: 1.65; } /* was #6b6b64 */
 .final-form {
   display: flex;
   gap: 0.5rem;
@@ -1021,8 +1016,8 @@ const roadmapItems = [
 /* ── Mockup inner elements ───────────────────── */
 :deep(.m-row) { display: flex; gap: 0.5rem; margin-bottom: 0.5rem; align-items: flex-start; }
 :deep(.m-star) { color: #fbbf24; font-weight: 700; flex-shrink: 0; }
-:deep(.m-stat) { font-size: 0.7rem; color: #6b6b64; margin-top: 0.75rem; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 0.5rem; }
-:deep(.m-label) { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.05em; color: #6b6b64; margin-bottom: 0.25rem; }
+:deep(.m-stat) { font-size: 0.7rem; color: #8a8a82; margin-top: 0.75rem; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 0.5rem; } /* was #6b6b64 */
+:deep(.m-label) { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.05em; color: #8a8a82; margin-bottom: 0.25rem; } /* was #6b6b64 */
 :deep(.m-label.mt) { margin-top: 0.875rem; }
 :deep(.m-body) { color: #e8e6e0; margin-bottom: 0.5rem; line-height: 1.6; }
 :deep(.m-issue) { display: flex; flex-direction: column; gap: 0.25rem; padding: 0.625rem; background: #232320; border: 1px solid rgba(255,255,255,0.06); border-radius: 6px; margin-bottom: 0.375rem; }
